@@ -29,7 +29,7 @@ const COMM = path.join(ROOT, 'community');
 // ─── Módulos opcionales → páginas que los componen ─────────────────────────
 const MODULES = {
   calendario:   { pages: ['calendario.html'] },
-  eventos:      { pages: ['eventos.html'] },
+  eventos:      { pages: ['eventos.html', 'evento.html'] },
   noticias:     { pages: ['noticias.html', 'noticia.html'] },
   shiurim:      { pages: ['shiurim.html'] },
   rav:          { pages: ['rav.html'] },

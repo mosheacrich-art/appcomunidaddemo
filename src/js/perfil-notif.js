@@ -123,6 +123,11 @@
       if (prox < hoy0) prox = await fechaEsteAno(hm, hd, hHoy.hy + 1);
       const cuando = prox.getTime() === hoy0.getTime() ? '¡es hoy! 🎉'
         : prox.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const fact = document.getElementById('fact-hebreo');
+      if (fact) {
+        document.getElementById('ph-hebreo').textContent = window.__kehilaLang === 'en' ? `${hd} ${hm}` : `${hd} de ${MESES_ES[hm] || hm}`;
+        fact.hidden = false;
+      }
       el.innerHTML = `Tu fecha hebrea: <b>${hd} de ${MESES_ES[hm] || hm}</b> <span style="opacity:.7">(${origen})</span>.<br>`
         + `Tu próximo cumpleaños hebreo: <b>${cuando}</b>.`
         + (p.nacimiento_puesta_sol ? '' : '<br>Si naciste después de la puesta de sol, la fecha hebrea es un día más tarde: indícalo abajo.');
@@ -172,6 +177,7 @@
     if (error) {   // migración aún no aplicada: no mostramos secciones a medias
       document.getElementById('notificaciones').style.display = 'none';
       document.getElementById('cumple-hebreo').style.display = 'none';
+      ['jump-avisos', 'jump-cumple'].forEach(id => { const a = document.getElementById(id); if (a) a.hidden = true; });
       return;
     }
     if (fila) PREFS.forEach(([k]) => { prefs[k] = !!fila[k]; });

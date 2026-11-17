@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <style>html,body{background:#FAF5EE}</style>
+  <style>
+    #pt-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#FAF5EE;transition:opacity .2s ease}
+    #pt-overlay .pt-spinner{width:40px;height:40px;border-radius:50%;border:3px solid rgba(27,46,94,.15);border-top-color:#1B2E5E;animation:pt-spin .8s linear infinite}
+    @keyframes pt-spin{to{transform:rotate(360deg)}}
+    body.page-ready #pt-overlay{opacity:0;pointer-events:none}
+    body:not(.page-ready) .main-content{visibility:hidden}
+  </style>
+  <link rel="icon" type="image/png" sizes="48x48" href="img/icon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+  <link rel="apple-touch-icon" href="img/icon-180.png">
+  <title>Evento — {{name}}</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/eventos.css">
+  <style>
+    .main-content { margin-left: var(--sidebar-width); min-height: 100vh; }
+    @media (max-width: 768px) { .main-content { margin-left: 0; } }
+  </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1b2e5e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="{{name}}">
+  <link rel="apple-touch-icon" href="img/icon-192.png">
+  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);}</script>
+  <script defer src='/_vercel/insights/script.js'></script>
+  <script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);}</script>
+  <script defer src='/_vercel/speed-insights/script.js'></script>
+  <!-- Transición sin hueco crema (ver eventos.html). Aquí además el cartel
+       "vuela" desde la tarjeta de la lista: comparten view-transition-name. -->
+  <script>if('PageRevealEvent' in window){document.documentElement.classList.add('vt');document.write('<link rel="expect" href="#pt-ready" blocking="render">');}</script>
+  <style>html.vt:not(.vt-wait) #pt-overlay{display:none!important}html.vt body:not(.page-ready) .main-content{visibility:visible!important}</style>
+  <script>
+    // Smart App Banner de Safari (iOS): «Abrir» en la app en esta misma página
+    (function(){ try { if (!{{app.openInAppBanner}} || window.Capacitor) return; var m=document.createElement('meta'); m.name='apple-itunes-app';
+      m.content='app-id={{stores.appStoreId}}, app-argument='+location.href; document.head.appendChild(m); } catch(e){} })();
+  </script>
+  <script src="js/lang-en.js"></script>
+</head>
+<body>
+<div id="pt-overlay"><div class="pt-spinner"></div></div>
+<script>document.addEventListener("DOMContentLoaded",function(){document.body.classList.add("page-ready");});</script>
+<div id="sidebar-placeholder"></div>
+<div class="main-content">
+  <article class="evd-wrap">
+    <a href="eventos.html" class="evd-back">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
+      Eventos
+    </a>
+    <div id="evd-root">
+      <div class="evd-grid">
+        <div class="evd-poster"><div class="evd-skel"></div></div>
+        <div>
+          <div class="evd-skel-line" style="width:30%"></div>
+          <div class="evd-skel-line" style="width:85%;height:44px"></div>
+          <div class="evd-skel-line" style="width:60%;height:44px"></div>
+          <div class="evd-skel-line" style="height:140px;margin-top:24px"></div>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>
+
+<div class="toast-container"></div>
+<script src="/vendor/supabase.js"></script>
+<script defer src="https://js.stripe.com/v3/"></script>
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/familia.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/media.js"></script>
+<script src="js/router.js"></script>
+<script src="js/eventos-comun.js"></script>
+<script>
+  requireAuth();
+  initNav('eventos');
+
+  const EV_ID = new URLSearchParams(location.search).get('id');
+  let _posterHTML = '';
+
+  /** Lo llama eventos-comun.js cada vez que cambian los datos. */
+  function onEventosChange() { renderFicha(); }
+
+  function renderFicha() {
+    const root = document.getElementById('evd-root');
+    const ev = EV_ID ? evFind(EV_ID) : null;
+    if (!ev) {
+      if (!evCargado && EV_ID) return;   // sigue el esqueleto hasta que responda Supabase
+      _posterHTML = '';
+      root.innerHTML = `
+        <div class="evd-empty">
+          <h1>Evento no encontrado</h1>
+          <p>Puede que se haya cancelado o que el enlace no sea correcto.</p>
+          <a class="btn btn-primary" href="eventos.html">Ver todos los eventos</a>
+        </div>`;
+      return;
+    }
+    document.title = `${ev.titulo} — {{name}}`;
+
+    // Primera vez: se monta el esqueleto de la ficha. Después solo se
+    // actualizan sus partes, para no volver a crear la imagen del cartel.
+    if (!root.querySelector('.evd-info')) {
+      root.innerHTML = `<div class="evd-grid"><div class="evd-poster" id="evd-poster"></div><div class="evd-info" id="evd-info"></div></div>`;
+      _posterHTML = '';
+    }
+    const poster = evPosterHTML(ev, { ...evPosterBadge(ev), eager: true });
+    if (poster !== _posterHTML) {
+      document.getElementById('evd-poster').innerHTML = poster;
+      _posterHTML = poster;
+    }
+    document.getElementById('evd-info').innerHTML = infoHTML(ev);
+  }
+
+  function infoHTML(ev) {
+    const libres = evPlazasLibres(ev);
+    const acc = evAccion(ev).tipo;
+    const tags = [`<span class="ev-tag" style="--ev-cat:${evCatColor(ev.categoria)}"><i></i>${escHtml(evDirigidoA(ev))}</span>`];
+    if (acc === 'inscrito') tags.push('<span class="ev-tag is-ok">✓ Estás inscrito</span>');
+    else if (acc === 'espera') tags.push('<span class="ev-tag is-warn">Completo</span>');
+    else if (libres !== null && libres > 0 && libres <= 5 && acc === 'abierto') tags.push(`<span class="ev-tag is-warn">${libres === 1 ? 'Última plaza' : `Últimas ${libres} plazas`}</span>`);
+
+    const plazas = ev.aforo ? ` · ${ev.inscritos || 0}/${ev.aforo}` : '';
+    return `
+      <p class="evd-eyebrow">${escHtml(ev.categoria || 'Evento')}</p>
+      <h1 class="evd-title">${escHtml(ev.titulo)}</h1>
+      <div class="evd-tags">${tags.join('')}</div>
+
+      <dl class="evd-facts">
+        <div><dt>${EV_ICON.cal}Fecha</dt><dd>${escHtml(evFechaLarga(ev))}</dd></div>
+        <div><dt>${EV_ICON.clock}Hora</dt><dd>${escHtml(evHora(ev) || 'Por confirmar')}</dd></div>
+        <div><dt>${EV_ICON.pin}Lugar</dt><dd>${ev.lugar ? `<a href="#" onclick="abrirMapa(event)">${escHtml(ev.lugar)}</a>` : 'Por confirmar'}</dd></div>
+        <div><dt>${EV_ICON.users}Precio y plazas</dt><dd>${escHtml(evPrecioTxt(ev))}${plazas}</dd></div>
+      </dl>
+
+      <h2 class="evd-section-title">${EV_ICON.ticket}Inscripción</h2>
+      <div class="evd-reg">${inscripcionHTML(ev, acc, libres)}</div>
+
+      ${ev.descripcion ? `<h2 class="evd-section-title">Sobre el evento</h2><p class="evd-desc">${escHtml(ev.descripcion)}</p>` : ''}
+
+      <div class="evd-tools">
+        ${acc !== 'pasado' ? `<button class="btn btn-ghost btn-sm" onclick="anadirCalendario()">${EV_ICON.plus}Añadir al calendario</button>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="compartirEvento('${escHtml(String(ev.id))}',event)">${EV_ICON.share}Compartir</button>
+      </div>`;
+  }
+
+  function inscripcionHTML(ev, acc, libres) {
+    const id = escHtml(String(ev.id));
+    if (acc === 'pasado') return '<p>Este evento ya ha pasado.</p>';
+    if (acc === 'inscrito') return `
+      <div class="evd-reg-ok">${EV_ICON.check}Estás inscrito</div>
+      <button class="evd-cancel" onclick="cancelarInscripcion('${id}',event)">Cancelar inscripción</button>`;
+    if (acc === 'espera') return `
+      <p>El evento está completo. Apúntate a la lista de espera y te avisaremos si se libera una plaza.</p>
+      <button class="btn btn-espera btn-lg" onclick="openEspera('${id}',event)">Apuntarme a la lista de espera</button>`;
+    const partes = [];
+    partes.push(evPrecio(ev) ? `${escHtml(evPrecioTxt(ev))} por persona.` : 'Inscripción gratuita.');
+    if (libres !== null) partes.push(libres === 1 ? 'Queda 1 plaza.' : `Quedan ${libres} plazas.`);
+    partes.push('Podrás apuntar también a tu familia.');
+    return `
+      <p>${partes.map(p => `<span>${p}</span>`).join(' ')}</p>
+      <button class="btn btn-primary btn-lg" onclick="openInscripcion('${id}',event)">Inscribirme</button>`;
+  }
+
+  function abrirMapa(e) {
+    e.preventDefault();
+    const ev = evFind(EV_ID);
+    if (ev?.lugar) _abrirExterno('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ev.lugar));
+  }
+
+  /* Añadir al calendario: archivo .ics en web; en la app nativa (donde no
+     hay descargas) se abre Google Calendar con el evento ya rellenado. */
+  function anadirCalendario() {
+    const ev = evFind(EV_ID);
+    if (!ev) return;
+    const ymd = String(ev.fecha).slice(0, 10).replace(/-/g, '');
+    const hora = evHora(ev);
+    let ini, fin, todoElDia = !hora;
+    if (!todoElDia) {
+      const [h, m] = hora.split(':').map(Number);
+      const finH = Math.min(h + 2, 23);
+      ini = `${ymd}T${String(h).padStart(2, '0')}${String(m).padStart(2, '0')}00`;
+      fin = `${ymd}T${String(finH).padStart(2, '0')}${String(m).padStart(2, '0')}00`;
+    }
+    const url = `{{url}}/evento.html?id=${encodeURIComponent(ev.id)}`;
+    if (window.Capacitor?.isNativePlatform?.()) {
+      const q = new URLSearchParams({ action: 'TEMPLATE', text: ev.titulo, details: (ev.descripcion || '') + '\n\n' + url, location: ev.lugar || '', ctz: 'Europe/Madrid' });
+      q.set('dates', todoElDia ? `${ymd}/${ymd}` : `${ini}/${fin}`);
+      _abrirExterno('https://calendar.google.com/calendar/render?' + q.toString());
+      return;
+    }
+    const esc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/[,;]/g, m => '\\' + m);
+    const ics = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//{{name}}//Comunidad//ES', 'BEGIN:VEVENT',
+      `UID:evento-${ev.id}@{{domain}}`,
+      `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`,
+      todoElDia ? `DTSTART;VALUE=DATE:${ymd}` : `DTSTART;TZID=Europe/Madrid:${ini}`,
+      todoElDia ? '' : `DTEND;TZID=Europe/Madrid:${fin}`,
+      `SUMMARY:${esc(ev.titulo)}`,
+      ev.lugar ? `LOCATION:${esc(ev.lugar)}` : '',
+      `DESCRIPTION:${esc((ev.descripcion || '') + '\n\n' + url)}`,
+      `URL:${url}`,
+      'END:VEVENT', 'END:VCALENDAR'
+    ].filter(Boolean).join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (ev.titulo || 'evento').replace(/[^\p{L}\p{N} _-]/gu, '').trim().slice(0, 60) + '.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    if (typeof trackEvent === 'function') trackEvent('evento_calendario', { evento: String(ev.id) });
+  }
+
+  /* ─── Init ─── */
+  evPintarInstantanea();
+  evCargar();
+</script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(()=>{});
+    }
+  </script>
+<div id="pt-ready" hidden></div>
+<script src="js/abrir-app.js" defer></script>
+</body>
+</html>

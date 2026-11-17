@@ -23,352 +23,347 @@
     .main-content { margin-left: var(--sidebar-width); min-height: 100vh; background: var(--color-bg); }
     @media (max-width: 768px) { .main-content { margin-left: 0; } }
 
-    .perfil-inner {
-      max-width: 760px;
+    /* ════ Perfil — ficha de miembro + datos ════ */
+    .pf {
+      --pf-ink: #1B2E5E;
+      --pf-ink-deep: #132247;
+      --pf-gold: #C9A84C;
+      --pf-gold-soft: #E7D3A0;
+      --pf-cream: #FAF5EE;
+      --pf-line: rgba(27, 46, 94, 0.10);
+      --pf-field: #FFFDF9;
+      --pf-muted: #5E6578;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 36px 32px 60px;
+      padding: 28px 32px 120px;
     }
-    @media (max-width: 768px) { .perfil-inner { padding: 20px 16px 88px; } }
+    @media (max-width: 768px) { .pf { padding: 14px 16px 150px; } }
 
-    /* ─── Header ─── */
-    .perfil-header {
-      display: flex;
-      align-items: flex-end;
-      gap: 24px;
-      margin-bottom: 32px;
-      padding-bottom: 28px;
-      border-bottom: 1px solid var(--color-border);
-    }
-    @media (max-width: 560px) {
-      .perfil-header { flex-direction: column; align-items: flex-start; }
-    }
+    .pf ::selection { background: var(--pf-gold-soft); color: var(--pf-ink-deep); }
 
-    /* ─── Avatar upload ─── */
-    .avatar-upload-wrap {
-      position: relative;
-      flex-shrink: 0;
+    .pf-top { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+    .pf-back {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 50%;
+      color: var(--pf-ink); background: #fff; border: 1px solid var(--pf-line);
+      text-decoration: none; flex-shrink: 0;
+      transition: background .15s ease, transform .15s ease;
     }
-
-    .avatar-upload-wrap .avatar-xl {
-      width: 88px;
-      height: 88px;
-      font-size: 1.75rem;
-      border: 2px solid var(--color-border);
+    .pf-back:hover { background: var(--pf-gold-soft); }
+    .pf-back:active { transform: scale(.95); }
+    .pf-back svg { width: 17px; height: 17px; }
+    .pf-title {
+      font-family: var(--font-brand); font-weight: 700;
+      font-size: clamp(1.6rem, 2.4vw, 2rem); letter-spacing: -0.02em;
+      color: var(--pf-ink); line-height: 1.1; margin: 0;
     }
 
-    .avatar-upload-wrap img.avatar-photo {
-      width: 88px;
-      height: 88px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--color-border);
-      display: block;
-    }
-
-    .avatar-edit-btn {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--color-white);
-      border: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: background var(--transition-fast);
-    }
-    .avatar-edit-btn:hover { background: var(--color-bg); }
-    .avatar-edit-btn svg { width: 13px; height: 13px; color: var(--color-text-muted); }
-
-    #avatar-file-input { display: none; }
-
-    /* ─── Header info ─── */
-    .perfil-header-info { flex: 1; min-width: 0; }
-
-    .perfil-name {
-      font-family: var(--font-brand);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--color-text);
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
-    }
-
-    .perfil-email {
-      font-size: 0.875rem;
-      color: var(--color-text-muted);
-      margin-bottom: 10px;
-    }
-
-    .perfil-badges { display: flex; gap: 6px; flex-wrap: wrap; }
-
-    .ptag {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 8px;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      border: 1px solid;
-    }
-    .ptag-role  { color: #1B2E5E; background: #eef2ff; border-color: #c7d2fe; }
-    .ptag-status-active  { color: #15803d; background: #f0fdf4; border-color: #bbf7d0; }
-    .ptag-status-pending { color: #92400e; background: #fffbeb; border-color: #fde68a; }
-
-    /* ─── Sections ─── */
-    .perfil-section {
-      margin-bottom: 28px;
-    }
-
-    /* Notificaciones y cumpleaños hebreo */
-    .np-nota { font-size: .8rem; color: var(--color-text-muted); margin: 0 0 10px; line-height: 1.45; }
-    .np-list { display: flex; flex-direction: column; }
-    .np-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--color-border); cursor: pointer; }
-    .np-item span { flex: 1; min-width: 0; }
-    .np-item b { display: block; font-size: .875rem; font-weight: 600; color: var(--color-text); }
-    .np-item small { font-size: .75rem; color: var(--color-text-muted); }
-    .np-item input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--color-primary); }
-    .ch-grid { display: flex; flex-direction: column; gap: 12px; }
-    .ch-campo { display: flex; flex-direction: column; gap: 6px; font-size: .85rem; color: var(--color-text); }
-    .ch-manual summary { font-size: .8rem; color: var(--color-primary); cursor: pointer; }
-    .ch-manual-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .ch-manual-row input { width: 80px; }
-    .ch-manual-row select { flex: 1; min-width: 140px; }
-
-    .perfil-section-title {
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--color-text-muted);
-      margin-bottom: 12px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    /* ─── Field rows ─── */
-    .perfil-grid {
+    .pf-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
     }
-    @media (max-width: 560px) { .perfil-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 960px) { .pf-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
 
-    .perfil-field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    /* overflow-x:hidden global en html/body rompe position:sticky; clip
+       evita igual el scroll horizontal sin crear contenedor de scroll. */
+    @supports (overflow: clip) { html, body { overflow-x: clip; overflow-y: visible; } }
+    .pf-side { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 14px; }
+    @media (max-width: 960px) { .pf-side { position: static; } }
 
-    .perfil-field-label {
-      font-size: 0.7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text);
+    /* ─── Ficha de miembro ─── */
+    .pf-id {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--pf-ink);
+      color: var(--pf-cream);
+      box-shadow: 0 14px 34px -14px rgba(19, 34, 71, 0.55), 0 2px 6px rgba(19, 34, 71, 0.12);
+      isolation: isolate;
     }
+    .pf-id-cover {
+      position: relative; height: 128px; overflow: hidden;
+      background: var(--pf-ink-deep);
+    }
+    .pf-id-cover img {
+      width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%;
+      filter: grayscale(1) contrast(1.05) brightness(.9);
+      mix-blend-mode: luminosity; opacity: .55; display: block;
+    }
+    .pf-id-cover::after {
+      content: ''; position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(27,46,94,.25) 0%, rgba(27,46,94,.65) 60%, var(--pf-ink) 100%),
+        linear-gradient(90deg, rgba(201,168,76,.18), rgba(201,168,76,0) 55%);
+    }
+    .pf-id-word {
+      position: absolute; z-index: 1; top: 14px; right: 18px;
+      font-family: var(--font-brand); font-weight: 500; font-size: 1.05rem;
+      color: var(--pf-gold-soft); opacity: .9; letter-spacing: .01em;
+      direction: rtl;
+    }
+    .pf-id-body { position: relative; padding: 0 24px 22px; margin-top: -62px; text-align: center; }
 
-    .perfil-field-value {
-      font-size: 0.9rem;
-      color: var(--color-text);
-      font-weight: 400;
+    .pf-photo {
+      position: relative; display: block; width: 124px; height: 124px;
+      margin: 0 auto 14px; border-radius: 50%; cursor: pointer;
+      padding: 4px; background: var(--pf-ink);
+      box-shadow: 0 0 0 1.5px var(--pf-gold), 0 10px 24px -8px rgba(0,0,0,.45);
+      transition: box-shadow .2s ease;
     }
+    .pf-photo:focus-within, .pf-photo.is-drag { box-shadow: 0 0 0 3px var(--pf-gold), 0 10px 24px -8px rgba(0,0,0,.45); }
+    .pf-photo #avatar-display, .pf-photo #avatar-display > * { width: 100%; height: 100%; border-radius: 50%; }
+    .pf-photo .avatar { font-family: var(--font-brand); font-size: 2.6rem; font-weight: 500; letter-spacing: .02em; }
+    .pf-photo img.avatar-photo { object-fit: cover; display: block; }
+    .pf-photo-hint {
+      position: absolute; inset: 4px; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      background: rgba(19, 34, 71, .62); color: #fff;
+      font-size: .72rem; font-weight: 600; letter-spacing: .02em;
+      opacity: 0; transition: opacity .2s ease;
+    }
+    .pf-photo-hint svg { width: 20px; height: 20px; }
+    .pf-photo:hover .pf-photo-hint, .pf-photo.is-drag .pf-photo-hint, .pf-photo.is-busy .pf-photo-hint { opacity: 1; }
+    .pf-photo-cam {
+      position: absolute; right: 2px; bottom: 6px;
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--pf-gold); color: var(--pf-ink-deep);
+      border: 3px solid var(--pf-ink);
+    }
+    .pf-photo-cam svg { width: 15px; height: 15px; }
+    @media (hover: hover) { .pf-photo-cam { display: none; } }
+    #avatar-file-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
-    .perfil-field-value.empty {
-      color: var(--color-text-light);
-      font-style: italic;
-      font-size: 0.8rem;
+    .pf-name {
+      font-family: var(--font-brand); font-weight: 700;
+      font-size: 1.55rem; line-height: 1.15; letter-spacing: -0.015em;
+      color: #fff; text-wrap: balance; margin: 0 0 4px;
     }
+    .pf-email { font-size: .85rem; color: rgba(250, 245, 238, .72); word-break: break-all; }
+    .pf-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .ptag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: .72rem; font-weight: 600; letter-spacing: .01em;
+      border: 1px solid rgba(231, 211, 160, .45); color: var(--pf-gold-soft);
+    }
+    .ptag-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .ptag-status-active  { color: #A7E3BF; border-color: rgba(167, 227, 191, .4); }
+    .ptag-status-pending { color: #F6D58B; border-color: rgba(246, 213, 139, .45); }
+    .ptag-status-banned  { color: #F7B4B4; border-color: rgba(247, 180, 180, .45); }
 
-    /* ─── Edit mode ─── */
-    .perfil-field input,
-    .perfil-field select {
-      font-size: 0.875rem;
-      color: var(--color-text);
-      background: var(--color-white);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xs);
-      padding: 7px 10px;
-      outline: none;
-      width: 100%;
-      font-family: var(--font-ui);
-      transition: border-color var(--transition-fast);
+    .pf-facts { margin: 18px 0 0; padding: 0; border-top: 1px solid rgba(201, 168, 76, .28); text-align: left; }
+    .pf-fact {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+      padding: 11px 0; border-bottom: 1px solid rgba(201, 168, 76, .18);
     }
-    .perfil-field input:focus,
-    .perfil-field select:focus {
-      border-color: var(--color-primary);
-    }
+    .pf-fact[hidden] { display: none; }
+    .pf-fact dt { font-size: .78rem; color: rgba(250, 245, 238, .62); }
+    .pf-fact dd { margin: 0; font-family: var(--font-brand); font-size: 1rem; font-weight: 500; color: var(--pf-gold-soft); text-align: right; }
 
-    /* ─── Actions ─── */
-    .perfil-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid var(--color-border);
+    /* Índice lateral (solo escritorio) */
+    .pf-jump { display: flex; flex-direction: column; padding: 6px; background: #fff; border: 1px solid var(--pf-line); border-radius: 14px; }
+    .pf-jump a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 12px; border-radius: 9px;
+      font-size: .875rem; font-weight: 500; color: var(--pf-ink); text-decoration: none;
+      transition: background .15s ease;
     }
+    .pf-jump a:hover { background: var(--pf-cream); }
+    .pf-jump a svg { width: 14px; height: 14px; color: var(--pf-gold); }
+    .pf-jump a[hidden] { display: none; }
+    @media (max-width: 960px) { .pf-jump { display: none; } }
 
-    /* ─── Mis hijos ─── */
+    /* ─── Tarjetas ─── */
+    .pf-main { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+    .pf-card {
+      background: #fff;
+      border: 1px solid var(--pf-line);
+      border-radius: 16px;
+      padding: 24px 26px 26px;
+      box-shadow: 0 1px 2px rgba(27, 46, 94, .04), 0 6px 18px -10px rgba(27, 46, 94, .14);
+      scroll-margin-top: 20px;
+    }
+    @media (max-width: 560px) { .pf-card { padding: 20px 18px 22px; border-radius: 14px; } }
+    .pf-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
+    .pf-card-title {
+      font-family: var(--font-brand); font-weight: 700; font-size: 1.3rem;
+      letter-spacing: -0.01em; color: var(--pf-ink); margin: 0; line-height: 1.2;
+    }
+    .pf-card-sub { font-size: .85rem; color: var(--pf-muted); margin: 4px 0 0; line-height: 1.5; max-width: 60ch; }
+    .pf-card-head .btn { flex-shrink: 0; }
+
+    /* Formulario */
+    .pf-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+    .pf-form .full { grid-column: 1 / -1; }
+    @media (max-width: 560px) { .pf-form { grid-template-columns: 1fr; } }
+    .pf-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .pf-field[hidden] { display: none; }
+    .pf-field label, .pf-field .pf-label { font-size: .8rem; font-weight: 600; color: var(--pf-ink); }
+    .pf-field input {
+      font: 400 .95rem/1.3 var(--font-ui); color: var(--color-text);
+      background: var(--pf-field);
+      border: 1px solid rgba(27, 46, 94, .16); border-radius: 10px;
+      padding: 11px 13px; width: 100%; outline: none;
+      caret-color: var(--pf-gold-dark, #A8892E);
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .pf-field input::placeholder { color: #8A8F9C; }
+    .pf-field input:hover { border-color: rgba(27, 46, 94, .3); }
+    .pf-field input:focus { border-color: var(--pf-ink); background: #fff; box-shadow: 0 0 0 3px rgba(201, 168, 76, .28); }
+    .pf-field input.is-changed { border-color: var(--pf-gold); background: #FFFBEF; }
+    .pf-field input[readonly] {
+      background: #F4F1EA; border-color: transparent; color: #4A5064; cursor: default;
+    }
+    .pf-field input[readonly]:focus { box-shadow: none; }
+    .pf-divider {
+      grid-column: 1 / -1; display: flex; align-items: center; gap: 12px;
+      margin-top: 8px; font-size: .78rem; font-weight: 600; color: var(--pf-muted);
+    }
+    .pf-divider[hidden], .pf-locked[hidden] { display: none; }
+    .pf-divider::after { content: ''; flex: 1; height: 1px; background: var(--pf-line); }
+    .pf-locked {
+      grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start;
+      font-size: .8rem; color: var(--pf-muted); line-height: 1.5;
+    }
+    .pf-locked svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px; color: var(--pf-gold-dark, #A8892E); }
+    .pf-locked a { color: var(--pf-ink); text-underline-offset: 3px; text-decoration-color: var(--pf-gold); }
+
+    /* Lista de datos de solo lectura */
+    .pf-dl { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin: 0; }
+    @media (max-width: 560px) { .pf-dl { grid-template-columns: 1fr; } }
+    .pf-dl > div[hidden] { display: none; }
+    .pf-dl dt { font-size: .78rem; color: var(--pf-muted); margin-bottom: 3px; }
+    .pf-dl dd { margin: 0; font-size: .95rem; color: var(--color-text); }
+
+    /* Barra de guardar */
+    .pf-savebar {
+      position: fixed; z-index: 8000;
+      left: calc(50% + var(--sidebar-width) / 2); transform: translate(-50%, calc(100% + 48px));
+      visibility: hidden;
+      bottom: 22px;
+      display: flex; align-items: center; gap: 14px;
+      width: min(560px, calc(100vw - 32px));
+      padding: 10px 10px 10px 18px;
+      background: var(--pf-ink-deep, #132247); color: #fff;
+      border-radius: 14px;
+      box-shadow: 0 18px 40px -12px rgba(19, 34, 71, .55);
+      transition: transform .32s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .32s;
+      --pf-ink-deep: #132247;
+    }
+    .pf-savebar.show { transform: translate(-50%, 0); visibility: visible; transition-delay: 0s; }
+    .pf-savebar p { flex: 1; margin: 0; font-size: .875rem; }
+    .pf-savebar .btn-ghost { color: rgba(255,255,255,.8); }
+    .pf-savebar .btn-ghost:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .pf-savebar .btn-gold { color: #132247; }
+    @media (max-width: 768px) {
+      .pf-savebar { left: 50%; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
+    }
+    body.pf-dirty #kehila-lang-fab { display: none; }
+    @media (prefers-reduced-motion: reduce) { .pf-savebar { transition: none; } }
+
+    /* ─── Familia ─── */
+    .pf-sub {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      margin: 0 0 10px;
+    }
+    .pf-sub h3 { font-size: .9rem; font-weight: 600; color: var(--pf-ink); margin: 0; }
+    .pf-sub + p { font-size: .8rem; color: var(--pf-muted); margin: -4px 0 12px; line-height: 1.5; }
+    .pf-fam-block + .pf-fam-block { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--pf-line); }
+    .familia-list { display: flex; flex-direction: column; gap: 8px; }
+    .familia-card {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--pf-cream); border-radius: 12px; padding: 10px 12px;
+    }
+    .familia-card .avatar { font-family: var(--font-brand); }
+    .familia-card-info { flex: 1; min-width: 0; }
+    .familia-card-name { font-size: .9rem; font-weight: 600; color: var(--color-text); }
+    .familia-card-rel  { font-size: .78rem; color: var(--pf-muted); margin-top: 2px; }
     .hijo-badge {
-      display: inline-flex; align-items: center;
-      padding: 1px 7px; border-radius: 3px;
-      font-size: .65rem; font-weight: 700; letter-spacing: .03em;
-      background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE;
+      display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 999px;
+      font-size: .68rem; font-weight: 600; background: #EEF1F8; color: var(--pf-ink);
     }
     .hijo-actions { display: flex; gap: 2px; flex-shrink: 0; }
-    .hijo-action-btn {
+    .hijo-action-btn, .familia-remove-btn {
       background: none; border: none; cursor: pointer;
-      color: var(--color-text-light); padding: 5px; border-radius: var(--radius-xs);
-      display: flex; align-items: center; transition: color var(--transition-fast);
+      color: var(--pf-muted); width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: color .15s ease, background .15s ease;
     }
-    .hijo-action-btn:hover { color: var(--color-primary); }
-    .hijo-action-btn.danger:hover { color: var(--color-danger); }
-    .hijo-action-btn svg { width: 15px; height: 15px; }
-
-    /* ─── Mi familia ─── */
-    .familia-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .familia-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--color-white);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-    }
-
-    .familia-card-info { flex: 1; min-width: 0; }
-    .familia-card-name { font-size: .875rem; font-weight: 600; color: var(--color-text); }
-    .familia-card-rel  { font-size: .75rem; color: var(--color-text-muted); margin-top: 2px; }
-
-    .familia-remove-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--color-text-light);
-      padding: 4px;
-      border-radius: var(--radius-xs);
-      display: flex;
-      align-items: center;
-      transition: color var(--transition-fast);
-      flex-shrink: 0;
-    }
-    .familia-remove-btn:hover { color: var(--color-danger); }
-    .familia-remove-btn svg  { width: 15px; height: 15px; }
-
+    .hijo-action-btn:hover, .familia-remove-btn:hover { color: var(--pf-ink); background: #fff; }
+    .hijo-action-btn.danger:hover, .familia-remove-btn:hover { color: var(--color-danger); }
+    .hijo-action-btn svg, .familia-remove-btn svg { width: 16px; height: 16px; }
     .familia-empty {
-      font-size: .875rem;
-      color: var(--color-text-light);
-      font-style: italic;
+      display: flex; align-items: center; gap: 12px;
+      font-size: .875rem; color: var(--pf-muted); margin: 0;
+      padding: 14px; border: 1px dashed rgba(27, 46, 94, .18); border-radius: 12px;
     }
+
+    /* ─── Avisos y cumpleaños hebreo ─── */
+    .np-nota { font-size: .85rem; color: var(--pf-muted); margin: 0 0 10px; line-height: 1.55; }
+    .np-nota b { color: var(--pf-ink); }
+    .np-list { display: flex; flex-direction: column; }
+    .np-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--pf-line); cursor: pointer; }
+    .np-item:last-child { border-bottom: none; }
+    .np-item span { flex: 1; min-width: 0; }
+    .np-item b { display: block; font-size: .9rem; font-weight: 600; color: var(--color-text); }
+    .np-item small { font-size: .78rem; color: var(--pf-muted); }
+    .np-item input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--pf-ink); }
+    .ch-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 6px; }
+    .ch-campo { display: flex; flex-direction: column; gap: 6px; font-size: .85rem; font-weight: 600; color: var(--pf-ink); }
+    .ch-manual summary { font-size: .82rem; color: var(--pf-ink); cursor: pointer; text-decoration: underline; text-decoration-color: var(--pf-gold); text-underline-offset: 3px; }
+    .ch-manual-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .ch-manual-row input { width: 84px; }
+    .ch-manual-row select { flex: 1; min-width: 140px; }
+
+    /* ─── Seguridad / solicitud / baja ─── */
+    .solicitud-card {
+      background: var(--pf-cream); border-radius: 12px; padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px;
+    }
+    .solicitud-num { font-variant-numeric: tabular-nums; font-size: .9rem; color: var(--color-text); font-weight: 600; }
+    .solicitud-date { font-size: .78rem; color: var(--pf-muted); margin-top: 2px; }
+    .solicitud-card .ptag { color: var(--pf-ink); border-color: var(--pf-line); }
+
+    .pf-leave {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      padding: 6px 4px 0; font-size: .82rem; color: var(--pf-muted); line-height: 1.5;
+    }
+    .pf-leave p { margin: 0; max-width: 52ch; }
+    .pf-leave a { color: var(--pf-ink); }
+    .pf-leave-btn {
+      background: none; border: 1px solid rgba(185, 28, 28, .3); color: #B91C1C;
+      font: 600 .82rem var(--font-ui); padding: 8px 14px; border-radius: 10px; cursor: pointer;
+      transition: background .15s ease;
+    }
+    .pf-leave-btn:hover { background: #FEF2F2; }
 
     /* ─── Modal añadir familiar ─── */
     .modal-familiar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      background: rgba(0,0,0,.45);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      display: none; position: fixed; inset: 0; z-index: 9000;
+      background: rgba(19, 34, 71, .45); align-items: center; justify-content: center; padding: 20px;
     }
     .modal-familiar-overlay.open { display: flex; }
-
-    .modal-familiar-box {
-      background: var(--color-white);
-      border-radius: var(--radius-md);
-      width: 100%;
-      max-width: 440px;
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-    }
-
-    .modal-familiar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .modal-familiar-header h3 {
-      font-family: var(--font-brand);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--color-text);
-    }
-
+    .modal-familiar-box { background: #fff; border-radius: 16px; width: 100%; max-width: 440px; box-shadow: var(--shadow-xl); overflow: hidden; }
+    .modal-familiar-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--color-border); }
+    .modal-familiar-header h3 { font-family: var(--font-brand); font-size: 1.1rem; font-weight: 700; color: var(--color-text); }
     .modal-familiar-body { padding: 20px; }
-
-    .familia-search-results {
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      max-height: 220px;
-      overflow-y: auto;
-    }
-
+    .familia-search-results { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
     .familia-result-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: var(--radius-xs);
-      cursor: pointer;
-      transition: background var(--transition-fast);
-      border: 1px solid transparent;
+      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+      border-radius: 10px; cursor: pointer; border: 1px solid transparent; transition: background .15s ease;
     }
     .familia-result-item:hover { background: var(--color-bg); }
-    .familia-result-item.selected { background: var(--color-primary-light, #eef2ff); border-color: var(--color-primary); }
-
+    .familia-result-item.selected { background: #EEF1F8; border-color: var(--color-primary); }
     .familia-result-name { font-size: .875rem; font-weight: 500; color: var(--color-text); }
     .familia-result-email { font-size: .75rem; color: var(--color-text-muted); }
+    .modal-familiar-footer { padding: 14px 20px; border-top: 1px solid var(--color-border); display: flex; gap: 8px; justify-content: flex-end; }
 
-    .modal-familiar-footer {
-      padding: 14px 20px;
-      border-top: 1px solid var(--color-border);
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-    }
-
-    /* ─── Solicitud card ─── */
-    .solicitud-card {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .solicitud-num {
-      font-family: monospace;
-      font-size: 0.875rem;
-      color: var(--color-text);
-      font-weight: 600;
-    }
-
-    .solicitud-date {
-      font-size: 0.75rem;
-      color: var(--color-text-muted);
-      margin-top: 2px;
-    }
+    .pf :focus-visible { outline: 2px solid var(--pf-gold); outline-offset: 2px; }
+    #modal-hijo-overlay input::placeholder, #modal-delete-overlay input::placeholder,
+    .modal-familiar-overlay input::placeholder, .ch-manual-row input::placeholder { color: #6B7280; }
   </style>
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);}</script>
   <script defer src='/_vercel/insights/script.js'></script>
@@ -389,298 +384,290 @@
   <div id="sidebar-placeholder"></div>
 
   <div class="main-content">
-    <div class="perfil-inner">
+    <div class="pf">
 
-      <!-- Page header -->
-      <div class="page-header" style="margin-bottom:24px;">
-        <div class="page-header-left">
-          <a href="home.html" class="btn btn-secondary btn-sm" style="margin-bottom:12px;text-decoration:none;">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
-            Volver
-          </a>
-          <div class="page-header-label">Mi cuenta</div>
-          <h1 class="page-title">Mi perfil</h1>
-        </div>
-        <div class="page-header-actions">
-          <button class="btn btn-secondary btn-sm" id="btn-editar" onclick="toggleEdit()">Editar datos</button>
-          <button class="btn btn-primary btn-sm" id="btn-guardar" style="display:none;" onclick="guardar()">Guardar cambios</button>
-          <button class="btn btn-ghost btn-sm" id="btn-cancelar" style="display:none;" onclick="cancelarEdit()">Cancelar</button>
-        </div>
-      </div>
+      <header class="pf-top">
+        <a href="home.html" class="pf-back" aria-label="Volver al inicio">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
+        </a>
+        <h1 class="pf-title">Mi perfil</h1>
+      </header>
 
-      <!-- ══ HEADER PERFIL ══ -->
-      <div class="perfil-header">
-        <div class="avatar-upload-wrap">
-          <div id="avatar-display"></div>
-          <label class="avatar-edit-btn" for="avatar-file-input" title="Cambiar foto">
-            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Z"/>
-            </svg>
-          </label>
-          <input type="file" id="avatar-file-input" accept="image/*" onchange="handleAvatarUpload(event)">
-        </div>
+      <div class="pf-layout">
 
-        <div class="perfil-header-info">
-          <div class="perfil-name" id="ph-name">—</div>
-          <div class="perfil-email" id="ph-email">—</div>
-          <div class="perfil-badges" id="ph-badges"></div>
-        </div>
-      </div>
-
-      <!-- ══ SECCIÓN: MIS HIJOS ══ -->
-      <div class="perfil-section" id="section-hijos">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--color-border);">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div class="perfil-section-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none;">Mis hijos</div>
-            <span class="hijo-badge">Control parental</span>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="openAddHijoModal()">
-            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            Añadir hijo/a
-          </button>
-        </div>
-        <p style="font-size:.8rem;color:var(--color-text-muted);margin-bottom:12px;line-height:1.5;">Gestiona los perfiles de tus hijos. Podrás inscribirlos en actividades y eventos desde tu cuenta.</p>
-        <div class="familia-list" id="hijos-list">
-          <p class="familia-empty">Sin hijos registrados.</p>
-        </div>
-      </div>
-
-      <!-- ══ SECCIÓN: MI FAMILIA ══ -->
-      <div class="perfil-section" id="section-familia">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--color-border);">
-          <div class="perfil-section-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none;">Mi familia</div>
-          <button class="btn btn-primary btn-sm" onclick="openAddFamiliarModal()">
-            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            Añadir familiar
-          </button>
-        </div>
-        <div class="familia-list" id="familia-list">
-          <p class="familia-empty">Sin familiares vinculados.</p>
-        </div>
-      </div>
-
-      <!-- ══ SECCIÓN: DATOS PERSONALES ══ -->
-      <div class="perfil-section">
-        <div class="perfil-section-title">Datos personales</div>
-        <div class="perfil-grid">
-          <div class="perfil-field">
-            <div class="perfil-field-label">Nombre</div>
-            <div class="perfil-field-value" id="val-nombre">—</div>
-            <input id="inp-nombre" style="display:none;" placeholder="Nombre">
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Apellidos</div>
-            <div class="perfil-field-value" id="val-apellidos">—</div>
-            <input id="inp-apellidos" style="display:none;" placeholder="Apellidos">
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Teléfono</div>
-            <div class="perfil-field-value" id="val-telefono">—</div>
-            <input id="inp-telefono" style="display:none;" placeholder="+34 600 000 000">
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Fecha de nacimiento</div>
-            <div class="perfil-field-value" id="val-fechanac">—</div>
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Nacionalidad</div>
-            <div class="perfil-field-value" id="val-nacionalidad">—</div>
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">País de nacimiento</div>
-            <div class="perfil-field-value" id="val-paisnac">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ SECCIÓN: DIRECCIÓN ══ -->
-      <div class="perfil-section">
-        <div class="perfil-section-title">Dirección</div>
-        <div class="perfil-grid">
-          <div class="perfil-field">
-            <div class="perfil-field-label">País</div>
-            <div class="perfil-field-value" id="val-pais">—</div>
-            <input id="inp-pais" style="display:none;" placeholder="País">
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Ciudad</div>
-            <div class="perfil-field-value" id="val-ciudad">—</div>
-            <input id="inp-ciudad" style="display:none;" placeholder="Ciudad">
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Código postal</div>
-            <div class="perfil-field-value" id="val-cp">—</div>
-            <input id="inp-cp" style="display:none;" placeholder="CP">
-          </div>
-          <div class="perfil-field" style="grid-column: 1 / -1;">
-            <div class="perfil-field-label">Dirección</div>
-            <div class="perfil-field-value" id="val-direccion">—</div>
-            <input id="inp-direccion" style="display:none;" placeholder="Calle, número, piso...">
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ SECCIÓN: COMUNIDAD ══ -->
-      <div class="perfil-section">
-        <div class="perfil-section-title">Comunidad</div>
-        <div class="perfil-grid">
-          <div class="perfil-field">
-            <div class="perfil-field-label">Comunidad</div>
-            <div class="perfil-field-value" id="val-comunidad">—</div>
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Práctica religiosa</div>
-            <div class="perfil-field-value" id="val-practica">—</div>
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Familiar en kehilá</div>
-            <div class="perfil-field-value" id="val-familiar">—</div>
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Cómo conoció {{name}}</div>
-            <div class="perfil-field-value" id="val-conocio">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ SECCIÓN: DOCUMENTO ══ -->
-      <div class="perfil-section" id="section-doc">
-        <div class="perfil-section-title">Documento de identidad</div>
-        <div class="perfil-grid">
-          <div class="perfil-field">
-            <div class="perfil-field-label">Tipo</div>
-            <div class="perfil-field-value" id="val-docTipo">—</div>
-          </div>
-          <div class="perfil-field">
-            <div class="perfil-field-label">Número</div>
-            <div class="perfil-field-value" id="val-docNum">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ SECCIÓN: SOLICITUD ══ -->
-      <div class="perfil-section" id="section-solicitud" style="display:none;">
-        <div class="perfil-section-title">Solicitud de acceso</div>
-        <div class="solicitud-card">
-          <div>
-            <div class="solicitud-num" id="sol-num">—</div>
-            <div class="solicitud-date" id="sol-date">—</div>
-          </div>
-          <span class="ptag" id="sol-status-tag">—</span>
-        </div>
-      </div>
-
-      <!-- ══ ACCIONES ══ -->
-      <div class="perfil-actions" id="edit-actions" style="display:none;">
-        <button class="btn btn-primary btn-sm" onclick="guardar()">Guardar cambios</button>
-        <button class="btn btn-ghost btn-sm" onclick="cancelarEdit()">Cancelar</button>
-      </div>
-
-      <!-- ══ SECCIÓN: SEGURIDAD (2FA) — solo admin/super_admin/staff ══ -->
-      <div class="perfil-section" id="section-2fa" style="display:none;">
-        <div class="perfil-section-title">Seguridad</div>
-
-        <div id="mfa-status-off">
-          <p style="font-size:.875rem;color:var(--color-text-muted);margin-bottom:14px;line-height:1.6;">
-            La verificación en dos pasos no está activada. Añade una capa extra de protección: aunque alguien consiga tu contraseña, no podrá entrar sin el código de tu móvil.
-          </p>
-          <button class="btn btn-primary btn-sm" onclick="startMfaEnroll()">Activar verificación en dos pasos</button>
-        </div>
-
-        <div id="mfa-status-on" style="display:none;">
-          <p style="font-size:.875rem;color:#065F46;background:#D1FAE5;padding:10px 14px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="#065F46"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
-            Verificación en dos pasos activada
-          </p>
-        </div>
-
-        <div id="mfa-enroll-box" style="display:none;margin-top:16px;padding:16px;background:#F9FAFB;border-radius:10px;border:1px solid var(--color-border);">
-          <p style="font-size:.8rem;color:var(--color-text-muted);margin-bottom:12px;">1. Escanea este código con Google Authenticator, Authy, o tu gestor de contraseñas:</p>
-          <div id="mfa-qr-container" style="text-align:center;margin-bottom:14px;"></div>
-          <p style="font-size:.8rem;color:var(--color-text-muted);margin-bottom:8px;">2. Escribe el código de 6 dígitos que te muestra la app:</p>
-          <div id="mfa-enroll-otp-boxes" class="otp-boxes" style="justify-content:flex-start;margin-bottom:10px;"></div>
-          <div id="mfa-enroll-msg" style="display:none;font-size:.8rem;color:#991B1B;margin-bottom:10px;"></div>
-          <div style="display:flex;gap:10px;">
-            <button class="btn btn-ghost btn-sm" onclick="cancelMfaEnroll()">Cancelar</button>
-            <button class="btn btn-primary btn-sm" id="btn-mfa-confirm" onclick="confirmMfaEnroll(Array.from(document.querySelectorAll('#mfa-enroll-otp-boxes .otp-box')).map(b => b.value).join(''))">Confirmar</button>
-          </div>
-        </div>
-
-        <style>
-          .otp-boxes { display: flex; align-items: center; gap: 8px; }
-          .otp-boxes .otp-dash { width: 8px; height: 2px; background: var(--color-border); flex-shrink: 0; }
-          .otp-box {
-            width: 42px; height: 52px; text-align: center; font-size: 1.3rem; font-weight: 700;
-            border: 1.5px solid var(--color-border); border-radius: 8px; outline: none;
-            font-family: inherit; color: var(--color-text);
-          }
-          .otp-box:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(27,46,94,0.1); }
-        </style>
-      </div>
-
-      <!-- ══ SECCIÓN: NOTIFICACIONES ══ -->
-      <div class="perfil-section" id="notificaciones">
-        <div class="perfil-section-title">Notificaciones</div>
-        <p class="np-nota">Elige qué avisos quieres recibir. Los avisos sobre algo que tú has pedido (tus citas, tus reservas, respuestas del Rav, cambios en tus eventos) siempre te llegan. Todo queda guardado en la campana 🔔.</p>
-        <div id="np-list" class="np-list"></div>
-        <p class="np-nota" id="np-permiso" style="display:none;"></p>
-      </div>
-
-      <!-- ══ SECCIÓN: CUMPLEAÑOS HEBREO ══ -->
-      <div class="perfil-section" id="cumple-hebreo">
-        <div class="perfil-section-title">Cumpleaños hebreo</div>
-        <p class="np-nota" id="ch-resumen">Añade tu fecha de nacimiento en tu solicitud para calcularlo.</p>
-        <div class="ch-grid">
-          <label class="ch-campo">
-            <span>¿Naciste antes o después de la puesta de sol?</span>
-            <select id="ch-puesta" class="form-input">
-              <option value="">Elegir…</option>
-              <option value="antes">Antes de la puesta de sol</option>
-              <option value="despues">Después de la puesta de sol</option>
-              <option value="nose">No lo sé</option>
-            </select>
-          </label>
-          <details class="ch-manual">
-            <summary>¿La fecha no es correcta? Corrígela a mano</summary>
-            <div class="ch-manual-row">
-              <input id="ch-dia" type="number" min="1" max="30" class="form-input" placeholder="Día">
-              <select id="ch-mes" class="form-input">
-                <option value="">Mes hebreo…</option>
-                <option value="Tishrei">Tishrei</option><option value="Cheshvan">Jeshván</option>
-                <option value="Kislev">Kislev</option><option value="Tevet">Tevet</option>
-                <option value="Sh'vat">Shevat</option><option value="Adar">Adar</option>
-                <option value="Adar I">Adar I</option><option value="Adar II">Adar II</option>
-                <option value="Nisan">Nisán</option><option value="Iyyar">Iyar</option>
-                <option value="Sivan">Siván</option><option value="Tamuz">Tamuz</option>
-                <option value="Av">Av</option><option value="Elul">Elul</option>
-              </select>
-              <button class="btn btn-primary btn-sm" id="ch-guardar">Guardar</button>
-              <button class="btn btn-ghost btn-sm" id="ch-borrar">Usar el cálculo</button>
+        <!-- ══ FICHA DE MIEMBRO ══ -->
+        <aside class="pf-side">
+          <section class="pf-id" aria-label="Tu ficha de miembro">
+            <div class="pf-id-cover" aria-hidden="true">
+              <img src="img/placeholder.svg" alt="" loading="eager" decoding="async">
+              <span class="pf-id-word" lang="he">קהילה</span>
             </div>
-          </details>
+            <div class="pf-id-body">
+              <label class="pf-photo" id="pf-photo" for="avatar-file-input" title="Cambiar foto">
+                <div id="avatar-display"></div>
+                <span class="pf-photo-hint" aria-hidden="true">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/></svg>
+                  <span id="pf-photo-hint-text">Cambiar foto</span>
+                </span>
+                <span class="pf-photo-cam" aria-hidden="true">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/></svg>
+                </span>
+                <input type="file" id="avatar-file-input" accept="image/*" onchange="handleAvatarUpload(event)">
+              </label>
+
+              <h2 class="pf-name" id="ph-name">—</h2>
+              <div class="pf-email" id="ph-email">—</div>
+              <div class="pf-badges" id="ph-badges"></div>
+
+              <dl class="pf-facts">
+                <div class="pf-fact" id="fact-desde" hidden><dt>En la kehilá desde</dt><dd id="ph-desde"></dd></div>
+                <div class="pf-fact" id="fact-hebreo" hidden><dt>Cumpleaños hebreo</dt><dd id="ph-hebreo"></dd></div>
+                <div class="pf-fact" id="fact-ciudad" hidden><dt>Vive en</dt><dd id="ph-ciudad"></dd></div>
+              </dl>
+            </div>
+          </section>
+
+          <nav class="pf-jump" aria-label="Secciones del perfil">
+            <a href="#datos">Tus datos <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg></a>
+            <a href="#familia">Tu familia <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg></a>
+            <a href="#notificaciones" id="jump-avisos">Avisos <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg></a>
+            <a href="#cumple-hebreo" id="jump-cumple">Cumpleaños hebreo <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg></a>
+            <a href="#section-2fa" id="jump-seguridad" hidden>Seguridad <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg></a>
+          </nav>
+        </aside>
+
+        <div class="pf-main">
+
+          <!-- ══ TUS DATOS ══ -->
+          <section class="pf-card" id="datos">
+            <div class="pf-card-head">
+              <div>
+                <h2 class="pf-card-title">Tus datos</h2>
+                <p class="pf-card-sub">Así te tenemos apuntado en la comunidad. Cambia lo que quieras y guarda.</p>
+              </div>
+            </div>
+            <form class="pf-form" id="pf-form" onsubmit="event.preventDefault(); guardar();" novalidate>
+              <div class="pf-field">
+                <label for="inp-nombre">Nombre</label>
+                <input id="inp-nombre" autocomplete="given-name" placeholder="Nombre">
+              </div>
+              <div class="pf-field">
+                <label for="inp-apellidos">Apellidos</label>
+                <input id="inp-apellidos" autocomplete="family-name" placeholder="Apellidos">
+              </div>
+              <div class="pf-field">
+                <label for="inp-email">Correo electrónico</label>
+                <input id="inp-email" type="email" readonly tabindex="-1">
+              </div>
+              <div class="pf-field">
+                <label for="inp-telefono">Teléfono</label>
+                <input id="inp-telefono" type="tel" autocomplete="tel" placeholder="+34 600 000 000">
+              </div>
+
+              <div class="pf-divider">Dirección</div>
+              <div class="pf-field full">
+                <label for="inp-direccion">Calle y número</label>
+                <input id="inp-direccion" autocomplete="street-address" placeholder="Calle, número, piso…">
+              </div>
+              <div class="pf-field">
+                <label for="inp-ciudad">Ciudad</label>
+                <input id="inp-ciudad" autocomplete="address-level2">
+              </div>
+              <div class="pf-field">
+                <label for="inp-cp">Código postal</label>
+                <input id="inp-cp" autocomplete="postal-code" inputmode="numeric">
+              </div>
+              <div class="pf-field">
+                <label for="inp-pais">País</label>
+                <input id="inp-pais" autocomplete="country-name">
+              </div>
+
+              <div class="pf-divider" id="div-registro">De tu solicitud de alta</div>
+              <div class="pf-field" data-ro="fechanac"><label for="ro-fechanac">Fecha de nacimiento</label><input id="ro-fechanac" readonly tabindex="-1"></div>
+              <div class="pf-field" data-ro="nacionalidad"><label for="ro-nacionalidad">Nacionalidad</label><input id="ro-nacionalidad" readonly tabindex="-1"></div>
+              <div class="pf-field" data-ro="paisnac"><label for="ro-paisnac">País de nacimiento</label><input id="ro-paisnac" readonly tabindex="-1"></div>
+              <div class="pf-field" data-ro="doc"><label for="ro-doc">Documento de identidad</label><input id="ro-doc" readonly tabindex="-1"></div>
+              <p class="pf-locked" id="pf-locked">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
+                <span>Estos datos no se pueden cambiar desde aquí. Si hay algo mal, <a href="contacto.html">escríbenos</a> y lo corregimos.</span>
+              </p>
+            </form>
+          </section>
+
+          <!-- ══ TU FAMILIA ══ -->
+          <section class="pf-card" id="familia">
+            <div class="pf-card-head">
+              <div>
+                <h2 class="pf-card-title">Tu familia</h2>
+                <p class="pf-card-sub">Añade a tus hijos para apuntarlos a actividades desde tu cuenta, y vincula a los familiares que también están en la app.</p>
+              </div>
+            </div>
+
+            <div class="pf-fam-block" id="section-hijos">
+              <div class="pf-sub">
+                <h3>Hijos <span class="hijo-badge">Control parental</span></h3>
+                <button class="btn btn-secondary btn-sm" onclick="openAddHijoModal()">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                  Añadir hijo/a
+                </button>
+              </div>
+              <div class="familia-list" id="hijos-list">
+                <p class="familia-empty">Aún no has añadido a ningún hijo.</p>
+              </div>
+            </div>
+
+            <div class="pf-fam-block" id="section-familia">
+              <div class="pf-sub">
+                <h3>Familiares en la app</h3>
+                <button class="btn btn-secondary btn-sm" onclick="openAddFamiliarModal()">
+                  <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                  Vincular familiar
+                </button>
+              </div>
+              <div class="familia-list" id="familia-list">
+                <p class="familia-empty">Aún no has vinculado a ningún familiar.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- ══ TU COMUNIDAD (solo si hay datos) ══ -->
+          <section class="pf-card" id="section-comunidad" hidden>
+            <div class="pf-card-head">
+              <div>
+                <h2 class="pf-card-title">Tu comunidad</h2>
+                <p class="pf-card-sub">Lo que nos contaste al pedir el alta.</p>
+              </div>
+            </div>
+            <dl class="pf-dl">
+              <div data-dl="comunidad"><dt>Comunidad</dt><dd id="val-comunidad"></dd></div>
+              <div data-dl="practica"><dt>Práctica religiosa</dt><dd id="val-practica"></dd></div>
+              <div data-dl="familiar"><dt>Familiar en la kehilá</dt><dd id="val-familiar"></dd></div>
+              <div data-dl="conocio"><dt>Cómo nos conociste</dt><dd id="val-conocio"></dd></div>
+            </dl>
+            <div class="solicitud-card" id="section-solicitud" style="display:none;">
+              <div>
+                <div class="solicitud-num" id="sol-num">—</div>
+                <div class="solicitud-date" id="sol-date">—</div>
+              </div>
+              <span class="ptag" id="sol-status-tag">—</span>
+            </div>
+          </section>
+
+          <!-- ══ AVISOS ══ -->
+          <section class="pf-card" id="notificaciones">
+            <div class="pf-card-head">
+              <div>
+                <h2 class="pf-card-title">Avisos</h2>
+                <p class="pf-card-sub">Elige qué avisos quieres recibir. Lo que tú has pedido (tus citas, tus reservas, respuestas del Rav, cambios en tus eventos) te llega siempre, y todo queda guardado en la campana.</p>
+              </div>
+            </div>
+            <div id="np-list" class="np-list"></div>
+            <p class="np-nota" id="np-permiso" style="display:none;"></p>
+          </section>
+
+          <!-- ══ CUMPLEAÑOS HEBREO ══ -->
+          <section class="pf-card" id="cumple-hebreo">
+            <div class="pf-card-head">
+              <div>
+                <h2 class="pf-card-title">Cumpleaños hebreo</h2>
+                <p class="pf-card-sub">Lo calculamos a partir de tu fecha de nacimiento para felicitarte el día que toca.</p>
+              </div>
+            </div>
+            <p class="np-nota" id="ch-resumen">Añade tu fecha de nacimiento en tu solicitud para calcularlo.</p>
+            <div class="ch-grid">
+              <label class="ch-campo">
+                <span>¿Naciste antes o después de la puesta de sol?</span>
+                <select id="ch-puesta" class="form-input">
+                  <option value="">Elegir…</option>
+                  <option value="antes">Antes de la puesta de sol</option>
+                  <option value="despues">Después de la puesta de sol</option>
+                  <option value="nose">No lo sé</option>
+                </select>
+              </label>
+              <details class="ch-manual">
+                <summary>¿La fecha no es correcta? Corrígela a mano</summary>
+                <div class="ch-manual-row">
+                  <input id="ch-dia" type="number" min="1" max="30" class="form-input" placeholder="Día">
+                  <select id="ch-mes" class="form-input">
+                    <option value="">Mes hebreo…</option>
+                    <option value="Tishrei">Tishrei</option><option value="Cheshvan">Jeshván</option>
+                    <option value="Kislev">Kislev</option><option value="Tevet">Tevet</option>
+                    <option value="Sh'vat">Shevat</option><option value="Adar">Adar</option>
+                    <option value="Adar I">Adar I</option><option value="Adar II">Adar II</option>
+                    <option value="Nisan">Nisán</option><option value="Iyyar">Iyar</option>
+                    <option value="Sivan">Siván</option><option value="Tamuz">Tamuz</option>
+                    <option value="Av">Av</option><option value="Elul">Elul</option>
+                  </select>
+                  <button class="btn btn-primary btn-sm" id="ch-guardar">Guardar</button>
+                  <button class="btn btn-ghost btn-sm" id="ch-borrar">Usar el cálculo</button>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <!-- ══ SEGURIDAD (2FA) — solo admin/super_admin/staff ══ -->
+          <section class="pf-card" id="section-2fa" style="display:none;">
+            <div class="pf-card-head">
+              <div>
+                <h2 class="pf-card-title">Seguridad</h2>
+                <p class="pf-card-sub">Tienes acceso de gestión, así que conviene proteger bien la cuenta.</p>
+              </div>
+            </div>
+
+            <div id="mfa-status-off">
+              <p class="np-nota" style="margin-bottom:14px;">
+                La verificación en dos pasos no está activada. Añade una capa extra de protección: aunque alguien consiga tu contraseña, no podrá entrar sin el código de tu móvil.
+              </p>
+              <button class="btn btn-primary btn-sm" onclick="startMfaEnroll()">Activar verificación en dos pasos</button>
+            </div>
+
+            <div id="mfa-status-on" style="display:none;">
+              <p style="font-size:.875rem;color:#065F46;background:#E3F5EC;padding:10px 14px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;margin:0;">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="#065F46"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                Verificación en dos pasos activada
+              </p>
+            </div>
+
+            <div id="mfa-enroll-box" style="display:none;margin-top:16px;padding:16px;background:var(--color-bg);border-radius:12px;">
+              <p style="font-size:.8rem;color:var(--color-text-muted);margin-bottom:12px;">1. Escanea este código con Google Authenticator, Authy, o tu gestor de contraseñas:</p>
+              <div id="mfa-qr-container" style="text-align:center;margin-bottom:14px;"></div>
+              <p style="font-size:.8rem;color:var(--color-text-muted);margin-bottom:8px;">2. Escribe el código de 6 dígitos que te muestra la app:</p>
+              <div id="mfa-enroll-otp-boxes" class="otp-boxes" style="justify-content:flex-start;margin-bottom:10px;"></div>
+              <div id="mfa-enroll-msg" style="display:none;font-size:.8rem;color:#991B1B;margin-bottom:10px;"></div>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-ghost btn-sm" onclick="cancelMfaEnroll()">Cancelar</button>
+                <button class="btn btn-primary btn-sm" id="btn-mfa-confirm" onclick="confirmMfaEnroll(Array.from(document.querySelectorAll('#mfa-enroll-otp-boxes .otp-box')).map(b => b.value).join(''))">Confirmar</button>
+              </div>
+            </div>
+
+            <style>
+              .otp-boxes { display: flex; align-items: center; gap: 8px; }
+              .otp-boxes .otp-dash { width: 8px; height: 2px; background: var(--color-border); flex-shrink: 0; }
+              .otp-box {
+                width: 42px; height: 52px; text-align: center; font-size: 1.3rem; font-weight: 700;
+                border: 1.5px solid var(--color-border); border-radius: 10px; outline: none;
+                font-family: inherit; color: var(--color-text); font-variant-numeric: tabular-nums;
+              }
+              .otp-box:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(201,168,76,0.28); }
+            </style>
+          </section>
+
+          <!-- ══ BAJA ══ -->
+          <div class="pf-leave" id="zona-peligro">
+            <p>¿Quieres irte? Puedes pedir que borremos tu cuenta y tus datos personales. Los registros anónimos de uso pueden conservarse según nuestra <a href="privacidad.html">Política de Privacidad</a>.</p>
+            <button class="pf-leave-btn" type="button" onclick="abrirModalEliminar()">Eliminar mi cuenta</button>
+          </div>
+
         </div>
       </div>
-
-      <!-- ══ ZONA DE PELIGRO ══ -->
-      <div class="perfil-section" id="zona-peligro" style="border:1.5px solid #FCA5A5;margin-top:32px;">
-        <div class="perfil-section-title" style="color:#B91C1C;">Zona de peligro</div>
-        <p style="font-size:.875rem;color:var(--color-text-muted);margin-bottom:16px;line-height:1.6;">
-          Eliminar tu cuenta borrará permanentemente tu perfil, tus datos personales y tu acceso a la app.
-          Esta acción no se puede deshacer. Los registros anónimos de actividad (analíticas) pueden conservarse
-          conforme a nuestra <a href="privacidad.html" style="color:var(--color-primary);">Política de Privacidad</a>.
-        </p>
-        <button
-          class="btn btn-sm"
-          style="background:#FEF2F2;color:#B91C1C;border:1.5px solid #FCA5A5;"
-          onclick="abrirModalEliminar()">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width:15px;height:15px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-          </svg>
-          Solicitar eliminación de cuenta
-        </button>
-      </div>
-
     </div>
+  </div>
+
+  <!-- Barra de guardar (aparece al cambiar algún dato) -->
+  <div class="pf-savebar" id="pf-savebar" role="region" aria-label="Cambios sin guardar" aria-hidden="true">
+    <p>Tienes cambios sin guardar</p>
+    <button class="btn btn-ghost btn-sm" type="button" onclick="cancelarEdit()" tabindex="-1">Descartar</button>
+    <button class="btn btn-gold btn-sm" type="button" id="btn-guardar" onclick="guardar()" tabindex="-1">Guardar cambios</button>
   </div>
 
   <!-- Modal eliminar cuenta -->
@@ -865,9 +852,15 @@
         try {
           const { data } = await sb
             .from('profiles')
-            .select('name,telefono,pais,ciudad,cp,direccion,avatar_url,fecha_nac,nacionalidad,pais_nac,doc_tipo,doc_numero')
+            .select('name,telefono,pais,ciudad,cp,direccion,fecha_nac,nacionalidad,pais_nac,doc_tipo,doc_numero,comunidad,created_at')
             .eq('id', user.userId)
             .single();
+          // avatar_url va aparte: si la columna no existe en profiles, no debe
+          // tumbar la carga del resto de datos (antes fallaba todo el select).
+          try {
+            const { data: av, error: avErr } = await sb.from('profiles').select('avatar_url').eq('id', user.userId).single();
+            if (!avErr && av?.avatar_url && data) data.avatar_url = av.avatar_url;
+          } catch (_) {}
           if (data) {
             if (data.name) {
               const parts = data.name.split(' ');
@@ -879,11 +872,16 @@
             if (data.ciudad)       perfilData.ciudad       = data.ciudad;
             if (data.cp)           perfilData.cp           = data.cp;
             if (data.direccion)    perfilData.direccion    = data.direccion;
+            if (data.comunidad)    perfilData.comunidad    = data.comunidad;
             if (data.fecha_nac)    perfilData.fechaNac     = new Date(data.fecha_nac).toLocaleDateString('es-ES');
             if (data.nacionalidad) perfilData.nacionalidad = data.nacionalidad;
             if (data.pais_nac)     perfilData.paisNac      = data.pais_nac;
             if (data.doc_tipo)     perfilData.docTipo      = data.doc_tipo;
             if (data.doc_numero)   perfilData.docNum       = '••••' + data.doc_numero.slice(-3);
+            if (data.created_at) {
+              const desde = new Date(data.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+              perfilData.miembroDesde = desde.charAt(0).toUpperCase() + desde.slice(1);
+            }
             // La foto guardada en Supabase manda (sincroniza entre dispositivos);
             // el valor local solo sirve de vista previa instantánea mientras carga.
             if (data.avatar_url) perfilData.photo = await resolveMediaUrl('community media', data.avatar_url);
@@ -915,6 +913,8 @@
       if (!['admin', 'super_admin', 'staff'].includes(user.role)) return;
       const section = document.getElementById('section-2fa');
       section.style.display = '';
+      const jump = document.getElementById('jump-seguridad');
+      if (jump) jump.hidden = false;
 
       const sb = getSupabase();
       if (!sb) return;
@@ -1019,48 +1019,69 @@
       btn.disabled = false; btn.textContent = 'Confirmar';
     }
 
+    const ROLE_LABELS = {
+      super_admin: 'Super admin', admin: 'Admin', staff: 'Equipo',
+      mod: 'Moderador', miembro: 'Miembro'
+    };
+    const STATUS_LABELS = { active: 'Miembro activo', pending: 'Pendiente de aprobación', banned: 'Suspendido', suspended: 'Suspendido' };
+
     function renderPerfil() {
       const d = perfilData;
 
-      // Avatar
+      // Foto o iniciales
       const avatarWrap = document.getElementById('avatar-display');
       if (d.photo) {
-        avatarWrap.innerHTML = `<img class="avatar-photo" src="${d.photo}" alt="Foto de perfil">`;
+        avatarWrap.innerHTML = `<img class="avatar-photo" src="${escHtml(d.photo)}" alt="Foto de perfil">`;
       } else {
         const color = getAvatarColor(d.nombre || user.name);
         const initials = (user.initials || (d.nombre[0] || '') + (d.apellidos[0] || '')).toUpperCase().slice(0,2) || '?';
-        avatarWrap.innerHTML = `<div class="avatar avatar-xl" data-color="${color}">${initials}</div>`;
+        avatarWrap.innerHTML = `<div class="avatar" data-color="${color}">${escHtml(initials)}</div>`;
       }
+      document.getElementById('pf-photo-hint-text').textContent = d.photo ? 'Cambiar foto' : 'Subir foto';
 
-      // Header
+      // Ficha
       document.getElementById('ph-name').textContent = (d.nombre + ' ' + d.apellidos).trim() || user.name;
       document.getElementById('ph-email').textContent = d.email;
 
-      // Badges
-      const roleLabel = { admin: 'Admin', mod: 'Moderador', miembro: 'Miembro' }[d.role] || d.role;
-      const statusClass = d.status === 'active' ? 'ptag-status-active' : 'ptag-status-pending';
-      const statusLabel = { active: 'Activo', pending: 'Pendiente aprobación', banned: 'Suspendido' }[d.status] || d.status;
+      const statusKey = d.status === 'active' ? 'active' : (d.status === 'pending' ? 'pending' : 'banned');
+      const statusLabel = STATUS_LABELS[d.status] || d.status;
+      const roleChip = (d.role && d.role !== 'miembro')
+        ? `<span class="ptag">${escHtml(ROLE_LABELS[d.role] || d.role)}</span>` : '';
       document.getElementById('ph-badges').innerHTML =
-        `<span class="ptag ptag-role">${roleLabel}</span>
-         <span class="ptag ${statusClass}">${statusLabel}</span>`;
+        `<span class="ptag ptag-status-${statusKey}"><span class="ptag-dot"></span>${escHtml(statusLabel)}</span>${roleChip}`;
 
-      // Campos
-      setVal('nombre',      d.nombre);
-      setVal('apellidos',   d.apellidos);
-      setVal('telefono',    d.telefono);
-      setVal('fechanac',    d.fechaNac);
-      setVal('nacionalidad',d.nacionalidad);
-      setVal('paisnac',     d.paisNac);
-      setVal('pais',        d.pais);
-      setVal('ciudad',      d.ciudad);
-      setVal('cp',          d.cp);
-      setVal('direccion',   d.direccion);
-      setVal('comunidad',   d.comunidad);
-      setVal('practica',    d.practica);
-      setVal('familiar',    d.familiar);
-      setVal('conocio',     d.conocio);
-      setVal('docTipo',     d.docTipo);
-      setVal('docNum',      d.docNum);
+      setFact('desde', d.miembroDesde);
+      setFact('ciudad', d.ciudad);
+
+      // Formulario editable
+      document.getElementById('inp-email').value = d.email || '';
+      EDIT_FIELDS.forEach(f => {
+        const inp = document.getElementById('inp-' + f);
+        if (inp) { inp.value = d[f] || ''; inp.classList.remove('is-changed'); }
+      });
+      setDirty(false);
+
+      // Datos de la solicitud (solo lectura): se ocultan los vacíos
+      const doc = [d.docTipo, d.docNum].filter(Boolean).join(' · ');
+      const ro = { fechanac: d.fechaNac, nacionalidad: d.nacionalidad, paisnac: d.paisNac, doc };
+      let anyRo = false;
+      Object.entries(ro).forEach(([k, v]) => {
+        const wrap = document.querySelector(`[data-ro="${k}"]`);
+        document.getElementById('ro-' + k).value = v || '';
+        wrap.hidden = !v;
+        if (v) anyRo = true;
+      });
+      document.getElementById('div-registro').hidden = !anyRo;
+      document.getElementById('pf-locked').hidden = !anyRo;
+
+      // Tu comunidad: solo si nos contó algo al pedir el alta
+      const com = { comunidad: d.comunidad, practica: d.practica, familiar: d.familiar, conocio: d.conocio };
+      Object.entries(com).forEach(([k, v]) => {
+        document.getElementById('val-' + k).textContent = v || '';
+        document.querySelector(`[data-dl="${k}"]`).hidden = !v;
+      });
+      const hasCom = !!(d.comunidad || d.practica || d.conocio || d.solicitudNum);
+      document.getElementById('section-comunidad').hidden = !hasCom;
 
       // Solicitud
       if (d.solicitudNum) {
@@ -1070,57 +1091,66 @@
           ? 'Enviada el ' + new Date(d.submittedAt).toLocaleDateString('es-ES', {day:'numeric',month:'long',year:'numeric'})
           : '';
         document.getElementById('sol-status-tag').textContent = statusLabel;
-        document.getElementById('sol-status-tag').className = 'ptag ' + statusClass;
       }
     }
 
-    function setVal(id, value) {
-      const el = document.getElementById('val-' + id);
-      if (!el) return;
-      if (value) {
-        el.textContent = value;
-        el.classList.remove('empty');
-      } else {
-        el.textContent = 'No indicado';
-        el.classList.add('empty');
-      }
+    function setFact(id, value) {
+      const row = document.getElementById('fact-' + id);
+      if (!row) return;
+      document.getElementById('ph-' + id).textContent = value || '';
+      row.hidden = !value;
     }
 
-    function toggleEdit() {
-      editMode = true;
-      document.getElementById('btn-editar').style.display = 'none';
-      document.getElementById('btn-guardar').style.display = '';
-      document.getElementById('btn-cancelar').style.display = '';
-      document.getElementById('edit-actions').style.display = 'none';
+    /* ─── Cambios sin guardar ─── */
+    function setDirty(on) {
+      editMode = on;
+      const bar = document.getElementById('pf-savebar');
+      bar.classList.toggle('show', on);
+      bar.setAttribute('aria-hidden', on ? 'false' : 'true');
+      bar.querySelectorAll('button').forEach(b => { b.tabIndex = on ? 0 : -1; });
+      document.body.classList.toggle('pf-dirty', on);
+    }
 
+    function checkDirty() {
+      let dirty = false;
       EDIT_FIELDS.forEach(f => {
-        const val = document.getElementById('val-' + f);
         const inp = document.getElementById('inp-' + f);
-        if (val && inp) {
-          val.style.display = 'none';
-          inp.style.display = '';
-          inp.value = perfilData[f] || '';
-        }
+        if (!inp) return;
+        const changed = inp.value.trim() !== (perfilData[f] || '');
+        inp.classList.toggle('is-changed', changed);
+        if (changed) dirty = true;
       });
+      setDirty(dirty);
     }
+
+    EDIT_FIELDS.forEach(f => {
+      document.getElementById('inp-' + f)?.addEventListener('input', checkDirty);
+    });
+    window.addEventListener('beforeunload', (e) => { if (editMode) { e.preventDefault(); e.returnValue = ''; } });
 
     function cancelarEdit() {
-      editMode = false;
-      document.getElementById('btn-editar').style.display = '';
-      document.getElementById('btn-guardar').style.display = 'none';
-      document.getElementById('btn-cancelar').style.display = 'none';
-
       EDIT_FIELDS.forEach(f => {
-        const val = document.getElementById('val-' + f);
         const inp = document.getElementById('inp-' + f);
-        if (val && inp) {
-          val.style.display = '';
-          inp.style.display = 'none';
-        }
+        if (inp) { inp.value = perfilData[f] || ''; inp.classList.remove('is-changed'); }
       });
+      setDirty(false);
     }
 
+    /* ─── Foto: arrastrar y soltar ─── */
+    (function () {
+      const zone = document.getElementById('pf-photo');
+      if (!zone) return;
+      ['dragenter', 'dragover'].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.add('is-drag'); }));
+      ['dragleave', 'drop'].forEach(ev => zone.addEventListener(ev, () => zone.classList.remove('is-drag')));
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        const file = e.dataTransfer?.files?.[0];
+        if (file && file.type.startsWith('image/')) handleAvatarUpload({ target: { files: [file] } });
+      });
+    })();
+
     async function guardar() {
+      const antes = { ...perfilData };
       EDIT_FIELDS.forEach(f => {
         const inp = document.getElementById('inp-' + f);
         if (inp) perfilData[f] = inp.value.trim();
@@ -1130,17 +1160,17 @@
       const session = getCurrentUser() || {};
       session.name = (perfilData.nombre + ' ' + perfilData.apellidos).trim();
       session.telefono = perfilData.telefono;
-      SESSION_STORAGE.setItem('kehila_user', JSON.stringify(session));
 
       // Guardar en Supabase
       const sb = getSupabase();
       const sess = typeof getValidSession === 'function' ? await getValidSession() : null;
       if (!sb || !sess || sess.user.id !== user.userId) {
+        perfilData = antes;
         if (typeof showToast === 'function') showToast('No se pudo confirmar tu sesión. Vuelve a intentarlo.', 'error');
         return;
       }
 
-      const { error } = await sb.from('profiles').upsert({
+      const fila = {
         id:        user.userId,
         nombre:    perfilData.nombre,
         apellidos: perfilData.apellidos,
@@ -1151,19 +1181,30 @@
         direccion: perfilData.direccion,
         name:      session.name,
         email:     user.email
-      }, { onConflict: 'id' });
+      };
+      const btnG = document.getElementById('btn-guardar');
+      btnG.disabled = true; btnG.textContent = 'Guardando…';
+      let { error } = await sb.from('profiles').upsert(fila, { onConflict: 'id' });
+      // Si profiles no tiene columnas nombre/apellidos (el nombre vive en
+      // 'name'), reintenta sin ellas en vez de fallar el guardado entero.
+      if (error && /nombre|apellidos/.test(error.message || '')) {
+        const { nombre, apellidos, ...resto } = fila;
+        ({ error } = await sb.from('profiles').upsert(resto, { onConflict: 'id' }));
+      }
+      btnG.disabled = false; btnG.textContent = 'Guardar cambios';
 
       if (error) {
-        if (typeof showToast === 'function') showToast('Error al guardar perfil: ' + error.message, 'error');
+        perfilData = antes;
+        if (typeof showToast === 'function') showToast('No se pudo guardar: ' + error.message, 'error');
         return;
       }
 
-      cancelarEdit();
+      SESSION_STORAGE.setItem('kehila_user', JSON.stringify(session));
       renderPerfil();
       renderFamiliaSection();
 
       if (typeof showToast === 'function') {
-        showToast('Perfil actualizado', 'success');
+        showToast('Guardado', 'success');
       } else {
         const t = document.createElement('div');
         t.style.cssText = 'position:fixed;top:20px;right:20px;z-index:999;background:#1B2E5E;color:#fff;padding:12px 18px;border-radius:6px;font-size:.875rem;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.15);';
@@ -1235,7 +1276,7 @@
     function renderHijos() {
       const list = document.getElementById('hijos-list');
       if (!_hijosData.length) {
-        list.innerHTML = '<p class="familia-empty">Sin hijos registrados. Añade a tus hijos para inscribirlos en actividades.</p>';
+        list.innerHTML = '<p class="familia-empty">Aún no has añadido a ningún hijo.</p>';
         return;
       }
       list.innerHTML = _hijosData.map(h => {
@@ -1417,7 +1458,7 @@
       const links = getFamilyLinks(user.userId || user.email);
       const list = document.getElementById('familia-list');
       if (!links.length) {
-        list.innerHTML = '<p class="familia-empty">Sin familiares vinculados.</p>';
+        list.innerHTML = '<p class="familia-empty">Aún no has vinculado a ningún familiar.</p>';
         return;
       }
       list.innerHTML = links.map(f => {

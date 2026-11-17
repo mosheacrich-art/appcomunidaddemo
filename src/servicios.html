@@ -223,6 +223,214 @@
     .confirm-h { font-family: var(--font-brand); font-size: 1.5rem; font-weight: 700; color: var(--color-primary); margin-bottom: 10px; }
     .confirm-p { font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.75; margin-bottom: 6px; }
     .confirm-ref-txt { font-size: 0.72rem; color: #94a3b8; margin-bottom: 26px; }
+
+    /* ════ Solicitud guiada (mismo lenguaje que Pregunta al Rav) ════ */
+    .sq {
+      --ink: #1B2E5E; --ink-deep: #132247; --gold: #C9A84C; --gold-soft: #E7D3A0; --cream: #FAF5EE;
+      --muted: #5E6578; --line: rgba(27, 46, 94, .1);
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --acc: #1B2E5E; --acc-soft: #EEF1F8;
+    }
+    .sq ::selection { background: var(--gold-soft); color: var(--ink-deep); }
+    .sq-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+      box-shadow: 0 1px 2px rgba(27,46,94,.04), 0 18px 40px -24px rgba(27,46,94,.28);
+    }
+    .sq-card + .sq-card { margin-top: 16px; }
+    .sq-banner-card { border-radius: 20px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 18px 40px -24px rgba(27,46,94,.4); }
+    .sq-banner-card .svc-banner { border-radius: 0; }
+    .sq-desc { padding: 22px 26px 24px; font-size: 1rem; line-height: 1.75; color: #22253A; margin: 0; background: #fff; }
+    @media (max-width: 600px) { .sq-desc { padding: 18px 18px 20px; } }
+
+    /* Intro: camino */
+    .sq-path-wrap { padding: 24px 26px 26px; }
+    @media (max-width: 600px) { .sq-path-wrap { padding: 20px 18px 22px; } }
+    .sq-h { font-family: var(--font-brand); font-size: clamp(1.35rem, 2.4vw, 1.7rem); font-weight: 700; color: var(--ink); letter-spacing: -0.015em; line-height: 1.2; margin: 0; text-wrap: balance; }
+    .sq-hint { font-size: .88rem; color: var(--muted); margin: 6px 0 20px; line-height: 1.5; max-width: 62ch; }
+    .sq-path { list-style: none; margin: 0; padding: 0; position: relative; }
+    .sq-path::before {
+      content: ''; position: absolute; left: 19px; top: 22px; bottom: 22px; width: 2px;
+      background: linear-gradient(var(--acc), var(--gold)); opacity: .35; border-radius: 2px;
+      transform-origin: top; animation: sqGrow .9s var(--ease-out) .15s both;
+    }
+    @keyframes sqGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    .sq-path li {
+      position: relative; display: flex; gap: 16px; align-items: flex-start; padding: 10px 0;
+      animation: sqUp .5s var(--ease-out) both; animation-delay: calc(.12s + var(--i, 0) * 90ms);
+    }
+    @keyframes sqUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .sq-path-dot {
+      position: relative; z-index: 1; width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: #fff; border: 2px solid var(--acc); color: var(--acc);
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem;
+      font-variant-numeric: tabular-nums; transition: background .25s ease, color .25s ease, transform .3s var(--ease-out);
+    }
+    .sq-path li:hover .sq-path-dot { background: var(--acc); color: #fff; transform: scale(1.06); }
+    .sq-path b { display: block; font-size: 1rem; color: #1A1A2E; margin-top: 2px; }
+    .sq-path small { display: block; font-size: .8rem; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+    .sq-path li.sq-path-end .sq-path-dot { border-color: var(--gold); background: var(--gold); color: var(--ink-deep); }
+
+    /* Pasos */
+    .sq-steps { display: flex; align-items: center; padding: 22px 26px 0; list-style: none; margin: 0; }
+    .sq-step { display: flex; align-items: center; gap: 9px; flex-shrink: 0; color: var(--muted); font-size: .8rem; font-weight: 600; }
+    .sq-step-dot {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid rgba(27,46,94,.18); background: #fff; color: var(--muted);
+      font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums;
+    }
+    .sq-step-dot svg { width: 14px; height: 14px; }
+    .sq-step.is-current { color: var(--ink); }
+    .sq-step.is-current .sq-step-dot { background: var(--acc); border-color: var(--acc); color: #fff; box-shadow: 0 0 0 5px rgba(201,168,76,.22); animation: sqPop .45s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes sqPop { from { transform: scale(.7); } to { transform: scale(1); } }
+    .sq-step.is-done { color: var(--ink); cursor: pointer; }
+    .sq-step.is-done .sq-step-dot { background: var(--gold); border-color: var(--gold); color: var(--ink-deep); }
+    .sq-step-label { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sq-steps.many .sq-step:not(.is-current) .sq-step-label { display: none; }
+    .sq-line { flex: 1; height: 2px; margin: 0 10px; background: rgba(27,46,94,.1); border-radius: 2px; overflow: hidden; min-width: 14px; }
+    .sq-line i { display: block; height: 100%; width: 0; background: var(--gold); }
+    .sq-line.is-full i { width: 100%; }
+    .sq-line.just i { animation: sqFill .55s var(--ease-out) both; }
+    @keyframes sqFill { from { width: 0; } to { width: 100%; } }
+    @media (max-width: 560px) {
+      .sq-steps { padding: 18px 18px 0; }
+      .sq-step:not(.is-current) .sq-step-label { display: none; }
+    }
+
+    .sq-panel { padding: 22px 26px 26px; }
+    @media (max-width: 560px) { .sq-panel { padding: 18px 18px 22px; } }
+    .sq-panel.enter-fwd  { animation: sqInFwd .48s var(--ease-out) both; }
+    .sq-panel.enter-back { animation: sqInBack .48s var(--ease-out) both; }
+    @keyframes sqInFwd  { from { opacity: 0; transform: translateX(28px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+    @keyframes sqInBack { from { opacity: 0; transform: translateX(-28px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+
+    /* Campos */
+    .sq-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+    .sq-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; grid-column: 1 / -1; animation: sqUp .45s var(--ease-out) both; animation-delay: calc(.08s + var(--i, 0) * 60ms); }
+    .sq-field.half { grid-column: auto; }
+    @media (max-width: 560px) { .sq-fields { grid-template-columns: 1fr; } .sq-field.half { grid-column: 1 / -1; } }
+    .sq-label { display: flex; align-items: center; gap: 8px; font-size: .88rem; font-weight: 600; color: var(--ink); }
+    .sq-label .opt { font-weight: 500; color: var(--muted); font-size: .78rem; }
+    .sq-ok { width: 18px; height: 18px; border-radius: 50%; background: #2F8A5F; color: #fff; display: inline-flex; align-items: center; justify-content: center; transform: scale(0); transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+    .sq-ok svg { width: 11px; height: 11px; }
+    .sq-field.is-ok .sq-ok { transform: scale(1); }
+    .sq-fhint { font-size: .78rem; color: var(--muted); margin-top: -1px; line-height: 1.4; }
+    .sq-input {
+      width: 100%; font: 400 .98rem/1.35 var(--font-ui); color: #1A1A2E;
+      padding: 12px 14px; border-radius: 12px; background: #FFFDF9;
+      border: 1.5px solid rgba(27,46,94,.14); outline: none; caret-color: var(--gold);
+      transition: border-color .2s ease, box-shadow .25s ease, background .2s ease;
+    }
+    textarea.sq-input { min-height: 110px; resize: vertical; line-height: 1.55; }
+    .sq-input::placeholder { color: #7C8190; }
+    .sq-input:hover { border-color: rgba(27,46,94,.28); }
+    .sq-input:focus { border-color: var(--acc); background: #fff; box-shadow: 0 0 0 4px rgba(201,168,76,.22); }
+    .sq-field.is-err .sq-input, .sq-field.is-err .sq-opts, .sq-field.is-err .sq-drop { border-color: #C2410C; }
+    .sq-field.is-err { animation: sqShake .4s ease; }
+    @keyframes sqShake { 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+    .sq-errmsg { font-size: .78rem; color: #B42318; display: none; }
+    .sq-field.is-err .sq-errmsg { display: block; }
+
+    /* Opciones (en vez de desplegables) */
+    .sq-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; border: 1.5px solid transparent; border-radius: 14px; }
+    .sq-opt {
+      display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer;
+      padding: 13px 14px; border-radius: 14px; background: #fff; border: 1.5px solid var(--line);
+      font: 500 .92rem/1.35 var(--font-ui); color: #1A1A2E; -webkit-tap-highlight-color: transparent;
+      transition: border-color .2s ease, background .2s ease, transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+    }
+    .sq-opt:hover { border-color: var(--acc); transform: translateY(-2px); box-shadow: 0 10px 20px -16px var(--acc); }
+    .sq-opt:active { transform: scale(.98); }
+    .sq-radio { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; border: 2px solid rgba(27,46,94,.25); position: relative; transition: border-color .2s ease; }
+    .sq-radio::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--acc); transform: scale(0); transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
+    .sq-opt.is-on { border-color: var(--acc); background: var(--acc-soft); box-shadow: 0 12px 22px -18px var(--acc); }
+    .sq-opt.is-on .sq-radio { border-color: var(--acc); }
+    .sq-opt.is-on .sq-radio::after { transform: scale(1); }
+
+    /* Subida de foto */
+    .sq-drop {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center;
+      padding: 22px 16px; border-radius: 14px; cursor: pointer;
+      border: 1.5px dashed rgba(27,46,94,.25); background: var(--cream); color: var(--ink);
+      transition: border-color .2s ease, background .2s ease;
+    }
+    .sq-drop:hover, .sq-drop.is-drag { border-color: var(--acc); background: var(--acc-soft); }
+    .sq-drop svg { width: 26px; height: 26px; color: var(--acc); }
+    .sq-drop b { font-size: .92rem; }
+    .sq-drop small { font-size: .78rem; color: var(--muted); }
+    .sq-drop img { max-width: 100%; max-height: 160px; border-radius: 10px; animation: sqUp .4s var(--ease-out); }
+    .sq-drop.is-busy { opacity: .6; pointer-events: none; }
+
+    /* Acciones */
+    .sq-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 24px; }
+    .sq-back {
+      display: inline-flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer;
+      font: 600 .88rem var(--font-ui); color: var(--muted); padding: 10px 6px; border-radius: 10px;
+    }
+    .sq-back:hover { color: var(--ink); }
+    .sq-back svg { width: 16px; height: 16px; transition: transform .2s ease; }
+    .sq-back:hover svg { transform: translateX(-3px); }
+    .sq-next {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 13px 22px; border-radius: 14px; border: none; cursor: pointer;
+      background: var(--ink); color: #fff; font: 600 .95rem var(--font-ui);
+      box-shadow: 0 10px 20px -12px rgba(19,34,71,.7);
+      transition: transform .2s var(--ease-out), box-shadow .25s ease, opacity .2s ease;
+    }
+    .sq-next:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 24px -12px rgba(19,34,71,.7); }
+    .sq-next:active:not(:disabled) { transform: scale(.98); }
+    .sq-next:disabled { opacity: .5; cursor: progress; }
+    .sq-next svg { width: 18px; height: 18px; transition: transform .25s var(--ease-out); }
+    .sq-next:hover:not(:disabled) svg { transform: translateX(3px); }
+    .sq-next.gold { background: var(--gold); color: var(--ink-deep); }
+    .sq-next.wide { width: 100%; padding: 16px 22px; font-size: 1rem; }
+    @media (max-width: 560px) { .sq-next { flex: 1; } }
+
+    /* Revisión: carta */
+    .sq-letter {
+      position: relative; border-radius: 16px; padding: 20px 22px 8px;
+      background: linear-gradient(#FFFDF8, #FBF6EC); border: 1px solid rgba(201,168,76,.4);
+      box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 16px 30px -22px rgba(19,34,71,.5);
+      transform-origin: 50% 100%;
+    }
+    .sq-letter::before { content: ''; position: absolute; left: 22px; right: 22px; top: 0; height: 3px; background: var(--acc); border-radius: 0 0 3px 3px; opacity: .55; }
+    .sq-letter-to { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: .8rem; color: var(--muted); margin-bottom: 6px; }
+    .sq-letter-to b { color: var(--ink); }
+    .sq-letter-tag { display: inline-flex; padding: 3px 10px; border-radius: 999px; background: var(--acc-soft); color: var(--acc); font-weight: 600; font-size: .74rem; }
+    .sq-sec { padding: 12px 0 14px; border-top: 1px dashed rgba(201,168,76,.45); }
+    .sq-sec:first-of-type { border-top: none; }
+    .sq-sec-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .sq-sec-head b { font-family: var(--font-brand); font-size: 1.02rem; color: var(--ink); }
+    .sq-sec-edit { background: none; border: none; cursor: pointer; font: 600 .78rem var(--font-ui); color: var(--acc); padding: 4px 8px; border-radius: 8px; }
+    .sq-sec-edit:hover { background: var(--acc-soft); }
+    .sq-kv { display: grid; grid-template-columns: minmax(120px, 40%) 1fr; gap: 4px 14px; font-size: .88rem; padding: 3px 0; }
+    .sq-kv span:first-child { color: var(--muted); }
+    .sq-kv span:last-child { color: #1A1A2E; font-weight: 500; overflow-wrap: anywhere; }
+    @media (max-width: 480px) { .sq-kv { grid-template-columns: 1fr; gap: 0; padding: 5px 0; } }
+    .sq-letter.is-flying { animation: sqFly .75s cubic-bezier(.55, 0, .3, 1) forwards; }
+    @keyframes sqFly { 0% { transform: none; opacity: 1; } 28% { transform: translateY(6px) scale(.97); } 100% { transform: translateY(-160px) rotate(-5deg) scale(.6); opacity: 0; } }
+    .sq-err { font-size: .84rem; color: #B42318; margin: 12px 0 0; }
+
+    /* Hecho */
+    .sq-done { text-align: center; padding: 40px 24px 34px; }
+    .sq-seal { position: relative; width: 92px; height: 92px; margin: 0 auto 20px; }
+    .sq-seal svg { width: 92px; height: 92px; display: block; }
+    .sq-seal circle { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 264; stroke-dashoffset: 264; transform: rotate(-90deg); transform-origin: 50% 50%; animation: sqDraw .7s var(--ease-out) .05s forwards; }
+    .sq-seal path { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60; animation: sqDraw .45s var(--ease-out) .6s forwards; }
+    @keyframes sqDraw { to { stroke-dashoffset: 0; } }
+    .sq-spark { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; margin: -3.5px; border-radius: 50%; background: var(--gold); opacity: 0; animation: sqSpark .8s var(--ease-out) .55s forwards; }
+    @keyframes sqSpark { 0% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(.4); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateY(-62px) scale(1); } }
+    .sq-done h2 { font-family: var(--font-brand); font-size: 1.7rem; color: var(--ink); margin: 0 0 8px; letter-spacing: -0.015em; }
+    .sq-done p { font-size: .92rem; color: var(--muted); line-height: 1.65; max-width: 420px; margin: 0 auto 22px; }
+    .sq-done em { color: #8A6D1F; }
+    .sq-done > * { animation: sqUp .5s var(--ease-out) both; }
+    .sq-done > :nth-child(2) { animation-delay: .7s; } .sq-done > :nth-child(3) { animation-delay: .8s; } .sq-done > :nth-child(4) { animation-delay: .9s; }
+
+    .sq :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      .sq *, .sq *::before, .sq *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+      .sq-seal circle, .sq-seal path { stroke-dashoffset: 0; }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1b2e5e">
@@ -620,194 +828,254 @@
   }
 
   /* ══════════════════════════════════════
-     RENDER: INTRO (servicios con form)
+     SOLICITUD GUIADA — mismo lenguaje visual que «Pregunta al Rav»
+     (intro con camino → pasos animados → carta de revisión → sello)
   ══════════════════════════════════════ */
+  var ACCENT = {
+    barmitzvah: ['#1B2E5E', '#EEF1F8'],
+    britmila:   ['#1E5A8A', '#E7F0F8'],
+    bodas:      ['#8B2040', '#F8E9ED'],
+    najalah:    ['#3A3A5C', '#EEEEF4'],
+    tenyad:     ['#1A6640', '#E5F2EA']
+  };
+  var IC = {
+    arrow: '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>',
+    back:  '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>',
+    check: '<svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>',
+    send:  '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/></svg>',
+    upload:'<svg fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>'
+  };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function reduceMotion() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  function accStyle(svc) { var a = ACCENT[svc.id] || ACCENT.barmitzvah; return '--acc:' + a[0] + ';--acc-soft:' + a[1]; }
+  state.dir = 'fwd';
+
+  /* ── Intro ── */
   function renderIntro() {
     var svc = SERVICES.find(function(s) { return s.id === state.serviceId; });
     if (!svc) return showView('lista');
 
-    var processHTML = svc.steps.map(function(step, i) {
-      var fieldNames = step.fields.slice(0, 3).map(function(f) { return f.label; }).join(' · ');
-      if (step.fields.length > 3) fieldNames += ' · …';
-      return '<div class="intro-process-step">'
-        + '<div class="intro-process-num">' + (i + 1) + '</div>'
-        + '<div><div class="intro-process-title">' + step.title + '</div><div class="intro-process-fields">' + fieldNames + '</div></div>'
-        + '</div>';
-    }).join('');
+    var pasos = svc.steps.map(function(step, i) {
+      var nombres = step.fields.slice(0, 3).map(function(f) { return f.label; }).join(' · ');
+      if (step.fields.length > 3) nombres += ' · …';
+      return '<li style="--i:' + i + '"><span class="sq-path-dot">' + (i + 1) + '</span>'
+        + '<div><b>' + esc(step.title) + '</b><small>' + esc(nombres) + '</small></div></li>';
+    }).join('')
+      + '<li class="sq-path-end" style="--i:' + svc.steps.length + '"><span class="sq-path-dot">' + IC.check.replace('<svg', '<svg style="width:16px;height:16px"') + '</span>'
+      + '<div><b>Revisas y lo envías</b><small>El equipo de {{name}} te contactará.</small></div></li>';
 
     document.getElementById('form-content').innerHTML =
-      '<div class="form-wrap">'
-      + buildBanner(svc)
-      + '<div class="svc-form-section no-top-radius">'
-      + '<p style="font-size:0.9375rem;color:var(--color-text);line-height:1.75;margin:0;">' + svc.desc + '</p>'
-      + '</div>'
-      + '<div class="svc-form-section">'
-      + '<div class="svc-form-section-title">Proceso de solicitud</div>'
-      + '<div class="intro-process">' + processHTML + '</div>'
-      + '</div>'
-      + '<button class="btn btn-primary btn-lg" id="btn-comenzar" style="width:100%;">Comenzar solicitud →</button>'
-      + '</div>';
+      '<div class="form-wrap sq" style="' + accStyle(svc) + '">'
+      + '<div class="sq-banner-card">' + buildBanner(svc) + '<p class="sq-desc">' + svc.desc + '</p></div>'
+      + '<div class="sq-card"><div class="sq-path-wrap">'
+      + '<h2 class="sq-h">Así funciona</h2>'
+      + '<p class="sq-hint">' + svc.steps.length + ' pasos cortos. Puedes volver atrás en cualquier momento sin perder lo que has escrito.</p>'
+      + '<ol class="sq-path">' + pasos + '</ol>'
+      + '<div class="sq-actions" style="margin-top:20px"><button class="sq-next gold wide" id="btn-comenzar">Empezar ' + IC.arrow + '</button></div>'
+      + '</div></div></div>';
 
-    document.getElementById('btn-comenzar').addEventListener('click', function() { showView('step', undefined, 0); });
+    document.getElementById('btn-comenzar').addEventListener('click', function() { state.dir = 'fwd'; showView('step', undefined, 0); });
   }
 
-  /* ══════════════════════════════════════
-     HELPERS DE FORMULARIO
-  ══════════════════════════════════════ */
-  function renderField(f) {
-    var labelHTML = '<label class="svc-form-label" for="field_' + f.id + '">' + f.label + (f.required ? '<span class="req">*</span>' : '') + '</label>';
-    var hintHTML  = f.hint ? '<div class="svc-form-hint">' + f.hint + '</div>' : '';
-    var inputHTML = '';
+  /* ── Campos ── */
+  function isHalf(f, fields) {
+    if (f.type === 'textarea' || f.type === 'select' || f.type === 'file-upload') return false;
+    var cortos = fields.filter(function(x) { return ['text', 'tel', 'email', 'date', 'time', 'number'].indexOf(x.type) !== -1; });
+    return cortos.length > 1;
+  }
+
+  function renderField(f, i, fields) {
+    var label = '<label class="sq-label" for="field_' + f.id + '">' + esc(f.label)
+      + (f.required ? '' : ' <span class="opt">(opcional)</span>')
+      + '<span class="sq-ok" aria-hidden="true">' + IC.check + '</span></label>';
+    var hint = f.hint ? '<div class="sq-fhint">' + esc(f.hint) + '</div>' : '';
+    var input = '';
     if (f.type === 'select') {
-      inputHTML = '<select class="svc-form-select" id="field_' + f.id + '"><option value="">Seleccionar...</option>'
-        + f.options.map(function(o) { return '<option value="' + o + '">' + o + '</option>'; }).join('') + '</select>';
-    } else if (f.type === 'textarea') {
-      inputHTML = '<textarea class="svc-form-textarea" id="field_' + f.id + '" placeholder="' + (f.placeholder || '') + '" rows="4"></textarea>';
-    } else if (f.type === 'file-upload') {
-      var existingUrl = state.fileUploads && state.fileUploads[f.id];
-      var previewHTML = existingUrl
-        ? '<img src="' + existingUrl + '" style="max-width:100%;max-height:140px;border-radius:6px;margin-top:10px;border:1.5px solid var(--color-border);">'
-        : '';
-      inputHTML = '<div id="upload_wrap_' + f.id + '" style="border:1.5px solid var(--color-border);border-radius:var(--radius-sm);padding:14px;background:var(--color-bg);">'
-        + '<label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:.875rem;font-weight:600;color:var(--color-primary);">'
-        + '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px;height:16px;flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>'
-        + (existingUrl ? 'Cambiar foto' : 'Seleccionar foto')
-        + '<input type="file" id="field_' + f.id + '" accept="image/*" style="display:none;"></label>'
-        + '<div id="preview_' + f.id + '">' + previewHTML + '</div>'
-        + '<div id="status_' + f.id + '" style="font-size:.75rem;color:var(--color-text-muted);margin-top:6px;">' + (existingUrl ? '✓ Foto subida' : '') + '</div>'
+      input = '<input type="hidden" id="field_' + f.id + '">'
+        + '<div class="sq-opts" role="radiogroup" aria-label="' + esc(f.label) + '">'
+        + f.options.map(function(o) {
+            return '<button type="button" class="sq-opt" role="radio" aria-checked="false" data-for="' + f.id + '" data-val="' + esc(o) + '"><span class="sq-radio"></span><span>' + esc(o) + '</span></button>';
+          }).join('')
         + '</div>';
+    } else if (f.type === 'textarea') {
+      input = '<textarea class="sq-input" id="field_' + f.id + '" placeholder="' + esc(f.placeholder || '') + '" rows="4"></textarea>';
+    } else if (f.type === 'file-upload') {
+      var url = state.fileUploads && state.fileUploads[f.id];
+      input = '<label class="sq-drop" id="upload_wrap_' + f.id + '">'
+        + '<span id="preview_' + f.id + '">' + (url ? '<img src="' + esc(url) + '" alt="">' : IC.upload) + '</span>'
+        + '<b id="status_' + f.id + '">' + (url ? 'Foto subida · toca para cambiarla' : 'Toca para elegir una foto') + '</b>'
+        + '<small>o arrástrala aquí</small>'
+        + '<input type="file" id="field_' + f.id + '" accept="image/*" style="display:none;"></label>';
     } else {
-      inputHTML = '<input type="' + f.type + '" class="svc-form-input" id="field_' + f.id + '" placeholder="' + (f.placeholder || '') + '">';
+      input = '<input type="' + f.type + '" class="sq-input" id="field_' + f.id + '" placeholder="' + esc(f.placeholder || '') + '"'
+        + (f.type === 'tel' ? ' autocomplete="tel"' : f.type === 'email' ? ' autocomplete="email"' : '') + '>';
     }
-    return '<div class="svc-form-group">' + labelHTML + hintHTML + inputHTML + '</div>';
+    return '<div class="sq-field' + (isHalf(f, fields) ? ' half' : '') + '" id="grp_' + f.id + '" style="--i:' + i + '">'
+      + label + input + hint
+      + '<div class="sq-errmsg">' + (f.type === 'select' ? 'Elige una opción.' : f.type === 'file-upload' ? 'Falta la foto.' : 'Este dato es necesario.') + '</div>'
+      + '</div>';
+  }
+
+  function fieldValue(f) {
+    if (f.type === 'file-upload') return (state.fileUploads && state.fileUploads[f.id]) || '';
+    var el = document.getElementById('field_' + f.id);
+    return el ? String(el.value || '').trim() : '';
+  }
+  function markOk(f) {
+    var g = document.getElementById('grp_' + f.id);
+    if (!g) return;
+    var v = fieldValue(f);
+    g.classList.toggle('is-ok', !!v);
+    if (v) g.classList.remove('is-err');
   }
 
   function validateStep(svc, stepIndex) {
-    var stepDef = svc.steps[stepIndex];
-    var valid = true;
-    stepDef.fields.forEach(function(f) {
-      if (f.type === 'file-upload') {
-        var wrap = document.getElementById('upload_wrap_' + f.id);
-        if (wrap) wrap.style.borderColor = '';
-        if (f.required && !(state.fileUploads && state.fileUploads[f.id])) {
-          if (wrap) wrap.style.borderColor = 'var(--color-danger)';
-          valid = false;
-        }
-        return;
+    var first = null;
+    svc.steps[stepIndex].fields.forEach(function(f) {
+      var g = document.getElementById('grp_' + f.id);
+      if (!g) return;
+      g.classList.remove('is-err');
+      if (f.required && !fieldValue(f)) {
+        void g.offsetWidth; g.classList.add('is-err');
+        if (!first) first = g;
       }
-      var el = document.getElementById('field_' + f.id);
-      if (!el) return;
-      el.classList.remove('error');
-      if (f.required && !el.value.trim()) { el.classList.add('error'); valid = false; }
     });
-    if (!valid) { var fe = document.querySelector('.error, [style*="border-color: var(--color-danger)"]'); if (fe) fe.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-    return valid;
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return !first;
   }
 
   function saveStepData(svc, stepIndex) {
     var stepData = {};
-    svc.steps[stepIndex].fields.forEach(function(f) {
-      if (f.type === 'file-upload') {
-        stepData[f.id] = (state.fileUploads && state.fileUploads[f.id]) || '';
-      } else {
-        var el = document.getElementById('field_' + f.id);
-        if (el) stepData[f.id] = el.value;
-      }
-    });
+    svc.steps[stepIndex].fields.forEach(function(f) { stepData[f.id] = fieldValue(f); });
     state.data['step_' + stepIndex] = stepData;
   }
 
-  function buildStepper(svc, currentStep) {
-    return '<div class="svc-stepper">'
-      + svc.steps.map(function(s, i) {
-          var cls = i < currentStep ? 'done' : (i === currentStep ? 'active' : '');
-          var dot = i < currentStep
-            ? '<svg fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:13px;height:13px;"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>'
-            : (i + 1);
-          return '<div class="svc-step-item ' + cls + '"><div class="svc-step-dot">' + dot + '</div><div class="svc-step-label">' + s.title + '</div></div>';
-        }).join('')
-      + '</div>';
+  function buildStepper(svc, currentStep, justDone) {
+    var n = svc.steps.length;
+    var html = '<ol class="sq-steps' + (n > 3 ? ' many' : '') + '" aria-label="Pasos">';
+    svc.steps.forEach(function(s, i) {
+      var cls = i < currentStep ? 'is-done' : (i === currentStep ? 'is-current' : '');
+      var dot = i < currentStep ? IC.check : (i + 1);
+      html += '<li class="sq-step ' + cls + '" data-go="' + (i < currentStep ? i : '') + '"><span class="sq-step-dot">' + dot + '</span><span class="sq-step-label">' + esc(s.title) + '</span></li>';
+      if (i < n - 1) {
+        var full = i < currentStep;
+        html += '<li class="sq-line' + (full ? ' is-full' : '') + (full && justDone && i === currentStep - 1 ? ' just' : '') + '" aria-hidden="true"><i></i></li>';
+      }
+    });
+    return html + '</ol>';
   }
 
-  /* ══════════════════════════════════════
-     RENDER: STEP
-  ══════════════════════════════════════ */
+  /* ── Paso ── */
   function renderStep() {
     var svc = SERVICES.find(function(s) { return s.id === state.serviceId; });
     if (!svc) return showView('lista');
     var stepDef = svc.steps[state.step];
     var isLast  = state.step === svc.steps.length - 1;
+    var cur = state.step;
+    var soloEleccion = stepDef.fields.length === 1 && stepDef.fields[0].type === 'select';
 
     document.getElementById('form-content').innerHTML =
-      '<div class="form-wrap">'
-      + buildStepper(svc, state.step)
-      + '<div class="svc-form-section">'
-      + '<div class="svc-form-section-title">' + stepDef.title + '</div>'
-      + stepDef.fields.map(renderField).join('')
-      + '</div>'
-      + '<div class="svc-btn-row">'
-      + '<button class="btn btn-secondary" id="btn-anterior"><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:15px;height:15px;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>' + (state.step === 0 ? 'Volver a la intro' : 'Anterior') + '</button>'
-      + '<button class="btn btn-primary" id="btn-continuar">' + (isLast ? 'Revisar solicitud' : 'Continuar') + '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:15px;height:15px;"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></button>'
-      + '</div></div>';
+      '<div class="form-wrap sq" style="' + accStyle(svc) + '"><div class="sq-card">'
+      + buildStepper(svc, cur, state.dir === 'fwd')
+      + '<div class="sq-panel enter-' + state.dir + '">'
+      + '<h2 class="sq-h">' + esc(stepDef.title) + '</h2>'
+      + '<p class="sq-hint">' + esc(svc.name) + ' · paso ' + (cur + 1) + ' de ' + svc.steps.length + '</p>'
+      + '<div class="sq-fields">' + stepDef.fields.map(function(f, i) { return renderField(f, i, stepDef.fields); }).join('') + '</div>'
+      + '<div class="sq-actions">'
+      + '<button type="button" class="sq-back" id="btn-anterior">' + IC.back + (cur === 0 ? 'Volver' : 'Atrás') + '</button>'
+      + '<button type="button" class="sq-next" id="btn-continuar">' + (isLast ? 'Revisar' : 'Continuar') + IC.arrow + '</button>'
+      + '</div></div></div></div>';
 
-    var saved = state.data['step_' + state.step] || {};
+    var saved = state.data['step_' + cur] || {};
     stepDef.fields.forEach(function(f) {
+      var el = document.getElementById('field_' + f.id);
       if (f.type === 'file-upload') {
-        // wire upload handler
-        var inp = document.getElementById('field_' + f.id);
-        if (inp) inp.addEventListener('change', function() { uploadFormFile(f.id, inp); });
-      } else {
-        var el = document.getElementById('field_' + f.id);
-        if (el && saved[f.id] !== undefined) el.value = saved[f.id];
+        if (el) el.addEventListener('change', function() { uploadFormFile(f.id, el, f); });
+        var drop = document.getElementById('upload_wrap_' + f.id);
+        ['dragenter', 'dragover'].forEach(function(ev) { drop.addEventListener(ev, function(e) { e.preventDefault(); drop.classList.add('is-drag'); }); });
+        ['dragleave', 'drop'].forEach(function(ev) { drop.addEventListener(ev, function() { drop.classList.remove('is-drag'); }); });
+        drop.addEventListener('drop', function(e) { e.preventDefault(); var fl = e.dataTransfer && e.dataTransfer.files; if (fl && fl[0]) uploadFormFile(f.id, { files: fl, value: '' }, f); });
+      } else if (f.type === 'select') {
+        var opts = document.querySelectorAll('.sq-opt[data-for="' + f.id + '"]');
+        var pick = function(btn, avanzar) {
+          opts.forEach(function(o) { o.classList.remove('is-on'); o.setAttribute('aria-checked', 'false'); });
+          btn.classList.add('is-on'); btn.setAttribute('aria-checked', 'true');
+          el.value = btn.dataset.val; markOk(f);
+          if (avanzar && soloEleccion && !isLast) {
+            setTimeout(function() { saveStepData(svc, cur); state.dir = 'fwd'; showView('step', undefined, cur + 1); }, reduceMotion() ? 0 : 420);
+          }
+        };
+        opts.forEach(function(btn) {
+          btn.addEventListener('click', function() { pick(btn, true); });
+          if (saved[f.id] && btn.dataset.val === saved[f.id]) pick(btn, false);
+        });
+      } else if (el) {
+        if (saved[f.id] !== undefined) el.value = saved[f.id];
+        el.addEventListener('input', function() { markOk(f); });
+        el.addEventListener('change', function() { markOk(f); });
       }
+      markOk(f);
     });
 
-    var cur = state.step;
+    document.querySelectorAll('.sq-step[data-go]').forEach(function(s) {
+      if (s.dataset.go === '') return;
+      s.addEventListener('click', function() { saveStepData(svc, cur); state.dir = 'back'; showView('step', undefined, Number(s.dataset.go)); });
+    });
     document.getElementById('btn-anterior').addEventListener('click', function() {
-      saveStepData(svc, cur);
+      saveStepData(svc, cur); state.dir = 'back';
       if (cur === 0) showView('intro'); else showView('step', undefined, cur - 1);
     });
     document.getElementById('btn-continuar').addEventListener('click', function() {
       if (!validateStep(svc, cur)) return;
-      saveStepData(svc, cur);
-      if (cur === svc.steps.length - 1) showView('review'); else showView('step', undefined, cur + 1);
+      saveStepData(svc, cur); state.dir = 'fwd';
+      if (isLast) showView('review'); else showView('step', undefined, cur + 1);
     });
+    var primero = document.querySelector('.sq-panel .sq-input');
+    if (primero && !primero.value && window.innerWidth > 760) setTimeout(function() { primero.focus({ preventScroll: true }); }, 300);
   }
 
-  /* ══════════════════════════════════════
-     RENDER: REVIEW
-  ══════════════════════════════════════ */
+  /* ── Revisión: carta ── */
   function renderReview() {
     var svc = SERVICES.find(function(s) { return s.id === state.serviceId; });
     if (!svc) return showView('lista');
 
-    var sectionsHTML = svc.steps.map(function(stepDef, i) {
+    var secciones = svc.steps.map(function(stepDef, i) {
       var sd = state.data['step_' + i] || {};
-      var rows = stepDef.fields.map(function(f) {
-        var val = sd[f.id]; if (!val) return '';
-        return '<div class="review-kv-row"><span class="review-kv-key">' + f.label + '</span><span class="review-kv-val">' + val + '</span></div>';
+      var filas = stepDef.fields.map(function(f) {
+        var v = sd[f.id]; if (!v) return '';
+        var shown = f.type === 'file-upload' ? 'Foto adjunta'
+          : f.type === 'date' ? new Date(v + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+          : v;
+        return '<div class="sq-kv"><span>' + esc(f.label) + '</span><span class="notranslate" translate="no">' + esc(shown) + '</span></div>';
       }).join('');
-      if (!rows) return '';
-      return '<div class="svc-form-section"><div class="svc-form-section-title">' + stepDef.title + '</div>' + rows + '</div>';
+      if (!filas) return '';
+      return '<div class="sq-sec"><div class="sq-sec-head"><b>' + esc(stepDef.title) + '</b><button type="button" class="sq-sec-edit" data-step="' + i + '">Editar</button></div>' + filas + '</div>';
     }).join('');
 
     document.getElementById('form-content').innerHTML =
-      '<div class="form-wrap">'
-      + '<div class="svc-form-section" style="margin-bottom:4px;">'
-      + '<div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-gold-dark);margin-bottom:4px;">' + svc.name + '</div>'
-      + '<div style="font-family:var(--font-brand);font-size:1.4rem;font-weight:700;color:var(--color-primary);">Revisa tu solicitud</div>'
-      + '<div style="font-size:0.875rem;color:var(--color-text-muted);margin-top:4px;">Comprueba que todos los datos son correctos antes de enviar.</div>'
-      + '</div>'
-      + sectionsHTML
-      + '<div class="svc-btn-row">'
-      + '<button class="btn btn-secondary" id="btn-edit"><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:15px;height:15px;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>Editar</button>'
-      + '<button class="btn btn-primary" id="btn-enviar">Enviar solicitud <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:15px;height:15px;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/></svg></button>'
-      + '</div></div>';
+      '<div class="form-wrap sq" style="' + accStyle(svc) + '"><div class="sq-card">'
+      + '<div class="sq-panel enter-fwd">'
+      + '<h2 class="sq-h">Revisa tu solicitud</h2>'
+      + '<p class="sq-hint">Así le llegará al equipo. Si algo no está bien, toca «Editar» en esa parte.</p>'
+      + '<article class="sq-letter" id="sq-letter">'
+      + '<div class="sq-letter-to"><span>Para <b>{{name}}</b></span><span class="sq-letter-tag">' + esc(svc.name) + '</span></div>'
+      + secciones
+      + '</article>'
+      + '<p class="sq-err" id="sq-err" hidden></p>'
+      + '<div class="sq-actions">'
+      + '<button type="button" class="sq-back" id="btn-edit">' + IC.back + 'Atrás</button>'
+      + '<button type="button" class="sq-next gold" id="btn-enviar">Enviar solicitud ' + IC.send + '</button>'
+      + '</div></div></div></div>';
 
-    document.getElementById('btn-edit').addEventListener('click', function() { showView('step', undefined, svc.steps.length - 1); });
+    document.querySelectorAll('.sq-sec-edit').forEach(function(b) {
+      b.addEventListener('click', function() { state.dir = 'back'; showView('step', undefined, Number(b.dataset.step)); });
+    });
+    document.getElementById('btn-edit').addEventListener('click', function() { state.dir = 'back'; showView('step', undefined, svc.steps.length - 1); });
     document.getElementById('btn-enviar').addEventListener('click', async function() {
       var btn = document.getElementById('btn-enviar');
-      btn.disabled = true; btn.textContent = 'Enviando…';
+      var err = document.getElementById('sq-err');
+      err.hidden = true;
+      btn.disabled = true;
 
       var allData = {};
       svc.steps.forEach(function(stepDef, i) {
@@ -815,40 +1083,49 @@
         stepDef.fields.forEach(function(f) { if (sd[f.id]) allData[f.label] = sd[f.id]; });
       });
 
-      // localStorage: best-effort (puede fallar en iframe)
-      try { saveRequest(state.serviceId, allData); } catch(_) {}
-
-      // Guardar en Supabase (await para asegurar que se guarda)
       var sb = typeof getSupabase === 'function' ? getSupabase() : null;
       var user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+      var fallo = !sb;
       if (sb) {
         try {
-          await sb.from('servicios_solicitudes').insert({
+          var res = await sb.from('servicios_solicitudes').insert({
             tipo: state.serviceId,
             datos: allData,
             usuario_id: user ? user.userId : null,
             usuario_nombre: user ? user.name : 'Anónimo'
           });
-        } catch(e) { console.error('Error al guardar solicitud:', e); }
+          if (res && res.error) { fallo = true; console.error('Error al guardar solicitud:', res.error); }
+        } catch(e) { fallo = true; console.error('Error al guardar solicitud:', e); }
       }
+      if (fallo) {
+        err.textContent = 'No se ha podido enviar. Revisa tu conexión y vuelve a intentarlo; tus datos siguen aquí.';
+        err.hidden = false;
+        btn.disabled = false;
+        return;
+      }
+      try { saveRequest(state.serviceId, allData); } catch(_) {}
 
+      if (!reduceMotion()) {
+        document.getElementById('sq-letter').classList.add('is-flying');
+        await new Promise(function(r) { setTimeout(r, 650); });
+      }
       showView('confirm');
     });
   }
 
-  /* ══════════════════════════════════════
-     RENDER: CONFIRM
-  ══════════════════════════════════════ */
+  /* ── Hecho ── */
   function renderConfirm() {
     var svc = SERVICES.find(function(s) { return s.id === state.serviceId; });
+    var sparks = '';
+    for (var a = 0; a < 360; a += 45) sparks += '<span class="sq-spark" style="--a:' + a + 'deg"></span>';
     document.getElementById('form-content').innerHTML =
-      '<div class="form-wrap"><div class="svc-form-section"><div class="confirm-center">'
-      + '<div class="confirm-icon-circle">✓</div>'
-      + '<div class="confirm-h">¡Solicitud enviada!</div>'
-      + '<div class="confirm-p">Hemos recibido tu solicitud para <strong>' + (svc ? svc.name : 'el servicio') + '</strong>.<br>El equipo de {{name}} se pondrá en contacto contigo en menos de 48 horas.<br><br><em>Jazak uvaruj — que seas bendecido/a.</em></div>'
-      + '<button class="btn btn-primary btn-lg" id="btn-volver-lista" style="width:100%;">Volver a servicios</button>'
+      '<div class="form-wrap sq" style="' + (svc ? accStyle(svc) : '') + '"><div class="sq-card"><div class="sq-done">'
+      + '<div class="sq-seal" aria-hidden="true"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="42"/><path d="M30 47.5 41 58 63 35"/></svg>' + sparks + '</div>'
+      + '<h2>Solicitud enviada</h2>'
+      + '<p>Hemos recibido tu solicitud de <strong>' + esc(svc ? svc.name : 'servicio') + '</strong>. El equipo de {{name}} se pondrá en contacto contigo en menos de 48 horas.<br><em>Jazak uvaruj.</em></p>'
+      + '<div><button class="sq-next" id="btn-volver-lista">Volver a servicios</button></div>'
       + '</div></div></div>';
-    document.getElementById('btn-volver-lista').addEventListener('click', function() { state.data = {}; state.serviceId = null; showView('lista'); });
+    document.getElementById('btn-volver-lista').addEventListener('click', function() { state.data = {}; state.fileUploads = {}; state.serviceId = null; showView('lista'); });
   }
 
   /* ── Botón volver ── */
@@ -857,27 +1134,29 @@
   /* ══════════════════════════════════════
      UPLOAD: ARCHIVO EN FORMULARIO (ketuva, etc.)
   ══════════════════════════════════════ */
-  async function uploadFormFile(fieldId, input) {
+  async function uploadFormFile(fieldId, input, f) {
     var file = input.files[0]; if (!file) return;
     var sb = typeof getSupabase === 'function' ? getSupabase() : null; if (!sb) return;
     var wrap    = document.getElementById('upload_wrap_' + fieldId);
     var preview = document.getElementById('preview_' + fieldId);
     var status  = document.getElementById('status_' + fieldId);
-    if (wrap) wrap.style.opacity = '0.6';
+    if (wrap) wrap.classList.add('is-busy');
     if (status) status.textContent = 'Subiendo…';
     try {
       var path = 'ketuvas/' + fieldId + '_' + Date.now() + '.' + file.name.split('.').pop();
       var { data: upData, error: upErr } = await sb.storage.from('negocios').upload(path, file, { upsert: true, contentType: file.type });
-      if (upErr) { if (status) status.textContent = 'Error: ' + upErr.message; return; }
-      var url = sb.storage.from('negocios').getPublicUrl(upData.path).data.publicUrl;
-      state.fileUploads[fieldId] = url;
-      var previewUrl = typeof resolveMediaUrl === 'function' ? (await resolveMediaUrl('negocios', url)) : url;
-      if (preview) preview.innerHTML = '<img src="' + previewUrl + '" style="max-width:100%;max-height:140px;border-radius:6px;margin-top:10px;border:1.5px solid var(--color-border);">';
-      if (status) status.textContent = '✓ Foto subida correctamente';
-      if (wrap) wrap.style.borderColor = 'var(--color-success)';
-    } catch(e) { if (status) status.textContent = 'Error inesperado.'; }
-    if (wrap) wrap.style.opacity = '';
-    input.value = '';
+      if (upErr) { if (status) status.textContent = 'No se pudo subir: ' + upErr.message; }
+      else {
+        var url = sb.storage.from('negocios').getPublicUrl(upData.path).data.publicUrl;
+        state.fileUploads[fieldId] = url;
+        var previewUrl = typeof resolveMediaUrl === 'function' ? (await resolveMediaUrl('negocios', url)) : url;
+        if (preview) preview.innerHTML = '<img src="' + esc(previewUrl) + '" alt="">';
+        if (status) status.textContent = 'Foto subida · toca para cambiarla';
+        if (f) markOk(f);
+      }
+    } catch(e) { if (status) status.textContent = 'Error inesperado. Inténtalo de nuevo.'; }
+    if (wrap) wrap.classList.remove('is-busy');
+    try { input.value = ''; } catch(_) {}
   }
 
   /* ══════════════════════════════════════

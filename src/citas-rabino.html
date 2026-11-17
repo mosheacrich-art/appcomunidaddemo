@@ -25,7 +25,91 @@
     .page-inner { max-width: 1100px; margin: 0 auto; padding: 32px 32px 80px; }
     @media (max-width: 768px) { .page-inner { padding: 20px 16px 88px; } }
 
-    /* Hero Rabino */
+    /* ─── Hero: el Rav en su ventana de piedra ─── */
+    .rv-hero {
+      position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 28px;
+      padding: 40px 44px 0; margin-bottom: 28px; border-radius: 24px; overflow: hidden; isolation: isolate;
+      background:
+        radial-gradient(120% 90% at 100% 100%, rgba(201,168,76,.28), rgba(201,168,76,0) 60%),
+        linear-gradient(160deg, #F7F0E3 0%, #EFE3CC 100%);
+      border: 1px solid rgba(168,137,46,.22);
+      box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 20px 44px -30px rgba(90,64,20,.45);
+    }
+    .rv-text { padding-bottom: 40px; max-width: 560px; }
+    .rv-title {
+      font-family: var(--font-brand); font-weight: 700; color: #1B2E5E;
+      font-size: clamp(2.2rem, 4.6vw, 3.4rem); line-height: 1.02; letter-spacing: -0.025em; margin: 0;
+    }
+    .rv-title .ink { position: relative; white-space: nowrap; }
+    .rv-title svg { position: absolute; left: -2%; bottom: -.16em; width: 104%; height: .32em; overflow: visible; }
+    .rv-title svg path {
+      fill: none; stroke: #C9A84C; stroke-width: 5; stroke-linecap: round;
+      stroke-dasharray: 320; stroke-dashoffset: 320; animation: rvDraw 1s cubic-bezier(.16,1,.3,1) .45s forwards;
+    }
+    @keyframes rvDraw { to { stroke-dashoffset: 0; } }
+    .rv-lede { font-size: 1.02rem; line-height: 1.65; color: #4A4636; margin: 18px 0 22px; max-width: 46ch; }
+    .rv-facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0 0 26px; padding: 0; list-style: none; }
+    .rv-facts li { display: flex; align-items: center; gap: 8px; font-size: .86rem; font-weight: 600; color: #1B2E5E; }
+    .rv-facts svg { width: 17px; height: 17px; color: #A8892E; flex-shrink: 0; }
+    .rv-cta {
+      display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 14px;
+      background: #1B2E5E; color: #fff; text-decoration: none; font: 600 .95rem var(--font-ui);
+      box-shadow: 0 12px 22px -14px rgba(19,34,71,.8); transition: transform .2s cubic-bezier(.16,1,.3,1), box-shadow .25s ease;
+    }
+    .rv-cta:hover { transform: translateY(-2px); box-shadow: 0 16px 26px -14px rgba(19,34,71,.8); }
+    .rv-cta svg { width: 17px; height: 17px; transition: transform .25s cubic-bezier(.16,1,.3,1); }
+    .rv-cta:hover svg { transform: translateY(3px); }
+
+    .rv-figure { position: relative; margin: 0; width: 280px; align-self: end; animation: rvRise .9s cubic-bezier(.16,1,.3,1) .1s both; }
+    @keyframes rvRise { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+    .rv-arch {
+      position: relative; display: block; width: 100%; height: 330px;
+      border-radius: 140px 140px 0 0; overflow: hidden; background: #C9A574;
+      box-shadow: 0 -2px 0 rgba(255,255,255,.4) inset;
+    }
+    .rv-arch img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; transform: scale(1.04); transition: transform 1.2s cubic-bezier(.16,1,.3,1); }
+    .rv-hero:hover .rv-arch img { transform: scale(1.08); }
+    .rv-figure::before {
+      content: ''; position: absolute; inset: -12px -12px 0 -12px; z-index: -1;
+      border: 1.5px solid rgba(168,137,46,.55); border-bottom: none; border-radius: 152px 152px 0 0;
+    }
+    .rv-caption {
+      position: absolute; left: -36px; bottom: 26px; z-index: 2;
+      background: #fff; border-radius: 14px; padding: 10px 14px 10px 12px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 14px 28px -16px rgba(19,34,71,.55); animation: rvRise .8s cubic-bezier(.16,1,.3,1) .55s both;
+    }
+    .rv-caption i { width: 8px; height: 8px; border-radius: 50%; background: #2F8A5F; box-shadow: 0 0 0 4px rgba(47,138,95,.16); flex-shrink: 0; }
+    .rv-caption b { display: block; font-family: var(--font-brand); font-size: .98rem; color: #1B2E5E; line-height: 1.15; }
+    .rv-caption small { display: block; font-size: .74rem; color: #6B6450; }
+
+    @media (max-width: 860px) {
+      .rv-hero { grid-template-columns: minmax(0, 1fr); padding: 26px 22px 0; gap: 0; }
+      .rv-text { padding-bottom: 22px; }
+      .rv-figure { width: 220px; justify-self: center; }
+      .rv-arch { height: 250px; }
+      .rv-caption { left: -28px; bottom: 8px; padding: 8px 12px; }
+      .rv-caption small { white-space: nowrap; }
+    }
+    @media (max-width: 420px) { .rv-figure { width: 190px; } .rv-arch { height: 220px; } .rv-caption { left: -18px; } }
+    @media (prefers-reduced-motion: reduce) {
+      .rv-figure, .rv-caption { animation: none; }
+      .rv-title svg path { animation: none; stroke-dashoffset: 0; }
+      .rv-arch img, .rv-cta, .rv-cta svg { transition: none; }
+    }
+
+    /* Variante cita: foto a la izquierda */
+    .rv-hero.flip { grid-template-columns: auto minmax(0, 1fr); gap: 40px; }
+    .rv-hero.flip .rv-figure { order: -1; }
+    .rv-hero.flip .rv-caption { left: -22px; right: auto; }
+    .rv-bio { font-size: .9rem; line-height: 1.6; color: #6B6450; margin: -8px 0 22px; max-width: 52ch; }
+    @media (max-width: 860px) {
+      .rv-hero.flip { grid-template-columns: minmax(0, 1fr); gap: 0; }
+      .rv-hero.flip .rv-figure { order: 2; }
+      .rv-hero.flip .rv-caption { left: -28px; }
+    }
+
+    /* Hero Rabino (antiguo) */
     .rav-hero { background: var(--color-primary); border-radius: var(--radius-lg); padding: 32px; text-align: center; margin-bottom: 32px; color: white; }
     .rav-avatar { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--color-gold); margin: 0 auto 16px; object-fit: cover; display: block; }
     .rav-name { font-family: var(--font-brand); font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
@@ -135,6 +219,281 @@
     .cita-estado.pendiente { background: #FEF3C7; color: #92400E; }
     .envio-aviso { background: #FEF3C7; color: #78350F; border-radius: var(--radius-sm); padding: 12px 14px; font-size: .82rem; line-height: 1.5; margin: 0 0 16px; text-align: left; }
     .envio-aviso a { color: inherit; font-weight: 700; }
+    /* ════ Formulario guiado: Pregunta al Rav ════ */
+    .rq {
+      --ink: #1B2E5E; --ink-deep: #132247; --gold: #C9A84C; --gold-soft: #E7D3A0; --cream: #FAF5EE;
+      --muted: #5E6578; --line: rgba(27, 46, 94, .1);
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --cat: #1B2E5E; --cat-soft: #EEF1F8;
+      position: relative; background: #fff; border: 1px solid var(--line); border-radius: 20px;
+      box-shadow: 0 1px 2px rgba(27,46,94,.04), 0 18px 40px -24px rgba(27,46,94,.28);
+      margin-bottom: 40px; overflow: hidden;
+    }
+    .rq ::selection { background: var(--gold-soft); color: var(--ink-deep); }
+
+    /* Pasos */
+    .rq-steps { display: flex; align-items: center; gap: 0; padding: 22px 28px 0; }
+    .rq-step { display: flex; align-items: center; gap: 10px; flex-shrink: 0; color: var(--muted); font-size: .82rem; font-weight: 600; }
+    .rq-step-dot {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid rgba(27,46,94,.18); background: #fff; color: var(--muted);
+      font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums;
+      transition: background .35s var(--ease-out), border-color .35s var(--ease-out), color .35s var(--ease-out), transform .35s var(--ease-out);
+    }
+    .rq-step-dot svg { width: 14px; height: 14px; display: none; }
+    .rq-step.is-current { color: var(--ink); }
+    .rq-step.is-current .rq-step-dot { background: var(--ink); border-color: var(--ink); color: #fff; transform: scale(1.06); box-shadow: 0 0 0 5px rgba(201,168,76,.22); }
+    .rq-step.is-done .rq-step-dot { background: var(--gold); border-color: var(--gold); color: var(--ink-deep); }
+    .rq-step.is-done .rq-step-dot span { display: none; }
+    .rq-step.is-done .rq-step-dot svg { display: block; }
+    .rq-step.is-done { color: var(--ink); cursor: pointer; }
+    .rq-line { flex: 1; height: 2px; margin: 0 12px; background: rgba(27,46,94,.1); border-radius: 2px; overflow: hidden; min-width: 18px; }
+    .rq-line i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .5s var(--ease-out); }
+    .rq-line.is-full i { width: 100%; }
+    @media (max-width: 560px) {
+      .rq-steps { padding: 18px 18px 0; }
+      .rq-step-label { display: none; }
+      .rq-step.is-current .rq-step-label { display: inline; }
+    }
+
+    /* Escenario con altura animada */
+    .rq-stage { position: relative; transition: height .45s var(--ease-out); }
+    .rq-panel { padding: 22px 28px 28px; }
+    .rq-panel[hidden] { display: none; }
+    @media (max-width: 560px) { .rq-panel { padding: 18px 18px 22px; } }
+    .rq-panel.enter-fwd  { animation: rqInFwd .48s var(--ease-out) both; }
+    .rq-panel.enter-back { animation: rqInBack .48s var(--ease-out) both; }
+    @keyframes rqInFwd  { from { opacity: 0; transform: translateX(28px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+    @keyframes rqInBack { from { opacity: 0; transform: translateX(-28px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+
+    .rq-q { font-family: var(--font-brand); font-size: clamp(1.35rem, 2.4vw, 1.7rem); font-weight: 700; color: var(--ink); letter-spacing: -0.015em; line-height: 1.2; margin: 0; text-wrap: balance; }
+    .rq-hint { font-size: .88rem; color: var(--muted); margin: 6px 0 20px; line-height: 1.5; max-width: 62ch; }
+
+    /* Paso 1: temas */
+    .rq-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    @media (max-width: 760px) { .rq-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+    .rq-tile {
+      --c: #1B2E5E; --c-soft: #EEF1F8;
+      position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+      padding: 16px 16px 15px; border-radius: 16px; text-align: left; cursor: pointer;
+      background: #fff; border: 1.5px solid var(--line); color: var(--ink);
+      font: inherit; -webkit-tap-highlight-color: transparent;
+      transition: transform .3s var(--ease-out), border-color .25s ease, box-shadow .3s var(--ease-out), background .25s ease, opacity .3s ease;
+      animation: rqTileIn .5s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 45ms);
+    }
+    @keyframes rqTileIn { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+    .rq-tile:hover { border-color: var(--c); transform: translateY(-3px); box-shadow: 0 12px 24px -16px var(--c); }
+    .rq-tile:active { transform: translateY(-1px) scale(.98); }
+    .rq-tile-ic {
+      width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center;
+      background: var(--c-soft); color: var(--c);
+      transition: background .3s ease, color .3s ease, transform .45s var(--ease-out);
+    }
+    .rq-tile-ic svg { width: 24px; height: 24px; overflow: visible; }
+    .rq-tile:hover .rq-tile-ic { transform: rotate(-6deg) scale(1.06); }
+    .rq-tile b { font-size: .95rem; font-weight: 700; display: block; }
+    .rq-tile small { font-size: .76rem; color: var(--muted); line-height: 1.35; display: block; margin-top: 2px; }
+    .rq-tile-check {
+      position: absolute; top: 12px; right: 12px; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--c); color: #fff; display: flex; align-items: center; justify-content: center;
+      transform: scale(0); transition: transform .4s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .rq-tile-check svg { width: 12px; height: 12px; }
+    .rq-tile.is-on { border-color: var(--c); background: var(--c-soft); box-shadow: 0 14px 28px -18px var(--c); transform: translateY(-3px); }
+    .rq-tile.is-on .rq-tile-ic { background: var(--c); color: #fff; }
+    .rq-tile.is-on .rq-tile-check { transform: scale(1); }
+    .rq-tiles.has-pick .rq-tile:not(.is-on) { opacity: .55; }
+    /* Llamas de las velas: parpadean al pasar o elegir */
+    .rq-flame { transform-box: fill-box; transform-origin: 50% 100%; }
+    .rq-tile:hover .rq-flame, .rq-tile.is-on .rq-flame { animation: rqFlicker 1.1s ease-in-out infinite alternate; }
+    .rq-tile:hover .rq-flame + .rq-flame, .rq-tile.is-on .rq-flame + .rq-flame { animation-delay: -.45s; }
+    @keyframes rqFlicker { 0% { transform: scale(1, 1) rotate(-3deg); } 50% { transform: scale(.9, 1.12) rotate(2deg); } 100% { transform: scale(1.05, .94) rotate(-1deg); } }
+
+    /* Paso 2: escribir */
+    .rq-topic {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px;
+      padding: 5px 12px 5px 6px; border-radius: 999px; border: none; cursor: pointer;
+      background: var(--cat-soft); color: var(--cat); font: 600 .8rem var(--font-ui);
+      transition: transform .2s ease;
+    }
+    .rq-topic:hover { transform: translateX(-2px); }
+    .rq-topic i { width: 22px; height: 22px; border-radius: 50%; background: var(--cat); color: #fff; display: flex; align-items: center; justify-content: center; }
+    .rq-topic i svg { width: 12px; height: 12px; }
+    .rq-write { position: relative; }
+    .rq-write textarea {
+      width: 100%; min-height: 170px; resize: vertical; display: block;
+      font: 400 1rem/1.6 var(--font-ui); color: #1A1A2E;
+      padding: 16px 18px 18px; border-radius: 16px;
+      background: #FFFDF9; border: 1.5px solid rgba(27,46,94,.14); outline: none;
+      caret-color: var(--gold);
+      transition: border-color .2s ease, box-shadow .25s ease, background .2s ease;
+    }
+    .rq-write textarea::placeholder { color: #7C8190; }
+    .rq-write textarea:focus { border-color: var(--cat); background: #fff; box-shadow: 0 0 0 4px rgba(201,168,76,.22); }
+    .rq-meter { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+    .rq-meter-track { flex: 1; height: 6px; border-radius: 999px; background: rgba(27,46,94,.08); overflow: hidden; }
+    .rq-meter-fill { height: 100%; width: 0; border-radius: inherit; background: #D9A441; transition: width .4s var(--ease-out), background .4s ease; }
+    .rq-meter-fill.ok { background: var(--gold); }
+    .rq-meter-fill.great { background: #2F8A5F; }
+    .rq-count { font-size: .76rem; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 66px; text-align: right; }
+    .rq-count.warn { color: #B45309; }
+    .rq-mood { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: .84rem; color: var(--muted); min-height: 22px; }
+    .rq-mood svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .rq-mood span { animation: rqMood .35s var(--ease-out); }
+    @keyframes rqMood { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+    /* Paso 3: privacidad + vista previa */
+    .rq-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+    @media (max-width: 560px) { .rq-choices { grid-template-columns: 1fr; } }
+    .rq-choice {
+      display: flex; gap: 14px; align-items: flex-start; text-align: left; cursor: pointer;
+      padding: 16px; border-radius: 16px; background: #fff; border: 1.5px solid var(--line);
+      font: inherit; color: var(--ink);
+      transition: border-color .25s ease, background .25s ease, transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+    }
+    .rq-choice:hover { transform: translateY(-2px); border-color: rgba(27,46,94,.3); }
+    .rq-choice-ic { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; background: var(--cream); color: var(--ink); display: flex; align-items: center; justify-content: center; transition: background .25s ease, color .25s ease; }
+    .rq-choice-ic svg { width: 21px; height: 21px; }
+    .rq-choice b { display: block; font-size: .95rem; margin-bottom: 3px; }
+    .rq-choice small { display: block; font-size: .8rem; color: var(--muted); line-height: 1.45; }
+    .rq-choice.is-on { border-color: var(--ink); background: #F5F7FC; box-shadow: 0 12px 24px -18px rgba(27,46,94,.6); }
+    .rq-choice.is-on .rq-choice-ic { background: var(--ink); color: var(--gold-soft); }
+
+    .rq-letter-wrap { perspective: 900px; }
+    .rq-letter {
+      position: relative; border-radius: 16px; padding: 20px 22px 18px;
+      background: linear-gradient(#FFFDF8, #FBF6EC);
+      border: 1px solid rgba(201,168,76,.4);
+      box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 16px 30px -22px rgba(19,34,71,.5);
+      transform-origin: 50% 100%;
+    }
+    .rq-letter::before {
+      content: ''; position: absolute; left: 22px; right: 22px; top: 0; height: 3px;
+      background: var(--cat); border-radius: 0 0 3px 3px; opacity: .55;
+    }
+    .rq-letter-to { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; font-size: .78rem; color: var(--muted); }
+    .rq-letter-to b { color: var(--ink); font-weight: 700; }
+    .rq-letter-tag { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: var(--cat-soft); color: var(--cat); font-weight: 600; font-size: .74rem; }
+    .rq-letter p { margin: 0; font-family: var(--font-brand); font-size: 1.05rem; line-height: 1.6; color: #22253A; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 9.6em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 75%, transparent); mask-image: linear-gradient(#000 75%, transparent); }
+    .rq-letter-foot { margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(201,168,76,.45); display: flex; align-items: center; gap: 8px; font-size: .78rem; color: var(--muted); }
+    .rq-letter-foot svg { width: 15px; height: 15px; color: var(--gold); }
+    .rq-letter.is-flying { animation: rqFly .75s cubic-bezier(.55, 0, .3, 1) forwards; }
+    @keyframes rqFly {
+      0%   { transform: none; opacity: 1; }
+      28%  { transform: translateY(6px) rotateX(10deg) scale(.97); }
+      100% { transform: translateY(-140px) rotate(-6deg) scale(.6); opacity: 0; }
+    }
+
+    /* Acciones */
+    .rq-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; }
+    .rq-back {
+      display: inline-flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer;
+      font: 600 .88rem var(--font-ui); color: var(--muted); padding: 10px 6px; border-radius: 10px;
+    }
+    .rq-back:hover { color: var(--ink); }
+    .rq-back svg { width: 16px; height: 16px; transition: transform .2s ease; }
+    .rq-back:hover svg { transform: translateX(-3px); }
+    .rq-next {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 13px 22px; border-radius: 14px; border: none; cursor: pointer;
+      background: var(--ink); color: #fff; font: 600 .95rem var(--font-ui);
+      box-shadow: 0 10px 20px -12px rgba(19,34,71,.7);
+      transition: transform .2s var(--ease-out), box-shadow .25s ease, background .2s ease, opacity .2s ease;
+    }
+    .rq-next:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 24px -12px rgba(19,34,71,.7); }
+    .rq-next:active:not(:disabled) { transform: translateY(0) scale(.98); }
+    .rq-next:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+    .rq-next svg { width: 18px; height: 18px; transition: transform .25s var(--ease-out); }
+    .rq-next:hover:not(:disabled) svg { transform: translateX(3px); }
+    .rq-next.send { background: var(--gold); color: var(--ink-deep); }
+    .rq-next.send:hover:not(:disabled) svg { transform: translate(3px, -3px) rotate(-8deg); }
+    .rq-err { font-size: .84rem; color: #B91C1C; margin: 12px 0 0; }
+    .rq-err[hidden] { display: none; }
+    @media (max-width: 560px) { .rq-next { flex: 1; } }
+
+    /* Hecho */
+    .rq-done { text-align: center; padding: 40px 24px 36px; }
+    .rq-done[hidden] { display: none; }
+    .rq-seal { position: relative; width: 92px; height: 92px; margin: 0 auto 20px; }
+    .rq-seal svg.ring { width: 92px; height: 92px; display: block; }
+    .rq-seal .ring circle { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 264; stroke-dashoffset: 264; transform: rotate(-90deg); transform-origin: 50% 50%; }
+    .rq-seal .ring path { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60; }
+    .rq-done.play .ring circle { animation: rqDraw .7s var(--ease-out) .05s forwards; }
+    .rq-done.play .ring path { animation: rqDraw .45s var(--ease-out) .6s forwards; }
+    @keyframes rqDraw { to { stroke-dashoffset: 0; } }
+    .rq-spark { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; margin: -3.5px; border-radius: 50%; background: var(--gold); opacity: 0; }
+    .rq-done.play .rq-spark { animation: rqSpark .8s var(--ease-out) .55s forwards; }
+    @keyframes rqSpark {
+      0% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(.4); }
+      30% { opacity: 1; }
+      100% { opacity: 0; transform: rotate(var(--a)) translateY(-62px) scale(1); }
+    }
+    .rq-done h2 { font-family: var(--font-brand); font-size: 1.7rem; color: var(--ink); margin: 0 0 8px; letter-spacing: -0.015em; }
+    .rq-done p { font-size: .92rem; color: var(--muted); line-height: 1.6; max-width: 400px; margin: 0 auto 18px; }
+    .rq-done .rq-ref { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: 999px; background: #FBF4E2; color: #8A6D1F; font-weight: 700; font-size: .85rem; font-variant-numeric: tabular-nums; margin-bottom: 22px; }
+    .rq-done > * { animation: rqTileIn .5s var(--ease-out) both; }
+    .rq-done > :nth-child(2) { animation-delay: .7s; } .rq-done > :nth-child(3) { animation-delay: .8s; }
+    .rq-done > :nth-child(4) { animation-delay: .9s; } .rq-done > :nth-child(5) { animation-delay: 1s; }
+
+    .rq :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rq *, .rq *::before, .rq *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+      .rq-seal .ring circle, .rq-seal .ring path { stroke-dashoffset: 0; }
+    }
+
+
+    /* ─── Cita: extras sobre el formulario guiado ─── */
+    .rq-tiles.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 760px) { .rq-tiles.cols-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .rq-tiles.cols-3 .rq-tile { flex-direction: row; align-items: center; } }
+    .rq-sub { font-size: .84rem; font-weight: 600; color: var(--ink); margin: 18px 0 10px; }
+    .rq-sub:first-of-type { margin-top: 0; }
+    .rq-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .rq-chip { position: relative; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .rq-chip input { position: absolute; opacity: 0; pointer-events: none; }
+    .rq-chip span {
+      display: inline-flex; align-items: center; gap: 7px; padding: 9px 15px; border-radius: 999px;
+      border: 1.5px solid var(--line); background: #fff; font: 600 .88rem var(--font-ui); color: #1A1A2E;
+      transition: background .25s ease, border-color .25s ease, color .25s ease, transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+    }
+    .rq-chip span::before {
+      content: ''; width: 0; height: 14px; overflow: hidden; flex-shrink: 0;
+      background: no-repeat center/14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E7D3A0' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m4.5 12.75 6 6 9-13.5'/%3E%3C/svg%3E");
+      transition: width .25s var(--ease-out); margin-right: -7px;
+    }
+    .rq-chip:hover span { border-color: var(--cat); transform: translateY(-2px); }
+    .rq-chip input:checked + span { background: var(--cat); border-color: var(--cat); color: #fff; box-shadow: 0 10px 18px -14px var(--cat); }
+    .rq-chip input:checked + span::before { width: 14px; margin-right: 0; }
+    .rq-chip input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .rq-line-input {
+      width: 100%; margin-top: 14px; font: 400 .95rem/1.35 var(--font-ui); color: #1A1A2E;
+      padding: 12px 14px; border-radius: 12px; background: #FFFDF9; border: 1.5px solid rgba(27,46,94,.14); outline: none;
+      transition: border-color .2s ease, box-shadow .25s ease;
+    }
+    .rq-line-input::placeholder { color: #7C8190; }
+    .rq-line-input:focus { border-color: var(--cat); background: #fff; box-shadow: 0 0 0 4px rgba(201,168,76,.22); }
+    .rq-line-input[readonly] { background: #F4F1EA; border-color: transparent; color: #4A5064; }
+    .rq-mod-info { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--muted); margin-top: 10px; min-height: 20px; }
+    .rq-mod-info svg { width: 16px; height: 16px; color: var(--gold); flex-shrink: 0; }
+    .rq-contact { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; margin: 20px 0 6px; }
+    .rq-contact label { display: flex; flex-direction: column; gap: 6px; font-size: .82rem; font-weight: 600; color: var(--ink); }
+    .rq-contact label .rq-line-input { margin-top: 0; }
+    .rq-contact .full { grid-column: 1 / -1; }
+    @media (max-width: 560px) { .rq-contact { grid-template-columns: 1fr; } }
+    .rq-agree { display: flex; gap: 12px; align-items: flex-start; margin-top: 16px; padding: 14px 16px; border-radius: 14px; background: var(--cream); cursor: pointer; font-size: .88rem; color: #1A1A2E; line-height: 1.45; }
+    .rq-agree input { width: 20px; height: 20px; accent-color: var(--ink); flex-shrink: 0; margin-top: 1px; }
+    .rq-ferr { display: none; font-size: .8rem; color: #B42318; margin-top: 8px; }
+    .rq-ferr.on { display: block; animation: rqMood .3s var(--ease-out); }
+    .rq-nota { font-size: .78rem; color: var(--muted); text-align: center; margin: 14px 0 0; line-height: 1.5; }
+    .rq-letter dl { margin: 0; display: grid; grid-template-columns: minmax(110px, 32%) 1fr; gap: 6px 14px; font-size: .9rem; }
+    .rq-letter dt { color: var(--muted); }
+    .rq-letter dd { margin: 0; color: #22253A; white-space: pre-line; overflow-wrap: anywhere; }
+    .rq-letter .motivo { font-family: var(--font-brand); font-size: 1.02rem; line-height: 1.6; color: #22253A; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 12px; max-height: 8em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+    @media (max-width: 480px) { .rq-letter dl { grid-template-columns: 1fr; gap: 0 0; } .rq-letter dd { margin-bottom: 6px; } }
+    .rq-done .envio-aviso { max-width: 440px; margin: 0 auto 20px; }
+    .rq-done .conf-mail { font-size: .92rem; color: var(--muted); line-height: 1.6; max-width: 420px; margin: 0 auto 20px; }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1b2e5e">
@@ -163,27 +522,39 @@
     <div class="page-inner">
 
       <!-- Hero Rabino -->
-      <div class="rav-hero">
-        <img class="rav-avatar" src="img/avatar.svg" alt="{{rabbi.name}}">
-        <div class="rav-name">{{rabbi.fullName}}</div>
-        <div class="rav-cargo">Rabino de {{name}}</div>
-        <div class="rav-desc">{{rabbi.bio}}</div>
-        <div class="rav-disponible">
-          <span class="pulse-dot"></span>
-          Envía tu solicitud y la oficina del Rav te escribirá para acordar la cita
+      <header class="rv-hero flip">
+        <div class="rv-text">
+          <h1 class="rv-title">Una cita <span class="ink">con el Rav<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 70 4, 150 4, 296 11"/></svg></span></h1>
+          <p class="rv-lede">Para hablar con calma de lo que necesites: una consulta halájica, tu camino judío, un Bar Mitzvá o una boda que se acerca.</p>
+          <p class="rv-bio">{{rabbi.bio}}</p>
+          <ul class="rv-facts">
+            <li><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>Presencial o por videollamada</li>
+            <li><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>La oficina te escribe para fijar día y hora</li>
+          </ul>
+          <a href="#rq" class="rv-cta">Pedir una cita <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"/></svg></a>
         </div>
-      </div>
+        <figure class="rv-figure">
+          <span class="rv-arch"><img src="img/avatar.svg" alt="{{rabbi.fullName}}" width="546" height="538" decoding="async"></span>
+          <figcaption class="rv-caption"><span><b>{{rabbi.name}}</b><small>Rabino de {{name}}</small></span></figcaption>
+        </figure>
+      </header>
 
-      <!-- Tipos de cita -->
-      <div class="section-title">¿Qué tipo de consulta necesitas?</div>
-      <div class="tipos-grid" id="tiposGrid"></div>
-
-      <!-- Formulario de solicitud / Confirmación -->
-      <div class="section-title">Cuéntanos qué necesitas</div>
-      <div class="form-section" id="formSection">
-        <div id="formContent"></div>
-        <div id="confirmacionContent" style="display:none"></div>
-      </div>
+      <!-- Solicitud guiada -->
+      <section class="rq" id="rq" aria-label="Pedir una cita con el Rav">
+        <ol class="rq-steps" id="rq-steps" aria-label="Pasos">
+          <li class="rq-step is-current" data-step="1"><span class="rq-step-dot"><span>1</span><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></span><span class="rq-step-label">Consulta</span></li>
+          <li class="rq-line" aria-hidden="true"><i></i></li>
+          <li class="rq-step" data-step="2"><span class="rq-step-dot"><span>2</span><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></span><span class="rq-step-label">Motivo</span></li>
+          <li class="rq-line" aria-hidden="true"><i></i></li>
+          <li class="rq-step" data-step="3"><span class="rq-step-dot"><span>3</span><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></span><span class="rq-step-label">Cuándo</span></li>
+          <li class="rq-line" aria-hidden="true"><i></i></li>
+          <li class="rq-step" data-step="4"><span class="rq-step-dot"><span>4</span><svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></span><span class="rq-step-label">Enviar</span></li>
+        </ol>
+        <div class="rq-stage" id="rq-stage">
+          <div id="formContent"></div>
+          <div class="rq-done" id="confirmacionContent" hidden></div>
+        </div>
+      </section>
 
       <!-- Mis citas -->
       <div class="section-gap">
@@ -214,110 +585,246 @@
     const DIAS_DISP = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
     const FRANJAS_DISP = ['Mañana', 'Mediodía', 'Tarde', 'Noche'];
 
+    // Colores por tipo (misma paleta que «Pregunta al Rav»)
+    const TIPO_COLOR = {
+      halacha: ['#6B3E75', '#F3EBF5'], espiritual: ['#B45309', '#FDF0DF'], barmitzvah: ['#1B2E5E', '#EEF1F8'],
+      matrimonial: ['#8B2040', '#F8E9ED'], kosher: ['#065F46', '#E3F4EC']
+    };
+
     let selectedTipo = null;
     let perfilTel = '';
     let enviando = false;
+    let rqStep = 1;
+    const MOTIVO_MIN = 10;
+    const reduceMotion = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ICK = '<svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>';
+    const IARROW = '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>';
+    const IBACK = '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>';
+    const ISEND = '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/></svg>';
+    const IPIN = '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>';
+    const IVIDEO = '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>';
+    const ILOCK = '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>';
 
     const esc = (v) => typeof escHtml === 'function' ? escHtml(v == null ? '' : String(v))
       : String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
     const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
     function fechaEnvio(ts) { const d = new Date(ts); return isNaN(d) ? '' : `${d.getDate()} ${MESES[d.getMonth()]} ${d.getFullYear()}`; }
+    const tipoIc = (t) => t.emoji.replace(/ style="[^"]*"/, '');
+
+    function setCat(id) {
+      const c = TIPO_COLOR[id] || TIPO_COLOR.barmitzvah;
+      const rq = document.getElementById('rq');
+      rq.style.setProperty('--cat', c[0]); rq.style.setProperty('--cat-soft', c[1]);
+    }
 
     function renderTipos() {
-      document.getElementById('tiposGrid').innerHTML = TIPOS_CITA.map(t => `
-        <button type="button" class="tipo-card ${selectedTipo === t.id ? 'selected' : ''}" onclick="selectTipo('${t.id}')" id="tipo-${t.id}" aria-pressed="${selectedTipo === t.id}">
-          <div class="tipo-emoji">${t.emoji}</div>
-          <div class="tipo-titulo">${t.titulo}</div>
-          ${t.desc ? `<div class="tipo-desc">${t.desc}</div>` : ''}
-        </button>
-      `).join('');
+      const box = document.getElementById('rq-tiles');
+      if (!box) return;
+      box.classList.toggle('has-pick', !!selectedTipo);
+      box.innerHTML = TIPOS_CITA.map((t, i) => {
+        const c = TIPO_COLOR[t.id] || TIPO_COLOR.barmitzvah;
+        const on = selectedTipo === t.id;
+        return `<button type="button" class="rq-tile${on ? ' is-on' : ''}" role="radio" aria-checked="${on}" id="tipo-${t.id}"
+          style="--c:${c[0]};--c-soft:${c[1]};--i:${i}" onclick="selectTipo('${t.id}')">
+          <span class="rq-tile-ic">${tipoIc(t)}</span>
+          <span><b>${t.titulo}</b>${t.desc ? `<small>${t.desc}</small>` : ''}</span>
+          <span class="rq-tile-check">${ICK}</span>
+        </button>`;
+      }).join('');
     }
 
     function selectTipo(id) {
       if (!selectedTipo && typeof trackEvent === 'function') trackEvent('cita_inicio', { tipo: String(id) });
       selectedTipo = id;
+      setCat(id);
       renderTipos();
-      const tipo = TIPOS_CITA.find(t => t.id === id);
-      const el = document.getElementById('f_tipo_sel');
-      if (el) el.innerHTML = `${tipo.emoji} ${tipo.titulo}`;
-      document.getElementById('f_tipo_err').style.display = 'none';
+      setTimeout(() => rqGo(2), reduceMotion() ? 0 : 420);
+    }
+
+    /* Altura animada + cambio de paso */
+    function rqMedir(fn) {
+      const stage = document.getElementById('rq-stage');
+      const from = stage.offsetHeight;
+      fn();
+      const to = stage.scrollHeight;
+      if (reduceMotion() || from === to) return;
+      stage.style.height = from + 'px';
+      stage.offsetHeight;
+      stage.style.height = to + 'px';
+      const fin = () => { stage.style.height = ''; stage.removeEventListener('transitionend', fin); };
+      stage.addEventListener('transitionend', fin);
+      setTimeout(fin, 600);
+    }
+
+    function pasoValido(n) {
+      if (n === 1) return !!selectedTipo;
+      if (n === 2) return document.getElementById('f_motivo').value.trim().length >= MOTIVO_MIN;
+      if (n === 3) return leerDisponibilidad().valido;
+      return true;
+    }
+
+    function rqGo(n) {
+      for (let k = 1; k < n; k++) if (!pasoValido(k)) { n = k; break; }
+      const dir = n >= rqStep ? 'enter-fwd' : 'enter-back';
+      rqStep = n;
+      rqMedir(() => {
+        document.querySelectorAll('#formContent .rq-panel').forEach(p => {
+          const on = Number(p.dataset.panel) === n;
+          p.hidden = !on;
+          p.classList.remove('enter-fwd', 'enter-back');
+          if (on) { void p.offsetWidth; p.classList.add(dir); }
+        });
+        document.getElementById('formContent').hidden = false;
+        document.getElementById('confirmacionContent').hidden = true;
+      });
+      document.querySelectorAll('#rq-steps .rq-step').forEach(s => {
+        const k = Number(s.dataset.step);
+        s.classList.toggle('is-current', k === n);
+        s.classList.toggle('is-done', k < n);
+        s.onclick = k < n ? () => rqGo(k) : null;
+      });
+      document.querySelectorAll('#rq-steps .rq-line').forEach((l, i) => l.classList.toggle('is-full', i + 1 < n));
+      if (n === 2) {
+        const t = TIPOS_CITA.find(x => x.id === selectedTipo);
+        document.getElementById('rq-topic').innerHTML = `<i>${tipoIc(t).replace('<svg', '<svg style="width:12px;height:12px"')}</i>${t.titulo}`;
+        const ta = document.getElementById('f_motivo');
+        if (window.innerWidth > 760) setTimeout(() => ta.focus({ preventScroll: true }), 260);
+        updateMotivo();
+      }
+      if (n === 3) toggleSeguir3();
+      if (n === 4) pintarCarta();
+      document.getElementById('rq').scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'nearest' });
     }
 
     function renderForm() {
       const user = getCurrentUser();
       const chips = (name, items) => items.map(v =>
-        `<label class="chip-opt"><input type="checkbox" name="${name}" value="${v}"><span>${v}</span></label>`).join('');
+        `<label class="rq-chip"><input type="checkbox" name="${name}" value="${v}"><span>${v}</span></label>`).join('');
+      const acciones = (atras, siguiente, id, disabled) => `
+        <div class="rq-actions">
+          <button type="button" class="rq-back" onclick="rqGo(${atras})">${IBACK}Atrás</button>
+          <button type="button" class="rq-next" id="${id}" onclick="rqGo(${siguiente})"${disabled ? ' disabled' : ''}>Continuar ${IARROW}</button>
+        </div>`;
       document.getElementById('formContent').innerHTML = `
-        <div class="resumen-card">
-          <div class="resumen-item"><span class="resumen-label">Tipo de consulta</span><span class="resumen-val" id="f_tipo_sel">Elige uno arriba</span></div>
-        </div>
-        <span class="form-error" id="f_tipo_err" style="margin:-8px 0 12px">Elige el tipo de consulta.</span>
-
-        <div class="form-group">
-          <label class="form-label" for="f_motivo">Motivo de la reunión</label>
-          <textarea class="form-textarea" id="f_motivo" maxlength="1500" placeholder="Cuéntale brevemente al Rav de qué quieres hablar. Solo lo lee la oficina del Rav."></textarea>
-          <span class="form-error" id="f_motivo_err">Escribe el motivo de la reunión (al menos unas palabras).</span>
+        <div class="rq-panel" data-panel="1">
+          <h2 class="rq-q">¿Qué tipo de consulta necesitas?</h2>
+          <p class="rq-hint">Elige la que más se acerque. En el siguiente paso puedes explicarlo con tus palabras.</p>
+          <div class="rq-tiles cols-3" id="rq-tiles" role="radiogroup" aria-label="Tipo de consulta"></div>
         </div>
 
-        <div class="form-group">
-          <span class="form-label">Tu disponibilidad</span>
-          <span class="form-sub">Días que te van bien</span>
-          <div class="chips">${chips('f_dias', DIAS_DISP)}</div>
-          <span class="form-sub">Franja horaria</span>
-          <div class="chips">${chips('f_franjas', FRANJAS_DISP)}</div>
-          <input type="text" class="form-input" id="f_disp_txt" maxlength="300" placeholder="Otros detalles (opcional): p. ej. «a partir del 3 de noviembre», «después de las 18 h»">
-          <span class="form-error" id="f_disp_err">Indica al menos un día o escribe cuándo te viene bien.</span>
-        </div>
-
-        <div class="form-group">
-          <span class="form-label">Modalidad</span>
-          <div class="modalidad-opts">
-            <label class="radio-opt"><input type="radio" name="f_mod" value="Presencial" checked onchange="updateModalidadInfo()"> Presencial</label>
-            <label class="radio-opt"><input type="radio" name="f_mod" value="Videollamada" onchange="updateModalidadInfo()"> Videollamada</label>
+        <div class="rq-panel" data-panel="2" hidden>
+          <button type="button" class="rq-topic" id="rq-topic" onclick="rqGo(1)" aria-label="Cambiar el tipo de consulta"></button>
+          <h2 class="rq-q">¿De qué quieres hablar con el Rav?</h2>
+          <p class="rq-hint">Unas líneas bastan. Solo lo lee la oficina del Rav.</p>
+          <div class="rq-write">
+            <label for="f_motivo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Motivo de la reunión</label>
+            <textarea id="f_motivo" maxlength="1500" placeholder="Ej.: Queremos empezar a preparar el Bar Mitzvá de nuestro hijo y nos gustaría orientación…"></textarea>
           </div>
-          <div class="modalidad-info" id="modalidadInfo"></div>
+          <div class="rq-meter" aria-hidden="true">
+            <div class="rq-meter-track"><div class="rq-meter-fill" id="rq-fill"></div></div>
+            <span class="rq-count" id="char-count">0 / 1500</span>
+          </div>
+          <div class="rq-mood" id="rq-mood" aria-live="polite"></div>
+          ${acciones(1, 3, 'rq-next-2', true)}
         </div>
 
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label" for="f_nombre">Nombre</label>
-            <input type="text" class="form-input" id="f_nombre" value="${esc(user ? user.name : '')}" readonly>
+        <div class="rq-panel" data-panel="3" hidden>
+          <h2 class="rq-q">¿Cuándo y cómo te viene bien?</h2>
+          <p class="rq-hint">Marca todo lo que te encaje. La oficina buscará un hueco y te escribirá.</p>
+          <p class="rq-sub">Días</p>
+          <div class="rq-chips">${chips('f_dias', DIAS_DISP)}</div>
+          <p class="rq-sub">Franja horaria</p>
+          <div class="rq-chips">${chips('f_franjas', FRANJAS_DISP)}</div>
+          <input type="text" class="rq-line-input" id="f_disp_txt" maxlength="300" placeholder="Algo más (opcional): «a partir del 3 de noviembre», «después de las 18 h»…">
+          <p class="rq-sub" style="margin-top:24px">¿Presencial o por videollamada?</p>
+          <div class="rq-choices" role="radiogroup" aria-label="Modalidad">
+            <label class="rq-choice is-on"><input type="radio" name="f_mod" value="Presencial" checked hidden onchange="updateModalidadInfo()">
+              <span class="rq-choice-ic">${IPIN}</span><span><b>Presencial</b><small>En {{centerName}}</small></span></label>
+            <label class="rq-choice"><input type="radio" name="f_mod" value="Videollamada" hidden onchange="updateModalidadInfo()">
+              <span class="rq-choice-ic">${IVIDEO}</span><span><b>Videollamada</b><small>Te enviarán el enlace por email</small></span></label>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="f_email">Email <span style="color:var(--color-text-muted);font-weight:400">(te contestarán aquí)</span></label>
-            <input type="email" class="form-input" id="f_email" value="${esc(user ? user.email : '')}" readonly>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f_tel">Teléfono de contacto</label>
-          <input type="tel" class="form-input" id="f_tel" placeholder="+34 600 000 000" autocomplete="tel" maxlength="40" value="${esc(perfilTel)}">
-          <span class="form-error" id="f_tel_err">Indica un teléfono por si la oficina necesita llamarte.</span>
+          <div class="rq-mod-info" id="modalidadInfo"></div>
+          ${acciones(2, 4, 'rq-next-3', true)}
         </div>
 
-        <label class="checkbox-confirm">
-          <input type="checkbox" id="f_privacy" onchange="toggleConfirmar()">
-          Confirmo que mantendré la privacidad de lo tratado en esta cita
-        </label>
-        <span class="form-error" id="f_envio_err"></span>
-        <button type="button" class="btn-confirmar" id="btnConfirmar" disabled onclick="enviarSolicitud()">Enviar solicitud</button>
-        <p class="form-nota">La solicitud llega por email a la oficina del Rav (${OFICINA_EMAIL}), que te escribirá para acordar el día y la hora.</p>
-      `;
+        <div class="rq-panel" data-panel="4" hidden>
+          <h2 class="rq-q">Revisa y envía</h2>
+          <p class="rq-hint">Así le llegará a la oficina del Rav, que te escribirá para acordar el día y la hora.</p>
+          <div class="rq-letter-wrap">
+            <article class="rq-letter" id="rq-letter" aria-label="Vista previa">
+              <div class="rq-letter-to"><span>Para <b>la oficina del Rav</b></span><span class="rq-letter-tag" id="rq-letter-tag"></span></div>
+              <p class="motivo notranslate" translate="no" id="rq-letter-motivo"></p>
+              <dl>
+                <dt>Disponibilidad</dt><dd id="rq-letter-disp" class="notranslate" translate="no"></dd>
+                <dt>Modalidad</dt><dd id="rq-letter-mod"></dd>
+              </dl>
+            </article>
+          </div>
+          <div class="rq-contact">
+            <label>Nombre<input type="text" class="rq-line-input" id="f_nombre" value="${esc(user ? user.name : '')}" readonly></label>
+            <label>Email (te contestarán aquí)<input type="email" class="rq-line-input" id="f_email" value="${esc(user ? user.email : '')}" readonly></label>
+            <label class="full">Teléfono de contacto<input type="tel" class="rq-line-input" id="f_tel" placeholder="+34 600 000 000" autocomplete="tel" maxlength="40" value="${esc(perfilTel)}"></label>
+          </div>
+          <span class="rq-ferr" id="f_tel_err">Indica un teléfono por si la oficina necesita llamarte.</span>
+          <label class="rq-agree"><input type="checkbox" id="f_privacy" onchange="toggleConfirmar()"><span>Confirmo que mantendré la privacidad de lo tratado en esta cita</span></label>
+          <span class="rq-ferr" id="f_envio_err"></span>
+          <div class="rq-actions">
+            <button type="button" class="rq-back" onclick="rqGo(3)">${IBACK}Editar</button>
+            <button type="button" class="rq-next send" id="btnConfirmar" disabled onclick="enviarSolicitud()">Enviar solicitud ${ISEND}</button>
+          </div>
+          <p class="rq-nota">La solicitud llega por email a la oficina del Rav (${OFICINA_EMAIL}).</p>
+        </div>`;
+
+      renderTipos();
       updateModalidadInfo();
-      if (selectedTipo) selectTipo(selectedTipo);
+      const fc = document.getElementById('formContent');
+      fc.querySelector('#f_motivo').addEventListener('input', updateMotivo);
+      fc.querySelectorAll('input[name="f_dias"], input[name="f_franjas"]').forEach(i => i.addEventListener('change', toggleSeguir3));
+      fc.querySelector('#f_disp_txt').addEventListener('input', toggleSeguir3);
+      fc.querySelector('#f_tel').addEventListener('input', () => document.getElementById('f_tel_err').classList.remove('on'));
+      if (selectedTipo) setCat(selectedTipo);
     }
 
-    // Al corregir un campo, ocultar su mensaje de error
-    function limpiarErrorCampo(e) {
-      const err = e.target.closest('.form-group')?.querySelector('.form-error');
-      if (err) err.style.display = 'none';
+    /* Guía mientras escribe el motivo */
+    let moodActual = '';
+    function updateMotivo() {
+      const ta = document.getElementById('f_motivo');
+      const len = ta.value.length, txt = ta.value.trim().length;
+      document.getElementById('char-count').textContent = `${len} / 1500`;
+      const pct = Math.min(100, txt < MOTIVO_MIN ? (txt / MOTIVO_MIN) * 30 : 30 + Math.min(70, ((txt - MOTIVO_MIN) / 180) * 70));
+      const fill = document.getElementById('rq-fill');
+      fill.style.width = pct + '%';
+      const mood = txt === 0 ? '' : txt < MOTIVO_MIN ? 'wait' : txt < 90 ? 'ok' : 'great';
+      fill.classList.toggle('ok', mood === 'ok');
+      fill.classList.toggle('great', mood === 'great');
+      document.getElementById('rq-next-2').disabled = txt < MOTIVO_MIN;
+      if (mood !== moodActual) {
+        moodActual = mood;
+        const msg = { wait: 'Unas palabras más, por favor.', ok: 'Bien. Si quieres, añade un poco de contexto.', great: 'Perfecto, así la oficina sabe de qué va.' }[mood];
+        const color = mood === 'great' ? '#2F8A5F' : mood === 'ok' ? '#8A6D1F' : '#5E6578';
+        document.getElementById('rq-mood').innerHTML = mood ? `<span style="display:inline-flex;align-items:center;gap:8px;color:${color}">${mood === 'wait' ? '' : ICK.replace('<svg', '<svg style="width:15px;height:15px"')}${msg}</span>` : '';
+      }
     }
-    document.getElementById('formContent').addEventListener('input', limpiarErrorCampo);
-    document.getElementById('formContent').addEventListener('change', limpiarErrorCampo);
+
+    function toggleSeguir3() {
+      const b = document.getElementById('rq-next-3');
+      if (b) b.disabled = !leerDisponibilidad().valido;
+    }
 
     function updateModalidadInfo() {
       const mod = document.querySelector('input[name="f_mod"]:checked')?.value;
+      document.querySelectorAll('.rq-choice').forEach(l => l.classList.toggle('is-on', l.querySelector('input').checked));
       const info = document.getElementById('modalidadInfo');
-      if (info) info.innerHTML = mod === 'Presencial' ? '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width:16px;height:16px;display:inline-block;vertical-align:middle"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg> ' + DIRECCION : '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width:16px;height:16px;display:inline-block;vertical-align:middle"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg> Te enviarán el enlace por email';
+      if (info) info.innerHTML = mod === 'Presencial' ? IPIN + esc(DIRECCION) : IVIDEO + 'Te enviarán el enlace por email';
+    }
+
+    function pintarCarta() {
+      const t = TIPOS_CITA.find(x => x.id === selectedTipo);
+      document.getElementById('rq-letter-tag').textContent = t ? t.titulo : '';
+      document.getElementById('rq-letter-motivo').textContent = document.getElementById('f_motivo').value.trim();
+      document.getElementById('rq-letter-disp').textContent = leerDisponibilidad().texto || '—';
+      document.getElementById('rq-letter-mod').textContent = document.querySelector('input[name="f_mod"]:checked')?.value || 'Presencial';
+      toggleConfirmar();
     }
 
     function toggleConfirmar() {
@@ -327,7 +834,7 @@
 
     function mostrarErrorEnvio(msg) {
       const el = document.getElementById('f_envio_err');
-      if (el) { el.textContent = msg; el.style.display = 'block'; }
+      if (el) { el.textContent = msg; el.classList.add('on'); }
     }
 
     /** Llama a la Edge Function notify-cita (email a la oficina / cancelación). */
@@ -361,8 +868,7 @@
 
     async function enviarSolicitud() {
       if (enviando) return;
-      const show = (id, on) => { document.getElementById(id).style.display = on ? 'block' : 'none'; };
-      document.getElementById('f_envio_err').style.display = 'none';
+      document.getElementById('f_envio_err').classList.remove('on');
 
       const tipo = TIPOS_CITA.find(t => t.id === selectedTipo);
       const motivo = document.getElementById('f_motivo').value.trim();
@@ -370,16 +876,10 @@
       const tel = document.getElementById('f_tel').value.trim();
       const mod = document.querySelector('input[name="f_mod"]:checked')?.value || 'Presencial';
 
-      show('f_tipo_err', !tipo);
-      show('f_motivo_err', motivo.length < 10);
-      show('f_disp_err', !disp.valido);
-      show('f_tel_err', tel.replace(/\D/g, '').length < 6);
-      const primerError = [...document.querySelectorAll('#formContent .form-error')].find(e => e.style.display === 'block');
-      if (primerError) {
-        if (!tipo) document.getElementById('tiposGrid').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        else primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
+      if (!tipo) return rqGo(1);
+      if (motivo.length < MOTIVO_MIN) return rqGo(2);
+      if (!disp.valido) return rqGo(3);
+      if (tel.replace(/\D/g, '').length < 6) { document.getElementById('f_tel_err').classList.add('on'); document.getElementById('f_tel').focus(); return; }
 
       const sb = typeof getSupabase === 'function' ? getSupabase() : null;
       const session = typeof getValidSession === 'function' ? await getValidSession() : null;
@@ -388,7 +888,7 @@
       const user = getCurrentUser();
       enviando = true;
       const btn = document.getElementById('btnConfirmar');
-      btn.disabled = true; btn.textContent = 'Enviando…';
+      btn.disabled = true;
 
       const { data: cita, error: citaErr } = await sb.from('citas').insert({
         usuario_id: session.user.id,
@@ -405,7 +905,7 @@
 
       if (citaErr) {
         enviando = false;
-        btn.textContent = 'Enviar solicitud'; toggleConfirmar();
+        toggleConfirmar();
         if (typeof trackEvent === 'function') trackEvent('cita_error', { msg: String(citaErr.message).slice(0, 120) });
         mostrarErrorEnvio('No se pudo enviar la solicitud: ' + citaErr.message);
         return;
@@ -417,42 +917,38 @@
         if (!aviso.ok) trackEvent('cita_error', { msg: ('aviso email: ' + aviso.error).slice(0, 120) });
       }
       enviando = false;
+      if (!reduceMotion()) {
+        document.getElementById('rq-letter').classList.add('is-flying');
+        await new Promise(r => setTimeout(r, 650));
+      }
       mostrarConfirmacion(tipo, mod, disp.texto, cita.id, aviso);
       loadMisCitas();
     }
 
     function mostrarConfirmacion(tipo, mod, disp, citaId, aviso) {
       const user = getCurrentUser();
-      document.getElementById('formContent').style.display = 'none';
       const el = document.getElementById('confirmacionContent');
-      el.style.display = 'block';
-      el.innerHTML = `
-        <div class="confirmacion">
-          <div class="check-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
-          </div>
-          <div class="conf-title">¡Solicitud enviada!</div>
-          <div class="conf-resumen">
-            <div class="conf-row"><span>Tipo de consulta</span><span>${tipo.titulo}</span></div>
-            <div class="conf-row"><span>Modalidad</span><span>${esc(mod)}</span></div>
-            <div class="conf-row"><span>Tu disponibilidad</span><span style="white-space:pre-line;text-align:right">${esc(disp)}</span></div>
-          </div>
+      let sparks = '';
+      for (let a = 0; a < 360; a += 45) sparks += `<span class="rq-spark" style="--a:${a}deg"></span>`;
+      rqMedir(() => {
+        document.getElementById('formContent').hidden = true;
+        el.hidden = false;
+        el.innerHTML = `
+          <div class="rq-seal" aria-hidden="true"><svg class="ring" viewBox="0 0 92 92"><circle cx="46" cy="46" r="42"/><path d="M30 47.5 41 58 63 35"/></svg>${sparks}</div>
+          <h2>Solicitud enviada</h2>
           ${aviso.ok ? `
-          <div class="conf-nota">
-            La oficina del Rav ha recibido tu solicitud y te escribirá a <strong>${esc(user ? user.email : 'tu correo')}</strong> para acordar el día y la hora.
-            ${aviso.acuse ? '<br>Te hemos enviado un email con el resumen.' : ''}
-          </div>` : `
+          <p class="conf-mail">La oficina del Rav te escribirá a <strong>${esc(user ? user.email : 'tu correo')}</strong> para acordar el día y la hora.${aviso.acuse ? ' Te hemos enviado un email con el resumen.' : ''}</p>` : `
           <div class="envio-aviso" id="avisoFallo">
             Tu solicitud está guardada, pero <strong>no pudimos enviarla por email</strong> a la oficina.
             <button type="button" class="btn-outline" style="margin:8px 0;display:block" onclick="reintentarAviso('${esc(citaId)}', this)">Reintentar envío</button>
             Si sigue fallando, escribe directamente a <a href="mailto:${OFICINA_EMAIL}">${OFICINA_EMAIL}</a>.
           </div>`}
-          <div class="conf-btns">
-            <button type="button" class="btn-primary" onclick="resetCitas()">Enviar otra solicitud</button>
-          </div>
-        </div>
-      `;
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          <div><button type="button" class="btn btn-secondary" onclick="resetCitas()">Pedir otra cita</button></div>`;
+        el.classList.remove('play'); void el.offsetWidth; el.classList.add('play');
+      });
+      document.querySelectorAll('#rq-steps .rq-step').forEach(s => { s.classList.remove('is-current'); s.classList.add('is-done'); s.onclick = null; });
+      document.querySelectorAll('#rq-steps .rq-line').forEach(l => l.classList.add('is-full'));
+      document.getElementById('rq').scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'nearest' });
     }
 
     async function reintentarAviso(citaId, btn) {
@@ -468,11 +964,9 @@
 
     function resetCitas() {
       selectedTipo = null;
-      document.getElementById('confirmacionContent').style.display = 'none';
-      document.getElementById('formContent').style.display = 'block';
-      renderTipos();
+      moodActual = '';
       renderForm();
-      document.getElementById('tiposGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      rqGo(1);
     }
 
     const ESTADO_LABEL = { pendiente: 'Enviada · te escribirán', confirmada: 'Confirmada', cancelada: 'Cancelada', realizada: 'Realizada' };

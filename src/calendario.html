@@ -1244,7 +1244,7 @@ function selectDate(key) {
         <div class="cal-ev-item-title">${ev.titulo}</div>
         ${ev.hora ? `<div class="cal-ev-item-hora">🕐 ${ev.hora}</div>` : ''}
         ${ev.descripcion ? `<div class="cal-ev-item-desc">${ev.descripcion}</div>` : ''}
-        ${isEventosTable ? `<a class="cal-ev-item-link" href="eventos.html?evento=${realId}" onclick="event.stopPropagation()">Ver en Eventos →</a>` : ''}`;
+        ${isEventosTable ? `<a class="cal-ev-item-link" href="evento.html?id=${realId}" onclick="event.stopPropagation()">Ver en Eventos →</a>` : ''}`;
       html += hasFlyer
         ? `<div class="cal-ev-item" id="calev-${ev.id}" style="cursor:pointer;display:flex;gap:10px;align-items:flex-start;" onclick="openEventoLightbox('${key}','${ev.id}')">
             <img src="${ev.imagen_url}" alt="${ev.titulo}" loading="lazy" decoding="async" style="width:48px;height:48px;border-radius:6px;object-fit:cover;flex-shrink:0;">

@@ -1208,11 +1208,11 @@
 
     /**
      * Maneja el click sobre una tarjeta de evento en el home: siempre lleva
-     * a eventos.html (a esa tarjeta en concreto) en vez de inscribir al
+     * a la ficha del evento (evento.html) en vez de inscribir al
      * instante, para que el usuario vea los detalles antes de apuntarse.
      */
     function homeCardClick(id) {
-      window.location.href = 'eventos.html?evento=' + encodeURIComponent(id);
+      window.location.href = 'evento.html?id=' + encodeURIComponent(id);
     }
 
     /* ─── Init renders — carga desde Supabase ─── */

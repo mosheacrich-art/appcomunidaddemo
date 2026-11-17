@@ -17,7 +17,7 @@
 
   // Página → módulo (para ocultar enlaces a módulos desactivados).
   var PAGE_MODULE = {
-    'calendario.html': 'calendario', 'eventos.html': 'eventos',
+    'calendario.html': 'calendario', 'eventos.html': 'eventos', 'evento.html': 'eventos',
     'noticias.html': 'noticias', 'noticia.html': 'noticias',
     'shiurim.html': 'shiurim', 'rav.html': 'rav', 'citas-rabino.html': 'citas',
     'rav-hub.html': 'rav-hub', 'siddur.html': 'siddur', 'donativos.html': 'donativos',
