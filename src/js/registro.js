@@ -54,6 +54,220 @@ const REG = {
   }
 };
 
+
+// ─── Validación en vivo (nombres, teléfono, documento) ───
+const RG_IC = {
+  ok:   '<svg fill="none" viewBox="0 0 24 24" stroke-width="2.6" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>',
+  info: '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"/></svg>',
+  err:  '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg>'
+};
+
+/** Mensaje bajo el campo: tipo '' | 'ok' | 'warn' | 'err' */
+function rgLive(id, tipo, msg, flash) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'rg-live' + (tipo ? ' ' + tipo : '');
+  el.innerHTML = msg ? (tipo === 'ok' ? RG_IC.ok : tipo === 'err' ? RG_IC.err : RG_IC.info) + '<span>' + msg + '</span>' : '';
+  if (flash) { void el.offsetWidth; el.classList.add('flash'); }
+}
+
+/** Marca el grupo del campo como correcto (tick verde junto a la etiqueta) */
+function rgOk(fieldId, ok) {
+  const g = document.getElementById(fieldId)?.closest('.form-group');
+  if (!g) return;
+  if (!g.querySelector('.rg-tick')) {
+    const lab = g.querySelector('.form-label');
+    if (lab) lab.insertAdjacentHTML('beforeend', `<span class="rg-tick" aria-hidden="true">${RG_IC.ok}</span>`);
+  }
+  g.classList.toggle('is-ok', !!ok);
+}
+
+function rgShake(fieldId) {
+  const g = document.getElementById(fieldId)?.closest('.form-group');
+  if (!g) return;
+  g.classList.remove('rg-shake'); void g.offsetWidth; g.classList.add('rg-shake');
+}
+
+// Nombres: solo letras (con acentos, ñ, ç…), espacios, guion y apóstrofo
+const RG_NOMBRE_OK = /^[\p{L}][\p{L}\p{M}'’\- ]*[\p{L}\p{M}]$/u;
+function rgLimpiarNombre(v) { return v.replace(/[^\p{L}\p{M}'’\- ]/gu, '').replace(/ {2,}/g, ' '); }
+
+// Teléfono: solo dígitos. Para España, 9 cifras que empiezan por 6, 7, 8 o 9.
+function rgValidarTelefono(prefijo, num) {
+  if (!num) return { ok: true, vacio: true };
+  if (prefijo === '+34') {
+    if (num.length < 9) return { ok: false, msg: `${(9 - num.length) === 1 ? 'Falta' : 'Faltan'} ${9 - num.length} número${(9 - num.length) === 1 ? '' : 's'} (son 9).` };
+    if (num.length > 9) return { ok: false, msg: 'Un teléfono español tiene 9 números.' };
+    if (!/^[6789]/.test(num)) return { ok: false, msg: 'Un teléfono español empieza por 6, 7, 8 o 9.' };
+    return { ok: true };
+  }
+  if (num.length < 6) return { ok: false, msg: 'Parece demasiado corto.' };
+  if (num.length > 15) return { ok: false, msg: 'Parece demasiado largo.' };
+  return { ok: true };
+}
+
+// Documentos de identidad
+const RG_LETRAS_DNI = 'TRWAGMYFPDXBNJZSQVHLCKE';
+const RG_DOCS = {
+  'DNI español':            { ph: '12345678Z', max: 9,  hint: '8 números y una letra' },
+  'NIE':                    { ph: 'X1234567L', max: 9,  hint: 'X, Y o Z, 7 números y una letra' },
+  'Pasaporte':              { ph: 'PAA123456', max: 9,  hint: 'Entre 6 y 9 letras o números' },
+  'Cédula de identidad':    { ph: '12345678',  max: 12, hint: 'Entre 6 y 12 caracteres' },
+  'Otro documento oficial': { ph: 'Número del documento', max: 20, hint: 'Entre 5 y 20 letras o números' }
+};
+function rgNormalizarDoc(v) { return v.toUpperCase().replace(/[^A-Z0-9]/g, ''); }
+
+function rgValidarDoc(tipo, v) {
+  if (!tipo) return { ok: false, msg: 'Elige primero el tipo de documento.' };
+  if (!v) return { ok: false, vacio: true, msg: RG_DOCS[tipo]?.hint || '' };
+  if (tipo === 'DNI español') {
+    const num = v.match(/^\d*/)[0];
+    if (/[A-Z]/.test(v.slice(0, Math.min(v.length, 8))) && num.length < 8) return { ok: false, msg: 'El DNI empieza por 8 números.' };
+    if (num.length < 8) return { ok: false, msg: `${(8 - num.length) === 1 ? 'Falta' : 'Faltan'} ${8 - num.length} número${(8 - num.length) === 1 ? '' : 's'} antes de la letra.` };
+    if (num.length > 8) return { ok: false, msg: 'El DNI tiene 8 números, no más.' };
+    if (v.length === 8) return { ok: false, warn: true, msg: 'Falta la letra del final.' };
+    if (!/^\d{8}[A-Z]$/.test(v)) return { ok: false, msg: 'Formato: 8 números y una letra (12345678Z).' };
+    const letra = RG_LETRAS_DNI[parseInt(v.slice(0, 8), 10) % 23];
+    if (v[8] !== letra) return { ok: false, msg: 'La letra no corresponde a ese número. Revísalo.' };
+    return { ok: true, msg: 'DNI correcto.' };
+  }
+  if (tipo === 'NIE') {
+    if (!/^[XYZ]/.test(v)) return { ok: false, msg: 'El NIE empieza por X, Y o Z.' };
+    const num = v.slice(1).match(/^\d*/)[0];
+    if (num.length < 7) return { ok: false, msg: `${(7 - num.length) === 1 ? 'Falta' : 'Faltan'} ${7 - num.length} número${(7 - num.length) === 1 ? '' : 's'} después de la ${v[0]}.` };
+    if (num.length > 7) return { ok: false, msg: 'El NIE tiene 7 números entre las dos letras.' };
+    if (v.length === 8) return { ok: false, warn: true, msg: 'Falta la letra del final.' };
+    if (!/^[XYZ]\d{7}[A-Z]$/.test(v)) return { ok: false, msg: 'Formato: X1234567L.' };
+    const n = parseInt('XYZ'.indexOf(v[0]) + v.slice(1, 8), 10);
+    if (v[8] !== RG_LETRAS_DNI[n % 23]) return { ok: false, msg: 'La letra no corresponde a ese número. Revísalo.' };
+    return { ok: true, msg: 'NIE correcto.' };
+  }
+  if (tipo === 'Pasaporte') {
+    if (v.length < 6) return { ok: false, msg: `Faltan caracteres: un pasaporte tiene entre 6 y 9.` };
+    if (v.length > 9) return { ok: false, msg: 'Demasiado largo: un pasaporte tiene entre 6 y 9 caracteres.' };
+    if (!/\d/.test(v)) return { ok: false, msg: 'El número de pasaporte lleva números.' };
+    return { ok: true, msg: 'Formato válido.' };
+  }
+  if (tipo === 'Cédula de identidad') {
+    const digitos = (v.match(/\d/g) || []).length;
+    if (v.length < 6 || digitos < 6) return { ok: false, msg: 'Parece incompleta: lleva al menos 6 números.' };
+    if (v.length > 12) return { ok: false, msg: 'Demasiado larga (máximo 12 caracteres).' };
+    return { ok: true, msg: 'Formato válido.' };
+  }
+  if (v.length < 5) return { ok: false, msg: 'Parece incompleto (mínimo 5 caracteres).' };
+  return { ok: true, msg: 'Formato válido.' };
+}
+
+function rgPintarDocs() {
+  const box = document.getElementById('rg-docs');
+  const sel = document.getElementById('r2-doc-tipo');
+  if (!box || !sel) return;
+  const ICONOS = {
+    'DNI español': '<path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z"/>',
+    'NIE': '<path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z"/>',
+    'Pasaporte': '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"/>',
+    'Cédula de identidad': '<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"/>',
+    'Otro documento oficial': '<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>'
+  };
+  const SUB = { 'DNI español': 'España', 'NIE': 'Extranjeros en España', 'Pasaporte': 'Cualquier país', 'Cédula de identidad': 'Latinoamérica y otros', 'Otro documento oficial': 'Otro oficial' };
+  const NOMBRE = { 'DNI español': 'DNI', 'NIE': 'NIE', 'Pasaporte': 'Pasaporte', 'Cédula de identidad': 'Cédula', 'Otro documento oficial': 'Otro' };
+  box.innerHTML = Object.keys(RG_DOCS).map((k, i) => `
+    <button type="button" class="rg-doc${sel.value === k ? ' is-on' : ''}" role="radio" aria-checked="${sel.value === k}" data-doc="${k}" style="--i:${i}">
+      <i><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" aria-hidden="true">${ICONOS[k]}</svg></i>
+      <span>${NOMBRE[k]}<small>${SUB[k]}</small></span>
+    </button>`).join('');
+  box.querySelectorAll('.rg-doc').forEach(b => b.addEventListener('click', () => {
+    sel.value = b.dataset.doc;
+    box.querySelectorAll('.rg-doc').forEach(x => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-checked', x === b); });
+    regClearFieldError('r2-doc-tipo', 'r2-doc-tipo-err');
+    rgOk('r2-doc-tipo', true);
+    const inp = document.getElementById('r2-doc-num');
+    const cfg = RG_DOCS[b.dataset.doc];
+    inp.placeholder = 'Ej.: ' + cfg.ph;
+    inp.maxLength = cfg.max;
+    inp.value = rgNormalizarDoc(inp.value).slice(0, cfg.max);
+    rgDocInput();
+    inp.focus({ preventScroll: true });
+  }));
+}
+
+function rgDocInput() {
+  const inp = document.getElementById('r2-doc-num');
+  const tipo = document.getElementById('r2-doc-tipo')?.value || '';
+  const limpio = rgNormalizarDoc(inp.value);
+  if (limpio !== inp.value) inp.value = limpio;
+  const r = rgValidarDoc(tipo, limpio);
+  if (r.ok) rgLive('r2-doc-live', 'ok', r.msg);
+  else if (r.vacio) rgLive('r2-doc-live', '', r.msg);
+  else rgLive('r2-doc-live', r.warn ? 'warn' : (limpio.length >= (RG_DOCS[tipo]?.max || 9) ? 'err' : 'warn'), r.msg);
+  rgOk('r2-doc-num', r.ok);
+  if (r.ok) regClearFieldError('r2-doc-num', 'r2-doc-num-err');
+}
+
+function rgInitValidacionEnVivo() {
+  // Nombre y apellidos
+  [['r1-nombre', 'r1-nombre-live'], ['r1-apellidos', 'r1-apellidos-live']].forEach(([id, live]) => {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    inp.addEventListener('input', () => {
+      const antes = inp.value;
+      const limpio = rgLimpiarNombre(antes);
+      if (limpio !== antes) {
+        const pos = inp.selectionStart - (antes.length - limpio.length);
+        inp.value = limpio;
+        try { inp.setSelectionRange(pos, pos); } catch (e) {}
+        rgLive(live, 'warn', 'Solo letras: escríbelo como aparece en tu documento (sin números).', true);
+      } else rgLive(live, '', '');
+      rgOk(id, RG_NOMBRE_OK.test(inp.value.trim()) && inp.value.trim().length >= 2);
+      if (inp.value.trim().length >= 2) regClearFieldError(id, id + '-err');
+    });
+  });
+  // Email
+  const em = document.getElementById('r1-email');
+  if (em) em.addEventListener('input', () => rgOk('r1-email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em.value.trim())));
+  // Teléfono
+  const tel = document.getElementById('r1-telefono');
+  const pre = document.getElementById('r1-prefijo');
+  const telCheck = (avisar) => {
+    const antes = tel.value;
+    let v = antes.trim();
+    const pd = (pre?.value || '').replace('+', '');
+    if (v.startsWith('+') && pd && v.replace(/\D/g, '').startsWith(pd)) v = v.replace(/\D/g, '').slice(pd.length);
+    else if (pd && v.startsWith('00' + pd)) v = v.slice(2 + pd.length);
+    let limpio = v.replace(/\D/g, '');
+    // El prefijo tecleado a mano (34…, 0034…) sobra: ya está elegido a la izquierda
+    if (pd && limpio.startsWith('00' + pd)) limpio = limpio.slice(2 + pd.length);
+    else if (pd === '34' && limpio.length > 9 && limpio.startsWith('34')) limpio = limpio.slice(2);
+    else if (pd && pd !== '34' && limpio.startsWith(pd) && limpio.length >= pd.length + 8) limpio = limpio.slice(pd.length);
+    if (limpio !== antes) tel.value = limpio;
+    const r = rgValidarTelefono(pre?.value || '+34', limpio);
+    if (avisar && /[^\d\s+]/.test(antes)) rgLive('r1-telefono-live', 'warn', 'Solo números: el prefijo ya está elegido a la izquierda.', true);
+    else if (!r.ok && limpio.length) rgLive('r1-telefono-live', 'warn', r.msg);
+    else if (r.ok && !r.vacio) rgLive('r1-telefono-live', 'ok', 'Teléfono correcto.');
+    else rgLive('r1-telefono-live', '', '');
+    rgOk('r1-telefono', r.ok && !r.vacio);
+    if (r.ok) regClearFieldError('r1-telefono', 'r1-telefono-err');
+  };
+  if (tel) { tel.addEventListener('input', () => telCheck(true)); pre?.addEventListener('change', () => telCheck(false)); }
+  // Contraseñas
+  const pw = document.getElementById('r1-password'), cf = document.getElementById('r1-confirm');
+  const pwCheck = () => {
+    const v = pw.value;
+    rgOk('r1-password', v.length >= 8 && /[A-Z]/.test(v) && /[a-z]/.test(v) && /\d/.test(v) && /[^A-Za-z0-9]/.test(v));
+    rgOk('r1-confirm', !!cf.value && cf.value === v);
+  };
+  pw?.addEventListener('input', pwCheck); cf?.addEventListener('input', pwCheck);
+  // Documento
+  rgPintarDocs();
+  document.getElementById('r2-doc-num')?.addEventListener('input', rgDocInput);
+  // Selects y textos del resto de pasos: tick al completarlos
+  ['r2-nacionalidad', 'r2-pais-nac', 'r3-pais'].forEach(id => document.getElementById(id)?.addEventListener('change', e => rgOk(id, !!e.target.value)));
+  const fechaCheck = () => rgOk('r2-dia', ['r2-dia', 'r2-mes', 'r2-anio'].every(i => document.getElementById(i)?.value));
+  ['r2-dia', 'r2-mes', 'r2-anio'].forEach(id => document.getElementById(id)?.addEventListener('change', fechaCheck));
+  [['r3-ciudad', 2], ['r3-direccion', 5]].forEach(([id, n]) => document.getElementById(id)?.addEventListener('input', e => rgOk(id, e.target.value.trim().length >= n)));
+  document.getElementById('r3-cp')?.addEventListener('input', e => rgOk('r3-cp', e.target.value.trim().length >= 4));
+}
+
 // ─── Navegación entre pasos ──────────────────
 /**
  * Avanza al siguiente paso si la validación del paso actual es correcta.
@@ -63,6 +277,7 @@ function regNextStep() {
   if (!regValidateCurrentStep()) return;
   if (REG.step < 4) {
     REG.step++;
+    REG._dir = 'fwd';
     regRenderStep();
   }
 }
@@ -73,6 +288,7 @@ function regNextStep() {
 function regPrevStep() {
   if (REG.step > 1) {
     REG.step--;
+    REG._dir = 'back';
     regRenderStep();
   }
 }
@@ -85,6 +301,7 @@ function regGoToStep(n) {
   // Only allow going back, not skipping forward
   if (n < REG.step) {
     REG.step = n;
+    REG._dir = 'back';
     regRenderStep();
   }
 }
@@ -103,7 +320,10 @@ function regRenderStep() {
   // Show/hide step panels
   for (let i = 1; i <= 4; i++) {
     const panel = document.getElementById(`reg-step-${i}`);
-    if (panel) panel.style.display = (i === REG.step) ? '' : 'none';
+    if (!panel) continue;
+    panel.style.display = (i === REG.step) ? '' : 'none';
+    panel.classList.remove('rg-enter-fwd', 'rg-enter-back');
+    if (i === REG.step && REG._dir) { void panel.offsetWidth; panel.classList.add('rg-enter-' + REG._dir); }
   }
   // Update progress bar
   regUpdateProgress();
@@ -155,6 +375,7 @@ function regShowFieldError(fieldId, errorId, msg) {
   const err = document.getElementById(errorId);
   if (field) field.classList.add('error');
   if (err) { err.textContent = msg; err.style.display = ''; }
+  rgShake(fieldId);
 }
 
 function regClearFieldError(fieldId, errorId) {
@@ -171,18 +392,25 @@ function regValidateStep1() {
   REG.data.apellidos = document.getElementById('r1-apellidos')?.value.trim() || '';
   REG.data.email = document.getElementById('r1-email')?.value.trim().toLowerCase() || '';
   REG.data.telefonoPrefijo = document.getElementById('r1-prefijo')?.value || '+34';
-  REG.data.telefono = document.getElementById('r1-telefono')?.value.trim() || '';
+  REG.data.telefono = (document.getElementById('r1-telefono')?.value || '').replace(/\D/g, '');
+  if (REG.data.telefonoPrefijo === '+34' && REG.data.telefono.length === 11 && REG.data.telefono.startsWith('34')) REG.data.telefono = REG.data.telefono.slice(2);
   REG.data.password = document.getElementById('r1-password')?.value || '';
   const confirm = document.getElementById('r1-confirm')?.value || '';
 
   // Nombre: mínimo 2 palabras
-  if (!REG.data.nombre || REG.data.nombre.split(/\s+/).length < 1 || REG.data.nombre.length < 2) {
+  if (!REG.data.nombre || REG.data.nombre.length < 2) {
     regShowFieldError('r1-nombre', 'r1-nombre-err', t('err_nombre_completo'));
+    ok = false;
+  } else if (!RG_NOMBRE_OK.test(REG.data.nombre)) {
+    regShowFieldError('r1-nombre', 'r1-nombre-err', 'El nombre solo puede llevar letras.');
     ok = false;
   } else { regClearFieldError('r1-nombre', 'r1-nombre-err'); }
 
   if (!REG.data.apellidos || REG.data.apellidos.length < 2) {
     regShowFieldError('r1-apellidos', 'r1-apellidos-err', t('err_apellidos'));
+    ok = false;
+  } else if (!RG_NOMBRE_OK.test(REG.data.apellidos)) {
+    regShowFieldError('r1-apellidos', 'r1-apellidos-err', 'Los apellidos solo pueden llevar letras.');
     ok = false;
   } else { regClearFieldError('r1-apellidos', 'r1-apellidos-err'); }
 
@@ -191,8 +419,9 @@ function regValidateStep1() {
     ok = false;
   } else { regClearFieldError('r1-email', 'r1-email-err'); }
 
-  if (REG.data.telefono && REG.data.telefono.length < 6) {
-    regShowFieldError('r1-telefono', 'r1-telefono-err', t('err_telefono_valido'));
+  const telR = rgValidarTelefono(REG.data.telefonoPrefijo, REG.data.telefono);
+  if (!telR.ok) {
+    regShowFieldError('r1-telefono', 'r1-telefono-err', telR.msg || t('err_telefono_valido'));
     ok = false;
   } else { regClearFieldError('r1-telefono', 'r1-telefono-err'); }
 
@@ -217,7 +446,7 @@ function regValidateStep1() {
 function regValidateStep2() {
   let ok = true;
   REG.data.docTipo = document.getElementById('r2-doc-tipo')?.value || '';
-  REG.data.docNumero = document.getElementById('r2-doc-num')?.value.trim() || '';
+  REG.data.docNumero = rgNormalizarDoc(document.getElementById('r2-doc-num')?.value || '');
   const dia = document.getElementById('r2-dia')?.value || '';
   const mes = document.getElementById('r2-mes')?.value || '';
   const anio = document.getElementById('r2-anio')?.value || '';
@@ -230,8 +459,9 @@ function regValidateStep2() {
     ok = false;
   } else { regClearFieldError('r2-doc-tipo', 'r2-doc-tipo-err'); }
 
-  if (!REG.data.docNumero || REG.data.docNumero.length < 5) {
-    regShowFieldError('r2-doc-num', 'r2-doc-num-err', t('err_docnum'));
+  const docR = rgValidarDoc(REG.data.docTipo, REG.data.docNumero);
+  if (!docR.ok) {
+    regShowFieldError('r2-doc-num', 'r2-doc-num-err', REG.data.docNumero ? docR.msg : t('err_docnum'));
     ok = false;
   } else { regClearFieldError('r2-doc-num', 'r2-doc-num-err'); }
 
@@ -291,8 +521,8 @@ function regValidateStep3() {
   REG.data.ciudad = document.getElementById('r3-ciudad')?.value.trim() || '';
   REG.data.cp = document.getElementById('r3-cp')?.value.trim() || '';
   REG.data.direccion = document.getElementById('r3-direccion')?.value.trim() || '';
-  REG.data.familiar = document.getElementById('r3-familiar-toggle')?.checked || false;
-  REG.data.familiarNombre = document.getElementById('r3-familiar-nombre')?.value.trim() || '';
+  REG.data.familiar = false;
+  REG.data.familiarNombre = '';
 
   if (!REG.data.pais) {
     regShowFieldError('r3-pais', 'r3-pais-err', t('err_paisres'));
@@ -553,6 +783,8 @@ function regShowConfirmacion(num) {
     conf.style.display = '';
     document.getElementById('conf-num').textContent = num;
     document.getElementById('conf-email').textContent = REG.data.email;
+    const seal = conf.querySelector('.rg-seal');
+    if (seal) { seal.classList.remove('play'); void seal.offsetWidth; seal.classList.add('play'); }
   }
 }
 
@@ -752,6 +984,7 @@ function regBuildYearSelect() {
 // ─── Init ─────────────────────────────────────
 function regInit() {
   regRenderStep();
+  rgInitValidacionEnVivo();
   regInitUpload();
   regInitPasswordStrength();
   regBuildYearSelect();

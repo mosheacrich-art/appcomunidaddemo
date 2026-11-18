@@ -130,6 +130,8 @@
       .ch-photo { margin: 0; height: 220px; }
       .ch-shabat { position: relative; width: auto; margin: -42px 10px 0; }
     }
+    @media (max-width: 480px) {
+    }
     @media (prefers-reduced-motion: reduce) { .ch-photo img, .ch-shabat, .ch-title em::after { animation: none; } }
 
     /* ═══ Layout ═══ */
@@ -301,7 +303,48 @@
 
     .cal-heb-inner :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
     @media (prefers-reduced-motion: reduce) {
-      .cal-day, .ds-body, .ch-flame { animation: none !important; }
+      .cal-day, .ds-body { animation: none !important; }
+    }
+
+    /* ═══ Móvil (≤760px): cabecera compacta y rejilla tranquila ═══ */
+    .ch-mini, .cal-dot { display: none; }
+    @media (max-width: 760px) {
+      .ch-hero { display: block; position: relative; overflow: hidden; padding: 20px 18px 16px; min-height: 0; border: none; background: #132247; margin-bottom: 14px; border-radius: 20px; }
+      .ch-stage { position: absolute; inset: 0; padding: 0 !important; z-index: -1; }
+      .ch-photo { position: absolute; inset: 0; margin: 0; height: auto; border-radius: 0; box-shadow: none; }
+      .ch-photo img { object-position: 50% 55%; }
+      .ch-photo::after { background: linear-gradient(180deg, rgba(19,34,71,.55) 0%, rgba(19,34,71,.88) 100%); }
+      .ch-photo figcaption, .ch-shabat, .ch-hoy, .ch-next { display: none !important; }
+      .ch-today { padding: 0; }
+      .ch-title { color: #fff; font-size: 1.75rem; line-height: 1.08; }
+      .ch-title em { color: var(--gold-soft); }
+      .ch-title em::after { display: none; }
+      .ch-mini { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 12px; font-size: .84rem; color: rgba(247,240,227,.82); }
+      .ch-mini-p { font-family: var(--font-brand); font-size: 1rem; color: #fff; font-weight: 600; }
+      .ch-mini-t { display: inline-flex; align-items: center; gap: 5px; }
+      .ch-mini-t svg { width: 16px; height: 16px; color: var(--gold-soft); }
+      .ch-mini-t b { color: #fff; font-variant-numeric: tabular-nums; font-weight: 700; }
+      .ch-mini-city select {
+        appearance: none; -webkit-appearance: none; background: transparent; border: none; color: var(--gold-soft);
+        font: 600 .84rem var(--font-ui); text-decoration: underline; text-underline-offset: 3px; padding: 0; cursor: pointer;
+      }
+      .ch-mini-city select option { color: #1A1A2E; }
+
+      .cal-month-sub .he { display: none; }
+      .cal-board:not(.cal-heb) .cal-hd { display: none; }
+      .cal-day { min-height: 54px; padding: 8px 2px 6px; gap: 4px; justify-content: flex-start; }
+      .cal-tags { display: none !important; }
+      .cal-dot { display: block; width: 6px; height: 6px; border-radius: 50%; margin: 0 auto; }
+      .cal-dot.d-fiesta { background: var(--t-yomtov); }
+      .cal-dot.d-fast { background: var(--t-fast); }
+      .cal-dot.d-rj { background: var(--t-rj); }
+      .cal-dot.d-ev { background: var(--t-ev); }
+      .cal-dot.d-mine { background: #fff; box-shadow: inset 0 0 0 2px var(--t-ev); width: 8px; height: 8px; }
+      .cal-day.today .cal-num { width: 28px; height: 28px; }
+      .lg-desk { display: none; }
+      .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+      .lg-mine .legend-dot { background: #fff !important; box-shadow: inset 0 0 0 2px var(--t-ev); width: 9px; height: 9px; }
+      .cal-legend { gap: 6px 12px; padding: 12px 14px; }
     }
   </style>
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);}</script>
@@ -330,6 +373,12 @@
           <h1 class="ch-title" id="ch-count">Calendario hebreo</h1>
           <p class="ch-hoy" id="ch-hoy">Cargando horarios…</p>
           <div class="ch-next" id="ch-next" aria-label="Próximas fechas"></div>
+          <div class="ch-mini" id="ch-mini" aria-label="Este Shabat">
+            <span class="ch-mini-p" id="ch-mini-p"></span>
+            <span class="ch-mini-t"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" d="M9 21h6M9.5 21V11.5h5V21"/><path d="M12 9c-1.5-1-1.4-3.1 0-5 1.4 1.9 1.5 4 0 5Z" fill="currentColor" stroke="none"/></svg><b id="ch-mini-c">--:--</b></span>
+            <span class="ch-mini-t"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>Havdalá <b id="ch-mini-h">--:--</b></span>
+            <label class="ch-mini-city"><span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Ciudad</span><select id="city-select-mini" onchange="changeCity(this.value)"></select></label>
+          </div>
         </div>
         <div class="ch-stage">
           <figure class="ch-photo">
@@ -953,6 +1002,11 @@ function updateCityUI() {
   const sel = document.getElementById('city-select');
   const key = Object.keys(CITIES).find(k => CITIES[k] === c);
   if (sel && key) sel.value = key;
+  const mini = document.getElementById('city-select-mini');
+  if (mini && sel) {
+    if (!mini.options.length) mini.innerHTML = sel.innerHTML;
+    if (key) mini.value = key;
+  }
 }
 
 /* ─── Iconos (trazo, sin emojis) ─── */
@@ -1031,6 +1085,9 @@ async function updateCandlesPreview() {
   document.getElementById('ch-sh-he').textContent = p ? p.he : '';
   document.getElementById('ch-sh-esp').textContent = fi.especial || '';
   document.getElementById('ch-sh-candles').textContent = fi.candles || '--:--';
+  document.getElementById('ch-mini-p').textContent = p ? p.es : 'Shabat';
+  document.getElementById('ch-mini-c').textContent = fi.candles || '--:--';
+  document.getElementById('ch-mini-h').textContent = si.havdalah || '--:--';
   document.getElementById('ch-sh-havdala').textContent = si.havdalah || '--:--';
   document.getElementById('ch-sh-fri').textContent = fri
     ? 'vie ' + new Date(fri + 'T12:00:00').getDate() : 'viernes';
@@ -1130,13 +1187,13 @@ function renderCal() {
         </div>
         <div class="cal-grid">${daysHtml}</div>
         <div class="cal-legend">
-          <div class="legend-item"><span class="legend-dot" style="background:var(--t-candles)"></span>Encendido</div>
-          <div class="legend-item"><span class="legend-dot" style="background:var(--t-shabat)"></span>Shabat</div>
+          <div class="legend-item lg-desk"><span class="legend-dot" style="background:var(--t-candles)"></span>Encendido</div>
+          <div class="legend-item lg-desk"><span class="legend-dot" style="background:var(--t-shabat)"></span>Shabat</div>
           <div class="legend-item"><span class="legend-dot" style="background:var(--t-yomtov)"></span>Festividad</div>
           <div class="legend-item"><span class="legend-dot" style="background:var(--t-rj)"></span>Rosh Jodesh</div>
           <div class="legend-item"><span class="legend-dot" style="background:var(--t-fast)"></span>Ayuno</div>
           <div class="legend-item"><span class="legend-dot" style="background:var(--t-ev)"></span>Evento</div>
-          <div class="legend-item"><span class="legend-dot" style="background:var(--t-mine)"></span>Estoy apuntado</div>
+          <div class="legend-item lg-mine"><span class="legend-dot" style="background:var(--t-mine)"></span>Estoy apuntado</div>
         </div>
       </div>
       <aside class="cal-side" id="cal-side" aria-live="polite"></aside>
@@ -1183,13 +1240,23 @@ function dayCell(d, key, other, todayKey, heb, idx) {
   evs.filter(e => e.tipo !== 'inscripcion' && !titulosMios.has(e.titulo))
     .forEach(e => tags.push(`<span class="cal-tag t-ev">${IC.cal}<span>${escC(e.titulo)}</span></span>`));
 
+  // Móvil: un único punto con lo más importante del día (sin velas ni parashá)
+  const tipos = info.holidays.map(h => h.tipo);
+  let dot = '';
+  if (mios.length) dot = 'mine';
+  else if (tipos.some(t => ['yomtov', 'sukkot', 'especial', 'chanuka', 'purim'].includes(t))) dot = 'fiesta';
+  else if (tipos.includes('fast') || info.ayunoInicio || info.ayunoFin) dot = 'fast';
+  else if (tipos.includes('roshjodesh')) dot = 'rj';
+  else if (evs.length) dot = 'ev';
+  const dotHtml = dot ? `<i class="cal-dot d-${dot}" aria-hidden="true"></i>` : '';
+
   const MAX = 3;
   const tagsHtml = tags.length
     ? `<div class="cal-tags">${tags.slice(0, MAX).join('')}${tags.length > MAX ? `<span class="cal-more">+${tags.length - MAX} más</span>` : ''}</div>` : '';
 
   return `<div class="${classes}" role="button" tabindex="0" data-key="${key}" style="--i:${idx}"
     onclick="tapDay('${key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tapDay('${key}')}">
-    <div class="cal-top">${top}</div>${tagsHtml}</div>`;
+    <div class="cal-top">${top}</div>${tagsHtml}${dotHtml}</div>`;
 }
 
 /** Toque en un día: en pantallas estrechas el panel está debajo, así que se baja a él. */

@@ -24,6 +24,45 @@ window.__KEHILA_EN={exact:{
 "Inscríbete gratis": "Sign up for free",
 "Para todos": "For everyone",
 "Todavía no estás inscrito en ningún evento próximo.": "You're not registered for any upcoming events yet.",
+"Solo letras: escríbelo como aparece en tu documento (sin números).": "Letters only: write it as it appears on your ID (no numbers).",
+"Solo números: el prefijo ya está elegido a la izquierda.": "Numbers only: the country code is already selected on the left.",
+"Teléfono correcto.": "Phone number looks right.",
+"Un teléfono español tiene 9 números.": "A Spanish phone number has 9 digits.",
+"Un teléfono español empieza por 6, 7, 8 o 9.": "A Spanish phone number starts with 6, 7, 8 or 9.",
+"Parece demasiado corto.": "Looks too short.",
+"Parece demasiado largo.": "Looks too long.",
+"Elige primero el tipo de documento.": "Choose the document type first.",
+"Elige primero el tipo de documento": "Choose the document type first",
+"8 números y una letra": "8 digits and a letter",
+"X, Y o Z, 7 números y una letra": "X, Y or Z, 7 digits and a letter",
+"Entre 6 y 9 letras o números": "6 to 9 letters or digits",
+"Entre 6 y 12 caracteres": "6 to 12 characters",
+"Entre 5 y 20 letras o números": "5 to 20 letters or digits",
+"El DNI empieza por 8 números.": "A DNI starts with 8 digits.",
+"El DNI tiene 8 números, no más.": "A DNI has 8 digits, no more.",
+"Falta la letra del final.": "The final letter is missing.",
+"Formato: 8 números y una letra (12345678Z).": "Format: 8 digits and a letter (12345678Z).",
+"La letra no corresponde a ese número. Revísalo.": "The letter doesn't match that number. Please check it.",
+"DNI correcto.": "Valid DNI.",
+"El NIE empieza por X, Y o Z.": "An NIE starts with X, Y or Z.",
+"El NIE tiene 7 números entre las dos letras.": "An NIE has 7 digits between the two letters.",
+"Formato: X1234567L.": "Format: X1234567L.",
+"NIE correcto.": "Valid NIE.",
+"Faltan caracteres: un pasaporte tiene entre 6 y 9.": "Too short: a passport number has 6 to 9 characters.",
+"Demasiado largo: un pasaporte tiene entre 6 y 9 caracteres.": "Too long: a passport number has 6 to 9 characters.",
+"El número de pasaporte lleva números.": "A passport number contains digits.",
+"Formato válido.": "Valid format.",
+"Parece incompleta: lleva al menos 6 números.": "Looks incomplete: it has at least 6 digits.",
+"Demasiado larga (máximo 12 caracteres).": "Too long (12 characters max).",
+"Parece incompleto (mínimo 5 caracteres).": "Looks incomplete (5 characters min).",
+"El nombre solo puede llevar letras.": "The first name can only contain letters.",
+"Los apellidos solo pueden llevar letras.": "The last name can only contain letters.",
+"Extranjeros en España": "Foreigners in Spain",
+"Cualquier país": "Any country",
+"Latinoamérica y otros": "Latin America and others",
+"Otro oficial": "Other official",
+"Cédula": "ID card",
+"Pasaporte": "Passport",
 "Mañana entra": "Tomorrow is",
 "Esta tarde entra": "Tonight is",
 "Shavúa tov": "Shavua tov",
@@ -2946,6 +2985,22 @@ patterns:[
 [
 "^¿Eliminar el subgrupo \"(.+?)\"\\? Se quitaran tambien todos sus miembros\\.$",
 "Delete the subgroup \"{}\"? All its members will be removed too."
+],
+[
+"^Faltan? (\\d+) números? antes de la letra\\.$",
+"{} digit(s) missing before the letter."
+],
+[
+"^Faltan? (\\d+) números? \\(son 9\\)\\.$",
+"{} digit(s) missing (there are 9)."
+],
+[
+"^Faltan? (\\d+) números? después de la ([XYZ])\\.$",
+"{0} digit(s) missing after the {1}."
+],
+[
+"^Ej\\.: (.+)$",
+"E.g.: {}"
 ],
 [
 "^Faltan (\\d+) días para$",

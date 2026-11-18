@@ -642,6 +642,66 @@
       .hero-tagline { font-size: 1.35rem; }
       .auth-form-panel { min-height: calc(100vh - 300px); }
     }
+
+    /* ═══ Registro: validación en vivo y movimiento ═══ */
+    #view-register { --rg-ok: #2F8A5F; --rg-err: #B42318; --rg-gold: #C9A84C; --rg-ink: #1B2E5E; --rg-ease: cubic-bezier(.16,1,.3,1); }
+    #view-register .rg-enter-fwd  { animation: rgFwd .45s var(--rg-ease) both; }
+    #view-register .rg-enter-back { animation: rgBack .45s var(--rg-ease) both; }
+    @keyframes rgFwd  { from { opacity: 0; transform: translateX(26px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+    @keyframes rgBack { from { opacity: 0; transform: translateX(-26px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+    #view-register .form-label { display: flex; align-items: center; gap: 6px; }
+    #view-register .rg-tick {
+      width: 17px; height: 17px; border-radius: 50%; background: var(--rg-ok); color: #fff; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center; margin-left: auto;
+      transform: scale(0); transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    #view-register .rg-tick svg { width: 10px; height: 10px; }
+    #view-register .form-group.is-ok .rg-tick { transform: scale(1); }
+    #view-register .form-group.is-ok .form-input:not(:focus) { border-color: rgba(47,138,95,.45); }
+    #view-register .form-group.rg-shake { animation: rgShake .4s ease; }
+    @keyframes rgShake { 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+    #view-register .rg-live { font-size: .78rem; line-height: 1.4; min-height: 0; color: var(--color-text-muted); display: flex; align-items: center; gap: 6px; }
+    #view-register .rg-live:empty { display: none; }
+    #view-register .rg-live.ok { color: var(--rg-ok); }
+    #view-register .rg-live.warn { color: #9A6B12; }
+    #view-register .rg-live.err { color: var(--rg-err); }
+    #view-register .rg-live svg { width: 14px; height: 14px; flex-shrink: 0; }
+    #view-register .rg-live.flash { animation: rgFlash .5s ease; }
+    @keyframes rgFlash { 0% { opacity: 0; transform: translateY(-3px); } 100% { opacity: 1; transform: none; } }
+    #view-register #r2-doc-num { font-variant-numeric: tabular-nums; letter-spacing: .06em; text-transform: uppercase; }
+    #view-register #r2-doc-num::placeholder { letter-spacing: 0; text-transform: none; }
+
+    .rg-docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; }
+    .rg-doc {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px; text-align: left; cursor: pointer;
+      padding: 12px; border-radius: 14px; background: #fff; border: 1.5px solid rgba(27,46,94,.12);
+      font: 600 .84rem/1.25 var(--font-ui); color: #1A1A2E; -webkit-tap-highlight-color: transparent;
+      transition: border-color .2s ease, background .2s ease, transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease;
+      animation: rgFwd .45s cubic-bezier(.16,1,.3,1) both; animation-delay: calc(var(--i,0) * 50ms);
+    }
+    .rg-doc:hover { border-color: var(--rg-ink, #1B2E5E); transform: translateY(-2px); }
+    .rg-doc:active { transform: scale(.98); }
+    .rg-doc i { width: 32px; height: 32px; border-radius: 10px; background: #F4F1EA; color: #1B2E5E; display: flex; align-items: center; justify-content: center; transition: background .2s ease, color .2s ease; }
+    .rg-doc i svg { width: 18px; height: 18px; }
+    .rg-doc small { display: block; font-weight: 500; font-size: .72rem; color: var(--color-text-muted); margin-top: 2px; }
+    .rg-doc.is-on { border-color: #1B2E5E; background: #F5F7FC; box-shadow: 0 10px 20px -16px rgba(27,46,94,.8); }
+    .rg-doc.is-on i { background: #1B2E5E; color: #E7D3A0; }
+    .form-group.rg-shake .rg-docs .rg-doc { border-color: rgba(180,35,24,.35); }
+
+    .rg-seal { position: relative; width: 92px; height: 92px; margin: 0 auto 6px; }
+    .rg-seal svg { width: 92px; height: 92px; display: block; }
+    .rg-seal circle { fill: none; stroke: #C9A84C; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 264; stroke-dashoffset: 264; transform: rotate(-90deg); transform-origin: 50% 50%; }
+    .rg-seal path { fill: none; stroke: #1B2E5E; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60; }
+    .rg-seal span { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; margin: -3.5px; border-radius: 50%; background: #C9A84C; opacity: 0; }
+    .rg-seal.play circle { animation: rgDraw .7s cubic-bezier(.16,1,.3,1) .05s forwards; }
+    .rg-seal.play path { animation: rgDraw .45s cubic-bezier(.16,1,.3,1) .6s forwards; }
+    .rg-seal.play span { animation: rgSpark .8s cubic-bezier(.16,1,.3,1) .55s forwards; }
+    @keyframes rgDraw { to { stroke-dashoffset: 0; } }
+    @keyframes rgSpark { 0% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(.4); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateY(-62px) scale(1); } }
+    @media (prefers-reduced-motion: reduce) {
+      #view-register *, #view-register *::before { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+      .rg-seal circle, .rg-seal path { stroke-dashoffset: 0; }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1b2e5e">
@@ -855,7 +915,6 @@
           <!-- ── PASO 1: DATOS DE CUENTA ── -->
           <div id="reg-step-1">
             <div class="auth-form-header" style="margin-bottom:20px;">
-              <p class="auth-form-pretitle" data-i18n="reg_s1_pretitle">Paso 1 de 4</p>
               <h2 class="auth-form-title" data-i18n="reg_s1_title">Crea tu cuenta</h2>
               <p class="auth-form-subtitle" data-i18n="reg_s1_subtitle">Información básica de acceso</p>
             </div>
@@ -863,12 +922,14 @@
               <div class="grid-2 gap-sm">
                 <div class="form-group">
                   <label class="form-label required" data-i18n="reg_nombre">Nombre</label>
-                  <input type="text" id="r1-nombre" class="form-input" data-i18n-attr="placeholder" data-i18n="reg_nombre_ph" placeholder="Como en tu DNI/Pasaporte" autocomplete="given-name">
+                  <input type="text" id="r1-nombre" class="form-input" autocapitalize="words" spellcheck="false" maxlength="60" data-i18n-attr="placeholder" data-i18n="reg_nombre_ph" placeholder="Como en tu DNI/Pasaporte" autocomplete="given-name">
+                  <span class="rg-live" id="r1-nombre-live"></span>
                   <span class="form-error" id="r1-nombre-err" style="display:none;"></span>
                 </div>
                 <div class="form-group">
                   <label class="form-label required" data-i18n="reg_apellidos">Apellidos</label>
-                  <input type="text" id="r1-apellidos" class="form-input" data-i18n-attr="placeholder" data-i18n="reg_apellidos_ph" placeholder="Apellidos completos" autocomplete="family-name">
+                  <input type="text" id="r1-apellidos" class="form-input" autocapitalize="words" spellcheck="false" maxlength="80" data-i18n-attr="placeholder" data-i18n="reg_apellidos_ph" placeholder="Apellidos completos" autocomplete="family-name">
+                  <span class="rg-live" id="r1-apellidos-live"></span>
                   <span class="form-error" id="r1-apellidos-err" style="display:none;"></span>
                 </div>
               </div>
@@ -895,9 +956,10 @@
                     <option value="+52">+52 MX</option>
                     <option value="" data-i18n="reg_otro">Otro</option>
                   </select>
-                  <input type="tel" id="r1-telefono" class="form-input" placeholder="612 345 678" style="border-radius:0 var(--radius-sm) var(--radius-sm) 0;" autocomplete="tel">
+                  <input type="tel" id="r1-telefono" class="form-input" inputmode="numeric" maxlength="15" placeholder="612345678" style="border-radius:0 var(--radius-sm) var(--radius-sm) 0;" autocomplete="tel">
                 </div>
                 <span class="form-hint" data-i18n="reg_telefono_hint">Para verificación y contacto urgente de la comunidad</span>
+                <span class="rg-live" id="r1-telefono-live"></span>
                 <span class="form-error" id="r1-telefono-err" style="display:none;"></span>
               </div>
               <div class="form-group">
@@ -940,7 +1002,6 @@
           <!-- ── PASO 2: IDENTIDAD ── -->
           <div id="reg-step-2" style="display:none;">
             <div class="auth-form-header" style="margin-bottom:16px;">
-              <p class="auth-form-pretitle" data-i18n="reg_s2_pretitle">Paso 2 de 4</p>
               <h2 class="auth-form-title" data-i18n="reg_s2_title">Verificación de identidad</h2>
               <p class="auth-form-subtitle" data-i18n="reg_s2_subtitle">Requerida para proteger la seguridad de la comunidad</p>
             </div>
@@ -951,7 +1012,8 @@
             <div class="flex-col gap-md">
               <div class="form-group">
                 <label class="form-label required" data-i18n="reg_doctipo">Tipo de documento</label>
-                <select id="r2-doc-tipo" class="form-input">
+                <div class="rg-docs" id="rg-docs" role="radiogroup" aria-label="Tipo de documento"></div>
+                <select id="r2-doc-tipo" class="form-input" hidden aria-hidden="true" tabindex="-1">
                   <option value="" data-i18n="reg_doctipo_ph">Selecciona el tipo</option>
                   <option value="DNI español" data-i18n="doc_dni">DNI español</option>
                   <option value="NIE" data-i18n="doc_nie">NIE (Número de Identidad Extranjero)</option>
@@ -963,7 +1025,8 @@
               </div>
               <div class="form-group">
                 <label class="form-label required" data-i18n="reg_docnum">Número de documento</label>
-                <input type="text" id="r2-doc-num" class="form-input" data-i18n-attr="placeholder" data-i18n="reg_docnum_ph" placeholder="Número del documento">
+                <input type="text" id="r2-doc-num" class="form-input" placeholder="Elige primero el tipo de documento" autocapitalize="characters" autocomplete="off" spellcheck="false" maxlength="20">
+                <span class="rg-live" id="r2-doc-live"></span>
                 <span class="form-error" id="r2-doc-num-err" style="display:none;"></span>
               </div>
               <div class="form-group">
@@ -1069,7 +1132,6 @@
           <!-- ── PASO 3: RESIDENCIA ── -->
           <div id="reg-step-3" style="display:none;">
             <div class="auth-form-header" style="margin-bottom:20px;">
-              <p class="auth-form-pretitle" data-i18n="reg_s3_pretitle">Paso 3 de 4</p>
               <h2 class="auth-form-title" data-i18n="reg_s3_title">Información de residencia</h2>
               <p class="auth-form-subtitle" data-i18n="reg_s3_subtitle">Para asignarte a tu comunidad local</p>
             </div>
@@ -1108,17 +1170,6 @@
                 <span class="form-hint" data-i18n="reg_direccion_hint">No compartida con otros miembros</span>
                 <span class="form-error" id="r3-dir-err" style="display:none;"></span>
               </div>
-              <div class="form-group">
-                <label class="form-label" data-i18n="reg_familiar">¿Tienes familiares en la comunidad?</label>
-                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:6px;">
-                  <input type="checkbox" id="r3-familiar-toggle" onchange="regToggleFamiliar()">
-                  <span style="font-size:0.875rem;color:var(--color-text-muted);" data-i18n="reg_familiar_ck">Sí, tengo un familiar miembro</span>
-                </label>
-                <div id="r3-familiar-field" style="display:none;margin-top:8px;">
-                  <input type="text" id="r3-familiar-nombre" class="form-input" data-i18n-attr="placeholder" data-i18n="reg_familiar_ph" placeholder="Nombre del familiar">
-                  <span class="form-hint" data-i18n="reg_familiar_hint">Ayuda a agilizar tu verificación</span>
-                </div>
-              </div>
               <div style="display:flex;gap:10px;">
                 <button type="button" class="btn btn-ghost btn-lg" style="flex:1;" onclick="regPrevStep()">
                   <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px;height:16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
@@ -1135,7 +1186,6 @@
           <!-- ── PASO 4: REVISIÓN Y CONSENTIMIENTOS ── -->
           <div id="reg-step-4" style="display:none;">
             <div class="auth-form-header" style="margin-bottom:20px;">
-              <p class="auth-form-pretitle" data-i18n="reg_s4_pretitle">Paso 4 de 4</p>
               <h2 class="auth-form-title" data-i18n="reg_s4_title">Revisión final</h2>
               <p class="auth-form-subtitle" data-i18n="reg_s4_subtitle">Confirma tus datos antes de enviar</p>
             </div>
@@ -1187,9 +1237,7 @@
           <!-- ── CONFIRMACIÓN ── -->
           <div id="reg-confirmacion" style="display:none;">
             <div style="text-align:center;padding:32px 0 20px;">
-              <div class="reg-check-circle">
-                <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
-              </div>
+              <div class="rg-seal" aria-hidden="true"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="42"/><path d="M30 47.5 41 58 63 35"/></svg><span style="--a:0deg"></span><span style="--a:45deg"></span><span style="--a:90deg"></span><span style="--a:135deg"></span><span style="--a:180deg"></span><span style="--a:225deg"></span><span style="--a:270deg"></span><span style="--a:315deg"></span></div>
               <h2 style="font-family:var(--font-brand);font-size:1.75rem;font-weight:700;color:var(--color-text);margin:16px 0 8px;" data-i18n="reg_conf_title">Solicitud recibida</h2>
               <p style="color:var(--color-text-muted);margin-bottom:24px;" data-i18n="reg_conf_desc">Hemos recibido tu solicitud correctamente.</p>
             </div>
