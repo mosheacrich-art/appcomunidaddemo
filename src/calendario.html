@@ -79,34 +79,48 @@
     .ch-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(200deg, rgba(19,34,71,0) 45%, rgba(19,34,71,.45) 100%); pointer-events: none; }
     .ch-photo figcaption { position: absolute; right: 14px; top: 14px; z-index: 1; font-size: .74rem; font-weight: 600; color: #fff; background: rgba(19,34,71,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 5px 10px; border-radius: 999px; }
 
+    /* «Este Shabat»: tarjeta de luaj impresa — papel, doble filete dorado,
+       horarios en filas con puntos guía (como el programa de la sinagoga). */
     .ch-shabat {
-      position: absolute; left: 0; bottom: 0; width: min(380px, 78%); z-index: 2;
-      border-radius: 18px; padding: 18px 18px 14px; color: #F7F0E3;
-      background: linear-gradient(165deg, #1F3466 0%, #132247 100%);
-      box-shadow: 0 22px 40px -18px rgba(19,34,71,.8);
-      display: flex; flex-direction: column; gap: 2px;
+      position: absolute; left: 0; bottom: 0; width: min(372px, 78%); z-index: 2;
+      padding: 20px 22px 16px; color: var(--ink);
+      background: #FFFCF6;
+      border: 1px solid rgba(168,137,46,.5); border-radius: 6px;
+      outline: 1px solid rgba(168,137,46,.28); outline-offset: -6px;
+      box-shadow: 0 1px 0 rgba(255,255,255,.8) inset, 0 16px 30px -20px rgba(60,40,10,.55);
       animation: chUp .8s var(--ease-out) .25s both;
     }
     @keyframes chUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-    .ch-sh-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: .78rem; color: rgba(247,240,227,.7); }
-    .ch-sh-name { font-family: var(--font-brand); font-size: 1.55rem; font-weight: 700; color: #fff; line-height: 1.1; margin: 4px 0 0; }
-    .ch-sh-he { font-family: var(--font-brand); font-size: 1.05rem; color: var(--gold-soft); direction: rtl; text-align: left; unicode-bidi: plaintext; }
-    .ch-sh-esp { font-size: .76rem; font-weight: 600; color: var(--gold-soft); }
-    .ch-sh-times { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-    .ch-sh-time { border-radius: 12px; background: rgba(255,255,255,.07); padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
-    .ch-sh-time svg { width: 22px; height: 22px; color: var(--gold-soft); flex-shrink: 0; overflow: visible; }
-    .ch-sh-time span { display: block; font-size: .72rem; color: rgba(247,240,227,.7); white-space: nowrap; }
-    .ch-sh-time b { display: block; font-family: var(--font-brand); font-size: 1.4rem; line-height: 1.05; color: #fff; font-variant-numeric: tabular-nums; }
-    .ch-flame { transform-box: fill-box; transform-origin: 50% 100%; animation: chFlicker 1.6s ease-in-out infinite alternate; }
-    @keyframes chFlicker { 0% { transform: scale(1,1) rotate(-3deg); } 50% { transform: scale(.9,1.12) rotate(2deg); } 100% { transform: scale(1.05,.94) rotate(-1deg); } }
-    .ch-sh-city { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 10px; font-size: .76rem; color: rgba(247,240,227,.72); }
+    .ch-sh-when {
+      display: flex; align-items: center; gap: 10px; margin: 0;
+      font: 700 .66rem var(--font-ui); letter-spacing: .2em; text-transform: uppercase; color: var(--gold-dark);
+    }
+    .ch-sh-when::after { content: ''; flex: 1; height: 1px; background: rgba(168,137,46,.4); }
+    .ch-sh-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 8px; }
+    .ch-sh-name { font-family: var(--font-brand); font-size: 1.6rem; font-weight: 700; line-height: 1.1; margin: 0; color: var(--ink); text-wrap: balance; }
+    .ch-sh-he { font-family: var(--font-brand); font-size: 1.3rem; color: var(--gold-dark); direction: rtl; unicode-bidi: isolate; white-space: nowrap; }
+    .ch-sh-esp { display: block; margin-top: 2px; font-family: var(--font-brand); font-style: italic; font-size: .92rem; color: var(--gold-dark); }
+    .ch-sh-esp:empty { display: none; }
+    .ch-sh-times { margin: 12px 0 0; padding: 4px 0; border-top: 1px solid rgba(168,137,46,.3); border-bottom: 1px solid rgba(168,137,46,.3); }
+    .ch-sh-row { display: flex; align-items: baseline; gap: 8px; padding: 7px 0; }
+    .ch-sh-row + .ch-sh-row { border-top: 1px dashed rgba(27,46,94,.1); }
+    .ch-sh-row dt { font-size: .86rem; font-weight: 600; color: var(--ink); white-space: nowrap; }
+    .ch-sh-row dt small { margin-left: 4px; font-size: .76rem; font-weight: 500; color: var(--muted); }
+    .ch-sh-lead { flex: 1; min-width: 12px; border-bottom: 1.5px dotted rgba(27,46,94,.28); transform: translateY(-4px); }
+    .ch-sh-row dd { margin: 0; font-family: var(--font-brand); font-size: 1.5rem; font-weight: 700; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums lining-nums; }
+    .ch-sh-city { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 6px; margin-top: 10px; font-size: .76rem; color: var(--muted); }
+    .ch-sh-city label { color: var(--muted); }
     .ch-city {
       appearance: none; -webkit-appearance: none; cursor: pointer;
-      background: rgba(255,255,255,.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E7D3A0' stroke-width='2.4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E") no-repeat right 8px center/12px;
-      border: 1px solid rgba(231,211,160,.35); border-radius: 999px; color: #fff;
-      font: 600 .8rem var(--font-ui); padding: 4px 26px 4px 11px; outline: none;
+      background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A8892E' stroke-width='2.6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E") no-repeat right 0 center/11px;
+      border: 0; border-bottom: 1.5px solid rgba(168,137,46,.6); border-radius: 0; color: var(--ink);
+      font: 700 .8rem var(--font-ui); padding: 1px 16px 1px 0; outline: none;
+      field-sizing: content; max-width: 100%;
     }
-    .ch-city:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .ch-city:hover { border-bottom-color: var(--gold-dark); }
+    .ch-city:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    #city-minutes-note { flex-basis: 100%; font-style: italic; }
+    #city-minutes-note::first-letter { text-transform: uppercase; }
     .ch-city option, .ch-city optgroup { color: #1A1A2E; background: #fff; }
 
     @media (max-width: 960px) {
@@ -323,22 +337,18 @@
             <figcaption>Shabat en comunidad</figcaption>
           </figure>
         <section class="ch-shabat" id="ch-shabat" aria-label="Este Shabat">
-          <div class="ch-sh-top"><span id="ch-sh-when">Este Shabat</span><b id="ch-sh-esp-top"></b></div>
-          <p class="ch-sh-name" id="ch-sh-name">—</p>
-          <span class="ch-sh-he" id="ch-sh-he"></span>
-          <span class="ch-sh-esp" id="ch-sh-esp"></span>
-          <div class="ch-sh-times">
-            <div class="ch-sh-time">
-              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" d="M9 21h6M9.5 21V11.5h5V21"/><path class="ch-flame" d="M12 9c-1.5-1-1.4-3.1 0-5 1.4 1.9 1.5 4 0 5Z" fill="currentColor" stroke="none"/></svg>
-              <div><span>Encendido · <em id="ch-sh-fri" style="font-style:normal"></em></span><b id="ch-sh-candles">--:--</b></div>
-            </div>
-            <div class="ch-sh-time">
-              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>
-              <div><span>Havdalá · sábado</span><b id="ch-sh-havdala">--:--</b></div>
-            </div>
+          <p class="ch-sh-when" id="ch-sh-when">Este Shabat</p>
+          <div class="ch-sh-head">
+            <p class="ch-sh-name" id="ch-sh-name">—</p>
+            <span class="ch-sh-he" id="ch-sh-he" lang="he"></span>
           </div>
+          <span class="ch-sh-esp" id="ch-sh-esp"></span>
+          <dl class="ch-sh-times">
+            <div class="ch-sh-row"><dt>Encendido de velas<small id="ch-sh-fri"></small></dt><i class="ch-sh-lead" aria-hidden="true"></i><dd id="ch-sh-candles">--:--</dd></div>
+            <div class="ch-sh-row"><dt>Havdalá<small>sábado</small></dt><i class="ch-sh-lead" aria-hidden="true"></i><dd id="ch-sh-havdala">--:--</dd></div>
+          </dl>
           <div class="ch-sh-city">
-            <span>Horarios para</span>
+            <label for="city-select">Horarios para</label>
             <select id="city-select" class="ch-city" onchange="changeCity(this.value)" aria-label="Ciudad">
               <optgroup label="España">
                 <option value="madrid">Madrid</option>
@@ -389,7 +399,7 @@
                 <option value="sydney">Sídney</option>
               </optgroup>
             </select>
-            <span id="city-minutes-note">· encendido 18 min antes del ocaso</span>
+            <span id="city-minutes-note">encendido 18 min antes del ocaso</span>
           </div>
         </section>
         </div>
@@ -938,8 +948,8 @@ function updateCityUI() {
   const c = selectedCity;
   const note = document.getElementById('city-minutes-note');
   if (note) note.textContent = c.b === 40
-    ? `· encendido ${c.b} min antes del ocaso (minhag Yerushalayim)`
-    : `· encendido ${c.b} min antes del ocaso`;
+    ? `encendido ${c.b} min antes del ocaso (minhag Yerushalayim)`
+    : `encendido ${c.b} min antes del ocaso`;
   const sel = document.getElementById('city-select');
   const key = Object.keys(CITIES).find(k => CITIES[k] === c);
   if (sel && key) sel.value = key;
