@@ -27,5 +27,8 @@
     "scheme": "comunidaddemo",
     "androidPackage": "com.example.comunidaddemo",
     "iosBundleId": "com.example.comunidaddemo"
+  },
+  "brand": {
+    "assets": "brand/demo"
   }
 }
