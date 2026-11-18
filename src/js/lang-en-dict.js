@@ -1,5 +1,6 @@
 /* Generado: diccionario ES→EN para el modo inglés (js/lang-en.js). No editar a mano los patrones. */
 window.__KEHILA_EN={exact:{
+"Cambiar ciudad": "Change city",
 "Hemos recibido tu solicitud de": "We've received your request for",
 "No se pudo subir:": "Couldn't upload:",
 "pasos cortos. Puedes volver atrás en cualquier momento sin perder lo que has escrito.": "short steps. You can go back at any time without losing what you've written.",

@@ -20,7 +20,7 @@
   'use strict';
 
   const DB_KEY = 'kehila_demo_db';
-  const SEED_VERSION = 14;   // subir al cambiar seed(): descarta lo guardado en los navegadores
+  const SEED_VERSION = 15;   // subir al cambiar seed(): descarta lo guardado en los navegadores
   const DEMO_USER_ID = '00000000-0000-0000-0000-000000000000';
   const NO_DISPONIBLE = { message: 'No disponible en la demo', code: 'demo' };
 
@@ -216,7 +216,8 @@
       ],
       children: [],
       servicios_config: ['barmitzvah', 'britmila', 'bodas', 'najalah', 'tenyad']
-        .map((id) => ({ id, image_url: `img/demo/servicio-${id}.jpg` })),
+        .map((id) => ({ id, image_url: `img/demo/servicio-${id}.jpg` }))
+        .concat([{ id: 'shabat_banner', image_url: 'img/demo/momento-5.jpg' }]),   // foto de la tarjeta de Shabat (home)
       // Cabecera del mikve (mikve.html)
       app_config: [1, 2, 3].map((n) => ({ key: `mikve_galeria_${n}`, value: `img/demo/mikve-${n}.jpg` })),
     };
