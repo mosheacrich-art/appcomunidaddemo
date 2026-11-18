@@ -861,6 +861,8 @@
     // Cabecera del calendario: foto de una mesa de Shabat en vez del placeholder
     const chFoto = document.querySelector('.ch-photo img');
     if (chFoto) chFoto.src = 'img/demo/momento-5.jpg';
+    // Foto del Rav de ejemplo en las cabeceras con arco (Pregunta al Rav, Cita con el Rav)
+    document.querySelectorAll('.rv-arch img').forEach((im) => { im.src = 'img/demo/rav.jpg'; });
     if (/^(index\.html|reset-password\.html)$/.test(page)) {
       // Login: entrar con un clic como miembro o como administrador
       const form = document.getElementById('login-form');
