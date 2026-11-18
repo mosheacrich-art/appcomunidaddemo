@@ -16,9 +16,9 @@
     "donationsEmail": "donativos@demo.example.com"
   },
   "theme": {
-    "primary": "#1B2E5E",
-    "accent": "#8E2F3C",
-    "background": "#F7F7F4"
+    "primary": "#33442F",
+    "accent": "#A64B27",
+    "background": "#F2ECE2"
   },
   "integrations": {
     "demoLogin": true

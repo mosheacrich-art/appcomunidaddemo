@@ -115,12 +115,15 @@ function colorMap(theme) {
       ['#243D7A', shade(p, 0.07, -0.02)], ['#2D4A8A', shade(p, 0.12, -0.04)], ['#2D4A82', shade(p, 0.12, -0.04)],
       ['#9A7A2A', shade(a, -0.16)], ['#B8902E', shade(a, -0.07)], ['#B8943F', shade(a, -0.07)],
       ['#B8963E', shade(a, -0.07)], ['#A8863A', shade(a, -0.08)],
+      // tinta oscura y dorado claro del calendario y las tarjetas de Shabat
+      ['#132247', shade(p, -0.08, 0.03)], ['#1F3466', shade(p, 0.04)], ['#E7D3A0', mixWhite(a, 0.6)],
     ],
     rgb: [
       ['27,46,94', hexToRgb(p)], ['201,168,76', hexToRgb(a)], ['250,245,238', hexToRgb(bg)],
       // superposiciones oscuras (degradado sobre las fotos del login, etc.)
       ['17,28,52', hexToRgb(shade(p, -0.10, -0.04))], ['13,27,62', hexToRgb(shade(p, -0.09))], ['10,25,60', hexToRgb(shade(p, -0.10))],
       ['184,150,62', hexToRgb(shade(a, -0.07))],
+      ['19,34,71', hexToRgb(shade(p, -0.08, 0.03))], ['168,137,46', hexToRgb(shade(a, -0.1))],
     ],
   };
 }
