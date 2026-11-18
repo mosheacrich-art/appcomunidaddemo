@@ -858,6 +858,9 @@
       c.style.backgroundImage = `url('img/demo/${MOSAICO[i % MOSAICO.length]}.jpg')`;
       c.style.backgroundPosition = 'center';
     });
+    // Cabecera del calendario: foto de una mesa de Shabat en vez del placeholder
+    const chFoto = document.querySelector('.ch-photo img');
+    if (chFoto) chFoto.src = 'img/demo/momento-5.jpg';
     if (/^(index\.html|reset-password\.html)$/.test(page)) {
       // Login: entrar con un clic como miembro o como administrador
       const form = document.getElementById('login-form');

@@ -56,11 +56,12 @@
     .vid-thumb { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg,#1B2E5E,#2a4a8e); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .vid-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s; }
     .vid-card:hover .vid-thumb img { transform: scale(1.03); }
-    .vid-play-btn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0); transition: background .2s; }
-    .vid-card:hover .vid-play-btn { background: rgba(0,0,0,.25); }
-    .vid-play-circle { width: 48px; height: 48px; background: rgba(0,0,0,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; }
-    .vid-card:hover .vid-play-circle { opacity: 1; }
-    .vid-play-circle svg { width: 22px; height: 22px; color: #fff; margin-left: 3px; }
+    .vid-thumb { cursor: pointer; }
+    .vid-play-btn { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.08); transition: background .2s; }
+    .vid-card:hover .vid-play-btn { background: rgba(0,0,0,.22); }
+    .vid-play-circle { width: 68px; height: 48px; background: rgba(23,23,23,.8); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.3); transition: background .2s, transform .2s; }
+    .vid-card:hover .vid-play-circle { background: #FF0000; transform: scale(1.06); }
+    .vid-play-circle svg { width: 24px; height: 24px; color: #fff; fill: #fff; margin-left: 3px; }
     .vid-duration { position: absolute; bottom: 6px; right: 8px; background: rgba(0,0,0,.8); color: #fff; font-size: .68rem; font-weight: 600; padding: 2px 5px; border-radius: 4px; }
     .vid-info { padding: 10px 12px 12px; }
     .vid-title { font-size: .87rem; font-weight: 700; color: #0f172a; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 5px; }
@@ -446,9 +447,7 @@
           + (v.maestro ? '<div class="vid-author">' + v.maestro + '</div>' : '')
           + '<div class="vid-stats"><span class="vid-stat">' + EYE + '<span class="vista-count">' + fmtN(v.vistas) + '</span></span><span class="vid-stat">' + HEART + '<span class="like-count">' + fmtN(v.likes) + '</span></span><span>' + fmt(v.fecha) + '</span></div>'
           + '<div class="vid-actions">'
-          + '<button class="vid-like-btn like-btn' + (liked ? ' liked' : '') + '" data-id="' + v.id + '" data-likes="' + (v.likes||0) + '">' + (liked ? HEART_F : HEART) + '<span>' + fmtN(v.likes) + '</span></button>'
-          + '<button class="vid-open-btn vid-open-click" ' + da + ' style="width:13px;height:13px;">' + PLAY + ' Ver video</button>'
-          + '</div></div></div>';
+          + '<button class="vid-like-btn like-btn' + (liked ? ' liked' : '') + '" data-id="' + v.id + '" data-likes="' + (v.likes||0) + '">' + (liked ? HEART_F : HEART) + '<span>' + fmtN(v.likes) + '</span></button>'          + '</div></div></div>';
       }).join('');
     }
 

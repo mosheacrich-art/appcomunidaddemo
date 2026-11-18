@@ -41,6 +41,10 @@ html.sd-dark body::before { background: var(--sd-paper); }
 .app-layout { display: block; }
 
 .sd.main-content {
+  /* La barra lateral es position:fixed (no ocupa celda en .app-layout), así que
+     el main tiene que abarcar todo el grid o se queda en la columna de 240px. */
+  grid-column: 1 / -1;
+  min-width: 0;
   margin-left: var(--sidebar-width);
   min-height: 100vh;
   background: var(--sd-paper);

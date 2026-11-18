@@ -24,232 +24,271 @@
   <style>
     .main-content { margin-left: var(--sidebar-width); min-height: 100vh; }
     @media (max-width: 768px) { .main-content { margin-left: 0; padding-bottom: 80px; } }
-    .cal-heb-inner { padding: 32px 36px 60px; }
-    /* padding-top 60px: el botón hamburguesa es fixed, top:12/left:12,
-       40x40px (hb-btn en nav.js) — sin este espacio el título queda
-       debajo del botón. */
+    .cal-heb-inner {
+      --ink: #1B2E5E; --ink-deep: #132247; --gold: #C9A84C; --gold-dark: #A8892E; --gold-soft: #E7D3A0;
+      --cream: #FAF5EE; --stone: #F3EBDD; --muted: #5E6578; --line: rgba(27,46,94,.09);
+      --ease-out: cubic-bezier(.16,1,.3,1);
+      /* colores por tipo de día */
+      --t-candles: #A8892E; --t-candles-bg: #FBF3DD;
+      --t-shabat: #1B2E5E;  --t-shabat-bg: #EBEFF8;
+      --t-yomtov: #2F6F6A;  --t-yomtov-bg: #E3F1EF;
+      --t-rj: #3A6EA5;      --t-rj-bg: #E8F0F9;
+      --t-fast: #6B3E75;    --t-fast-bg: #F3EBF5;
+      --t-chanuka: #B45309; --t-chanuka-bg: #FDF0DF;
+      --t-purim: #9D174D;   --t-purim-bg: #FCEBF3;
+      --t-ev: #B4583B;      --t-ev-bg: #FBEDE7;
+      --t-mine: #1A6640;    --t-mine-bg: #E5F2EA;
+      padding: 28px 36px 60px; max-width: 1320px; margin: 0 auto;
+    }
+    .cal-heb-inner ::selection { background: var(--gold-soft); color: var(--ink-deep); }
     @media (max-width: 768px) { .cal-heb-inner { padding: 60px 14px 88px; } }
 
-    /* ── Grid principal ── */
-    .cal-wrap { display: grid; grid-template-columns: 1fr 400px; gap: 28px; align-items: start; }
-    @media (max-width: 900px) { .cal-wrap { grid-template-columns: 1fr; } }
-    .cal-wrap > div:first-child { background: #fff; border-radius: 14px; padding: 24px 28px; box-shadow: 0 1px 12px rgba(27,46,94,.08); }
+    /* ═══ Cabecera: cuenta atrás + foto de la comunidad + este Shabat ═══ */
+    .ch-hero {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px; align-items: center;
+      padding: 28px; margin-bottom: 24px; border-radius: 26px; position: relative; isolation: isolate;
+      background: radial-gradient(110% 90% at 0% 0%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%), linear-gradient(160deg, #F7F0E3 0%, #EFE3CC 100%);
+      border: 1px solid rgba(168,137,46,.22);
+      box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 20px 44px -30px rgba(90,64,20,.45);
+    }
+    .ch-today { display: flex; flex-direction: column; justify-content: center; padding: 8px 0 8px 10px; }
+    .ch-title { font-family: var(--font-brand); font-weight: 700; color: var(--ink); font-size: clamp(2.1rem, 4.4vw, 3.4rem); line-height: 1.02; letter-spacing: -0.028em; margin: 0; text-wrap: balance; }
+    .ch-title em { font-style: normal; color: var(--gold-dark); position: relative; white-space: nowrap; }
+    .ch-title em::after {
+      content: ''; position: absolute; left: -2%; right: -2%; bottom: .02em; height: .14em; border-radius: 99px;
+      background: rgba(201,168,76,.35); z-index: -1; transform-origin: left; animation: chMark .9s var(--ease-out) .35s both;
+    }
+    @keyframes chMark { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .ch-hoy { margin: 16px 0 0; font-size: 1rem; color: #4A4636; line-height: 1.55; }
+    .ch-hoy b { color: var(--ink); font-weight: 700; }
+    .ch-hoy-he { display: block; margin-top: 4px; font-family: var(--font-brand); font-size: 1.3rem; color: var(--gold-dark); direction: rtl; text-align: left; unicode-bidi: plaintext; }
+    .ch-next { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+    .ch-next button {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; cursor: pointer;
+      background: rgba(255,255,255,.7); border: 1px solid rgba(168,137,46,.25); font: 600 .8rem var(--font-ui); color: var(--ink);
+      transition: background .2s ease, transform .2s var(--ease-out);
+    }
+    .ch-next button:hover { background: #fff; transform: translateY(-1px); }
+    .ch-next i { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .ch-next small { font-weight: 500; color: var(--muted); }
 
-    /* ── Fecha hebrea ── */
-    .cal-side-hebrew { font-family: var(--font-brand); font-size: .95rem; color: var(--color-text-muted); margin-top: -8px; margin-bottom: 14px; direction: rtl; text-align: left; unicode-bidi: plaintext; }
-    .cal-month-hebrew { font-size: .85rem; font-weight: 500; color: var(--color-text-muted); margin-left: 8px; }
+    .ch-stage { position: relative; padding-bottom: 128px; }
+    .ch-photo { position: relative; margin: 0 0 0 64px; height: 300px; border-radius: 22px; overflow: hidden; background: #C9A574; box-shadow: 0 18px 36px -24px rgba(60,40,10,.6); }
+    .ch-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; display: block; animation: chKen 1.6s var(--ease-out) both; }
+    @keyframes chKen { from { transform: scale(1.08); } to { transform: scale(1); } }
+    .ch-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(200deg, rgba(19,34,71,0) 45%, rgba(19,34,71,.45) 100%); pointer-events: none; }
+    .ch-photo figcaption { position: absolute; right: 14px; top: 14px; z-index: 1; font-size: .74rem; font-weight: 600; color: #fff; background: rgba(19,34,71,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 5px 10px; border-radius: 999px; }
 
-    /* ── Mobile: reordenar — evento arriba, ciudad abajo ── */
-    @media (max-width: 768px) {
-      .cal-heb-inner { display: flex; flex-direction: column; }
-      .page-header  { order: 1; }
-      #cal-container { order: 2; }
-      .city-selector-bar { order: 3; margin-bottom: 0; margin-top: 16px; }
-      .cal-wrap { display: flex; flex-direction: column; align-items: stretch; }
-      .cal-side { order: -1; position: static !important; top: auto; max-height: none; overflow-y: visible; width: 100%; margin-bottom: 16px; }
+    .ch-shabat {
+      position: absolute; left: 0; bottom: 0; width: min(380px, 78%); z-index: 2;
+      border-radius: 18px; padding: 18px 18px 14px; color: #F7F0E3;
+      background: linear-gradient(165deg, #1F3466 0%, #132247 100%);
+      box-shadow: 0 22px 40px -18px rgba(19,34,71,.8);
+      display: flex; flex-direction: column; gap: 2px;
+      animation: chUp .8s var(--ease-out) .25s both;
     }
+    @keyframes chUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    .ch-sh-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: .78rem; color: rgba(247,240,227,.7); }
+    .ch-sh-name { font-family: var(--font-brand); font-size: 1.55rem; font-weight: 700; color: #fff; line-height: 1.1; margin: 4px 0 0; }
+    .ch-sh-he { font-family: var(--font-brand); font-size: 1.05rem; color: var(--gold-soft); direction: rtl; text-align: left; unicode-bidi: plaintext; }
+    .ch-sh-esp { font-size: .76rem; font-weight: 600; color: var(--gold-soft); }
+    .ch-sh-times { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .ch-sh-time { border-radius: 12px; background: rgba(255,255,255,.07); padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+    .ch-sh-time svg { width: 22px; height: 22px; color: var(--gold-soft); flex-shrink: 0; overflow: visible; }
+    .ch-sh-time span { display: block; font-size: .72rem; color: rgba(247,240,227,.7); white-space: nowrap; }
+    .ch-sh-time b { display: block; font-family: var(--font-brand); font-size: 1.4rem; line-height: 1.05; color: #fff; font-variant-numeric: tabular-nums; }
+    .ch-flame { transform-box: fill-box; transform-origin: 50% 100%; animation: chFlicker 1.6s ease-in-out infinite alternate; }
+    @keyframes chFlicker { 0% { transform: scale(1,1) rotate(-3deg); } 50% { transform: scale(.9,1.12) rotate(2deg); } 100% { transform: scale(1.05,.94) rotate(-1deg); } }
+    .ch-sh-city { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 10px; font-size: .76rem; color: rgba(247,240,227,.72); }
+    .ch-city {
+      appearance: none; -webkit-appearance: none; cursor: pointer;
+      background: rgba(255,255,255,.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E7D3A0' stroke-width='2.4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E") no-repeat right 8px center/12px;
+      border: 1px solid rgba(231,211,160,.35); border-radius: 999px; color: #fff;
+      font: 600 .8rem var(--font-ui); padding: 4px 26px 4px 11px; outline: none;
+    }
+    .ch-city:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .ch-city option, .ch-city optgroup { color: #1A1A2E; background: #fff; }
 
-    /* ── Selector de ciudad ── */
-    .city-selector-bar {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--color-white); border-radius: var(--radius-md);
-      border: 1.5px solid var(--color-border); padding: 12px 18px;
-      margin-bottom: 20px; flex-wrap: wrap;
-      box-shadow: var(--shadow-sm);
+    @media (max-width: 960px) {
+      .ch-hero { grid-template-columns: minmax(0, 1fr); padding: 22px 16px 16px; gap: 18px; }
+      .ch-today { padding: 0 4px; }
+      .ch-stage { padding-bottom: 0 !important; }
+      .ch-photo { margin: 0; height: 220px; }
+      .ch-shabat { position: relative; width: auto; margin: -42px 10px 0; }
     }
-    .city-selector-icon { font-size: 1.1rem; flex-shrink: 0; }
-    .city-selector-label { font-size: .8125rem; font-weight: 600; color: var(--color-text-muted); white-space: nowrap; }
-    .city-select {
-      border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);
-      padding: 6px 12px; font-size: .875rem; font-family: inherit;
-      color: var(--color-text); background: var(--color-bg);
-      cursor: pointer; outline: none; min-width: 200px; font-weight: 500;
-    }
-    .city-select:focus { border-color: var(--color-primary); }
-    .city-candles-preview {
-      font-size: .8125rem; color: var(--color-text-muted);
-      margin-left: auto; text-align: right;
-    }
-    .city-candles-preview strong { color: var(--color-gold-dark, #9a7a2a); }
-    .city-minutes-note {
-      font-size: .72rem; color: var(--color-text-muted);
-      padding: 3px 8px; background: var(--color-bg);
-      border-radius: 20px; border: 1px solid var(--color-border);
-      white-space: nowrap; flex-shrink: 0;
-    }
-    @media (max-width: 600px) {
-      .city-candles-preview { margin-left: 0; width: 100%; }
-      .city-select { width: 100%; }
-    }
+    @media (prefers-reduced-motion: reduce) { .ch-photo img, .ch-shabat, .ch-title em::after { animation: none; } }
 
-    /* ── Nav mes ── */
-    .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .cal-month-label { font-family: var(--font-brand); font-size: 1.5rem; font-weight: 700; color: var(--color-text); }
+    /* ═══ Layout ═══ */
+    .cal-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 24px; align-items: start; }
+    @media (max-width: 1100px) { .cal-wrap { grid-template-columns: minmax(0, 1fr); } }
+    .cal-board { background: #fff; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 1px 2px rgba(27,46,94,.04), 0 18px 40px -28px rgba(27,46,94,.3); overflow: hidden; }
+
+    /* Barra del mes */
+    .cal-bar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .cal-titles { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .cal-month-label { font-family: var(--font-brand); font-size: clamp(1.35rem, 2.4vw, 1.75rem); font-weight: 700; color: var(--ink); letter-spacing: -0.015em; line-height: 1.1; }
+    .cal-month-sub { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+    .cal-month-sub .he { font-family: var(--font-brand); font-size: .98rem; color: var(--gold-dark); }
     .cal-nav-btn {
-      width: 34px; height: 34px; border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      background: var(--color-white); border: 1.5px solid var(--color-border);
-      cursor: pointer; transition: all var(--transition-fast); color: var(--color-text);
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: var(--ink);
+      background: #fff; border: 1px solid var(--line); transition: background .15s ease, transform .2s var(--ease-out);
     }
-    .cal-nav-btn:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+    .cal-nav-btn:hover { background: var(--cream); }
+    .cal-nav-btn:active { transform: scale(.94); }
     .cal-nav-btn svg { width: 16px; height: 16px; }
-
-    /* ── Grid días ── */
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-    .cal-header-day { text-align: center; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--color-text-muted); padding: 10px 0; }
-    .cal-day {
-      aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      border-radius: var(--radius-sm); cursor: pointer; position: relative;
-      transition: background var(--transition-fast); font-size: 1rem; font-weight: 400;
-      color: var(--color-text); padding: 4px;
-    }
-    .cal-day:hover { background: var(--color-bg); }
-    .cal-day.other { color: var(--color-text-light); }
-    .cal-day.today { background: var(--color-primary); color: #fff; font-weight: 700; border-radius: var(--radius-sm); }
-    .cal-day.today:hover { background: var(--color-primary); opacity: .9; }
-    .cal-day.selected { background: var(--color-gold-light, #fef9ec); border: 2px solid var(--color-gold); font-weight: 600; }
-    .cal-day.shabbat-day { font-weight: 600; }
-
-    /* ── Selector Gregoriano / Hebreo ── */
-    .cal-modo { display: flex; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: 999px; padding: 3px; margin: 0 auto 16px; width: fit-content; max-width: 100%; }
-    .cal-modo button { border: none; background: none; border-radius: 999px; padding: 7px 16px; font: inherit; font-size: .8125rem; font-weight: 600; color: var(--color-text-muted); cursor: pointer; white-space: nowrap; transition: all var(--transition-fast); }
-    .cal-modo button.on { background: var(--color-primary); color: #fff; box-shadow: 0 1px 4px rgba(27,46,94,.25); }
+    .cal-tools { display: flex; align-items: center; gap: 8px; }
+    .cal-hoy-btn { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 14px; font: 600 .8rem var(--font-ui); color: var(--ink); cursor: pointer; }
+    .cal-hoy-btn:hover { background: var(--cream); }
+    .cal-modo { display: flex; background: var(--cream); border-radius: 999px; padding: 3px; }
+    .cal-modo button { border: none; background: none; border-radius: 999px; padding: 6px 13px; font: 600 .8rem var(--font-ui); color: var(--muted); cursor: pointer; white-space: nowrap; transition: background .2s ease, color .2s ease; }
+    .cal-modo button.on { background: var(--ink); color: #fff; }
     .cal-modo .he { font-family: var(--font-brand); margin-left: 4px; }
 
-    /* ── Modo hebreo: día en letras hebreas + día gregoriano pequeño ── */
-    .cal-heb-num { font-family: var(--font-brand); font-size: 1.2rem; font-weight: 700; line-height: 1; direction: rtl; }
-    .cal-greg-num { position: absolute; top: 3px; right: 5px; font-size: .6rem; font-weight: 500; color: var(--color-text-muted); white-space: nowrap; }
-    .cal-day.today .cal-greg-num { color: rgba(255,255,255,.75); }
-    .cal-day.other .cal-heb-num { opacity: .45; }
-    .cal-month-greg { font-size: .75rem; color: var(--color-text-muted); margin-top: 2px; }
-    @media (max-width: 600px) {
-      .cal-heb-num { font-size: 1rem; }
-      .cal-greg-num { font-size: .55rem; top: 2px; right: 3px; }
+    /* Rejilla */
+    .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    .cal-header-day { padding: 10px 10px 8px; font-size: .74rem; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); }
+    .cal-header-day.sab { color: var(--gold-dark); background: #FCF8EF; }
+    .cal-day {
+      position: relative; min-height: 112px; padding: 8px 8px 8px; cursor: pointer; text-align: left;
+      border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      display: flex; flex-direction: column; gap: 4px; min-width: 0; background: #fff;
+      transition: background .15s ease;
+      animation: calIn .4s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 8ms);
+    }
+    @keyframes calIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .cal-day:nth-child(7n) { border-right: none; }
+    .cal-day.sab { background: #FCF8EF; }
+    .cal-day:hover { background: #F7F2E8; }
+    .cal-day.other { background: #FBFAF7; }
+    .cal-day.other .cal-num, .cal-day.other .cal-hd { opacity: .4; }
+    .cal-day.other .cal-tag { opacity: .55; }
+    .cal-top { display: flex; align-items: baseline; justify-content: space-between; gap: 4px; }
+    .cal-num {
+      font-size: .95rem; font-weight: 600; color: #1A1A2E; font-variant-numeric: tabular-nums;
+      width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: -4px 0 0 -4px;
+    }
+    .cal-hd { font-family: var(--font-brand); font-size: .9rem; color: var(--gold-dark); direction: rtl; line-height: 1; }
+    .cal-hd small { font-family: var(--font-ui); font-size: .62rem; color: var(--muted); direction: ltr; margin-right: 3px; }
+    .cal-day.today .cal-num { background: var(--ink); color: #fff; }
+    .cal-day.selected { box-shadow: inset 0 0 0 2px var(--gold); background: #FFFBF0; z-index: 1; }
+    /* modo hebreo: el número grande es el hebreo */
+    .cal-heb .cal-num { font-family: var(--font-brand); font-size: 1.1rem; width: auto; min-width: 28px; padding: 0 6px; border-radius: 999px; direction: rtl; }
+    .cal-heb .cal-hd { font-family: var(--font-ui); font-size: .7rem; color: var(--muted); direction: ltr; }
+
+    .cal-tags { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .cal-tag {
+      display: flex; align-items: center; gap: 5px; min-width: 0;
+      font-size: .7rem; font-weight: 600; line-height: 1.25; padding: 3px 6px; border-radius: 6px;
+      color: var(--c); background: var(--bg);
+    }
+    .cal-tag { align-items: flex-start; }
+    .cal-tag svg { margin-top: 1px; }
+    .cal-tag span { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+    .cal-tag svg { width: 11px; height: 11px; flex-shrink: 0; }
+    .cal-tag.t-candles { --c: var(--t-candles); --bg: var(--t-candles-bg); font-variant-numeric: tabular-nums; }
+    .cal-tag.t-shabat { --c: #fff; --bg: var(--t-shabat); }
+    .cal-tag.t-yomtov, .cal-tag.t-sukkot, .cal-tag.t-especial { --c: var(--t-yomtov); --bg: var(--t-yomtov-bg); }
+    .cal-tag.t-roshjodesh { --c: var(--t-rj); --bg: var(--t-rj-bg); }
+    .cal-tag.t-fast { --c: var(--t-fast); --bg: var(--t-fast-bg); }
+    .cal-tag.t-chanuka { --c: var(--t-chanuka); --bg: var(--t-chanuka-bg); }
+    .cal-tag.t-purim { --c: var(--t-purim); --bg: var(--t-purim-bg); }
+    .cal-tag.t-ev { --c: var(--t-ev); --bg: var(--t-ev-bg); }
+    .cal-tag.t-mine { --c: var(--t-mine); --bg: var(--t-mine-bg); }
+    .cal-more { font-size: .68rem; font-weight: 600; color: var(--muted); padding-left: 4px; }
+
+    /* Móvil: barras de color en vez de texto */
+    @media (max-width: 640px) {
+      .cal-bar { padding: 14px; }
+      .cal-tools { width: 100%; justify-content: space-between; }
+      .cal-header-day { padding: 8px 0; text-align: center; font-size: .68rem; }
+      .cal-day { min-height: 70px; padding: 6px 3px; align-items: center; gap: 3px; }
+      .cal-top { flex-direction: column; align-items: center; gap: 1px; }
+      .cal-num { margin: 0; width: 26px; height: 26px; font-size: .85rem; }
+      .cal-hd { font-size: .68rem; }
+      .cal-hd small { display: none; }
+      .cal-tags { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2px; width: 100%; }
+      .cal-tag { padding: 0; width: 14px; height: 4px; border-radius: 2px; background: var(--c); }
+      .cal-tag.t-shabat { background: var(--t-shabat); }
+      .cal-tag span, .cal-tag svg { display: none; }
+      .cal-more { display: none; }
     }
 
-    /* ── Dots ── */
-    .cal-dots { display: flex; gap: 2px; position: absolute; bottom: 3px; align-items: center; }
-    .cal-dot { width: 5px; height: 5px; border-radius: 50%; }
-    .dot-candles  { background: var(--color-gold); }
-    .dot-shabbat  { background: var(--color-primary); }
-    .dot-holiday  { background: #10B981; }
-    .dot-fast     { background: #7C3AED; }
-    .dot-chanuka  { background: #2563EB; }
-    .dot-purim    { background: #DB2777; }
-    .dot-roshjodesh { background: #0D9488; }
-    .cal-day.today .cal-dot { background: var(--color-gold); }
+    .cal-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 14px 20px; border-top: 1px solid var(--line); }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: .74rem; color: var(--muted); }
+    .legend-dot { width: 14px; height: 6px; border-radius: 3px; flex-shrink: 0; }
 
-    /* ── Panel lateral ── */
-    .cal-side {
-      background: var(--color-white); border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm); padding: 20px;
-      position: sticky; top: 20px; align-self: start;
-    }
-    .cal-side-title { font-size: .9375rem; font-weight: 700; color: var(--color-text); margin-bottom: 14px; }
-    .cal-side-heb-es { color: var(--color-gold-dark, #9a7a2a); font-weight: 700; }
-    .cal-empty { text-align: center; color: var(--color-text-light); font-size: .875rem; padding: 24px 0; }
+    /* ═══ Panel del día ═══ */
+    .cal-side { position: sticky; top: 20px; background: #fff; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 18px 40px -28px rgba(27,46,94,.3); overflow: hidden; }
+    @media (max-width: 1100px) { .cal-side { position: static; } }
+    .ds-head { display: flex; gap: 16px; align-items: center; padding: 20px 20px 16px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #FCF8EF, #fff); }
+    .ds-num { width: 64px; height: 72px; border-radius: 16px; flex-shrink: 0; background: var(--ink); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 20px -12px rgba(19,34,71,.7); }
+    .ds-num b { font-family: var(--font-brand); font-size: 1.9rem; line-height: 1; font-variant-numeric: tabular-nums; }
+    .ds-num small { font-size: .66rem; text-transform: uppercase; letter-spacing: .06em; color: var(--gold-soft); margin-top: 3px; }
+    .ds-titles { min-width: 0; }
+    .ds-titles h2 { font-size: 1.02rem; font-weight: 700; color: #1A1A2E; margin: 0; line-height: 1.3; }
+    .ds-titles .es { font-size: .86rem; color: var(--gold-dark); font-weight: 600; margin-top: 2px; }
+    .ds-titles .he { font-family: var(--font-brand); font-size: 1.05rem; color: var(--muted); margin-top: 2px; direction: rtl; text-align: left; unicode-bidi: plaintext; }
+    .ds-body { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 10px; animation: dsIn .35s var(--ease-out); }
+    @keyframes dsIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .ds-sec { font-size: .78rem; font-weight: 600; color: var(--muted); margin: 8px 0 0; }
+    .ds-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; color: var(--muted); font-size: .88rem; padding: 18px 0 6px; }
+    .ds-empty svg { width: 30px; height: 30px; color: var(--gold); }
 
-    /* ── Tarjeta Shabat en el panel — acento dorado ── */
-    .side-shabat-card {
-      background: var(--color-gold-light); border-radius: var(--radius-md);
-      padding: 0; margin-bottom: 12px; color: var(--color-text); position: relative; overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,.05);
-    }
-    .side-shabat-card::before {
-      content: ''; position: absolute; top: -40px; right: -50px; width: 220px; height: 220px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 4 93 78 7 78Z' fill='none' stroke='%23C9A84C' stroke-width='1.4'/%3E%3Cpath d='M50 96 7 22 93 22Z' fill='none' stroke='%23C9A84C' stroke-width='1.4'/%3E%3C/svg%3E");
-      opacity: .16; pointer-events: none;
-    }
-    .side-shabat-label {
-      position: relative; display: block; background: var(--color-gold); color: var(--color-primary);
-      padding: 9px 16px; font-size: .625rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
-    }
-    .side-shabat-parasha { position: relative; font-family: var(--font-brand); font-size: 1.6rem; font-weight: 800; color: var(--color-primary); line-height: 1.15; margin: 16px 16px 0; }
-    .side-shabat-he { position: relative; font-family: var(--font-brand); font-style: italic; font-size: .9rem; color: var(--color-gold-dark); direction: rtl; display: block; margin: 4px 16px 0; }
-    .side-shabat-especial { position: relative; font-size: .7rem; font-weight: 700; color: var(--color-gold-dark); margin: 6px 16px 0; }
-    .side-shabat-times {
-      position: relative; display: flex; gap: 26px; margin: 16px 16px 0;
-      padding-top: 14px; border-top: 1px solid rgba(27,46,94,.1); flex-wrap: wrap;
-    }
-    .side-time-item { display: flex; flex-direction: column; gap: 2px; }
-    .side-time-label { font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--color-gold-dark); }
-    .side-time-val { font-family: var(--font-brand); font-size: 1.25rem; font-weight: 800; color: var(--color-primary); }
-    .side-time-sep { display: none; }
-    .side-city-badge {
-      position: relative; display: block;
-      font-size: .68rem; font-weight: 500; color: var(--color-text-muted);
-      margin: 12px 16px 16px; letter-spacing: .03em;
-    }
+    .ds-shabat { border-radius: 16px; padding: 16px; background: var(--t-shabat); color: #F7F0E3; }
+    .ds-shabat .k { font-size: .76rem; color: rgba(247,240,227,.7); }
+    .ds-shabat .n { font-family: var(--font-brand); font-size: 1.45rem; font-weight: 700; color: #fff; line-height: 1.15; margin-top: 2px; }
+    .ds-shabat .h { font-family: var(--font-brand); font-size: 1rem; color: var(--gold-soft); direction: rtl; text-align: left; unicode-bidi: plaintext; }
+    .ds-shabat .e { font-size: .76rem; font-weight: 600; color: var(--gold-soft); margin-top: 4px; }
 
-    /* ── Tarjeta festividad en el panel ── */
-    .side-holiday-card {
-      border-radius: var(--radius-md); padding: 14px;
-      margin-bottom: 10px; border-left: 4px solid var(--color-primary);
-      background: var(--color-bg);
+    .ds-row { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: 14px; background: var(--bg, var(--cream)); }
+    .ds-ic { width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fff; color: var(--c, var(--ink)); }
+    .ds-ic svg { width: 18px; height: 18px; overflow: visible; }
+    .ds-row .t { flex: 1; min-width: 0; }
+    .ds-row .t b { display: block; font-size: .92rem; color: #1A1A2E; line-height: 1.3; }
+    .ds-row .t small { display: block; font-size: .78rem; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+    .ds-row .t .he { font-family: var(--font-brand); font-size: .95rem; color: var(--c, var(--muted)); }
+    .ds-time { font-family: var(--font-brand); font-size: 1.25rem; font-weight: 700; color: var(--c, var(--ink)); font-variant-numeric: tabular-nums; white-space: nowrap; align-self: center; }
+    .ds-row.r-candles { --c: var(--t-candles); --bg: var(--t-candles-bg); }
+    .ds-row.r-havdala { --c: var(--t-shabat); --bg: var(--t-shabat-bg); }
+    .ds-row.r-yomtov, .ds-row.r-sukkot, .ds-row.r-especial { --c: var(--t-yomtov); --bg: var(--t-yomtov-bg); }
+    .ds-row.r-roshjodesh { --c: var(--t-rj); --bg: var(--t-rj-bg); }
+    .ds-row.r-fast { --c: var(--t-fast); --bg: var(--t-fast-bg); }
+    .ds-row.r-chanuka { --c: var(--t-chanuka); --bg: var(--t-chanuka-bg); }
+    .ds-row.r-purim { --c: var(--t-purim); --bg: var(--t-purim-bg); }
+    .ds-row.r-omer { --c: #5E6578; --bg: #F1F2F5; }
+    .ds-row.r-ev { --c: var(--t-ev); --bg: var(--t-ev-bg); }
+    .ds-row.r-mine { --c: var(--t-mine); --bg: var(--t-mine-bg); }
+    .ds-row img.flyer { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; flex-shrink: 0; cursor: zoom-in; }
+    .ds-row a.lnk { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: .78rem; font-weight: 600; color: var(--c); text-decoration: none; }
+    .ds-row a.lnk:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .ds-badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: .72rem; font-weight: 700; color: var(--t-mine); background: #fff; padding: 2px 9px; border-radius: 999px; }
+    .ds-badge svg { width: 11px; height: 11px; }
+    .ds-ayuno { display: flex; gap: 18px; margin-top: 8px; }
+    .ds-ayuno div span { display: block; font-size: .72rem; color: var(--muted); }
+    .ds-ayuno div b { font-family: var(--font-brand); font-size: 1.15rem; color: var(--t-fast); }
+    .cal-ev-item-del { background: #fff; border: none; color: #B42318; cursor: pointer; width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .cal-ev-item-del svg { width: 14px; height: 14px; }
+
+    /* Admin: añadir evento */
+    .cal-add-btn { width: 100%; margin-top: 4px; padding: 10px; border: 1.5px dashed rgba(27,46,94,.2); background: none; border-radius: 12px; color: var(--muted); cursor: pointer; font: 600 .82rem var(--font-ui); display: flex; align-items: center; justify-content: center; gap: 6px; transition: border-color .15s, color .15s; }
+    .cal-add-btn:hover { border-color: var(--gold); color: var(--gold-dark); }
+    .cal-add-form { background: var(--cream); border-radius: 12px; padding: 12px; margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+    .cal-add-form input, .cal-add-form textarea { border: 1.5px solid rgba(27,46,94,.14); border-radius: 10px; padding: 9px 11px; font: .85rem var(--font-ui); outline: none; background: #fff; }
+    .cal-add-form input:focus, .cal-add-form textarea:focus { border-color: var(--ink); }
+    .cal-add-form-btns { display: flex; gap: 8px; }
+    .cal-add-form-btns button { flex: 1; padding: 9px; border-radius: 10px; font: 600 .82rem var(--font-ui); cursor: pointer; border: 1px solid rgba(27,46,94,.14); background: #fff; }
+    .cal-add-form-btns .btn-save { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+    /* Carga / error */
+    .loading-state { text-align: center; padding: 60px 20px; color: var(--muted); background: #fff; border-radius: 20px; border: 1px solid var(--line); }
+    .loading-spinner { width: 32px; height: 32px; border: 3px solid rgba(27,46,94,.12); border-top-color: var(--ink); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .cal-heb-inner :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      .cal-day, .ds-body, .ch-flame { animation: none !important; }
     }
-    .side-holiday-card.yomtov  { border-left-color: #1B2E5E; }
-    .side-holiday-card.fast    { border-left-color: #7C3AED; background: #F5F3FF; }
-    .side-holiday-card.chanuka { border-left-color: #2563EB; }
-    .side-holiday-card.purim   { border-left-color: #DB2777; }
-    .side-holiday-card.sukkot  { border-left-color: #D97706; }
-    .side-holiday-card.especial{ border-left-color: var(--color-gold); }
-    .side-holiday-card.roshjodesh { border-left-color: #0D9488; }
-    .side-holiday-card.omer    { border-left-color: #64748B; }
-    .side-ayuno-times { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
-    .side-ayuno-times .side-time-label { color: #6D28D9; }
-    .side-ayuno-times .side-time-sep { display: block; width: 1px; align-self: stretch; background: #DDD6FE; }
-    .side-ayuno-city { font-size: .68rem; color: var(--color-text-muted); margin-top: 6px; }
-    .side-holiday-name { font-size: .9375rem; font-weight: 600; color: var(--color-text); }
-    .side-holiday-he   { font-family: var(--font-brand); font-size: .9rem; color: var(--color-text-muted); direction: rtl; }
-    .side-holiday-desc { font-size: .75rem; color: var(--color-text-muted); margin-top: 3px; }
-    .side-holiday-time { font-size: .75rem; font-weight: 600; color: var(--color-gold-dark, #9a7a2a); margin-top: 4px; }
-
-    /* ── Candle lighting en viernes ── */
-    .side-candles-card {
-      border-radius: var(--radius-md); padding: 12px 14px;
-      margin-bottom: 10px; background: #fffbf0;
-      border: 1.5px solid #e9d38a; display: flex; align-items: center; gap: 12px;
-    }
-    .side-candles-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .side-candles-info { flex: 1; }
-    .side-candles-label { font-size: .625rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-muted); }
-    .side-candles-time  { font-family: var(--font-brand); font-size: 1.2rem; font-weight: 700; color: var(--color-gold-dark, #9a7a2a); }
-    .side-candles-next  { font-size: .75rem; color: var(--color-text-muted); margin-top: 2px; }
-
-    /* ── Loading ── */
-    .loading-state { text-align:center; padding: 60px 20px; color: var(--color-text-muted); }
-    .loading-spinner { width:32px; height:32px; border:3px solid var(--color-border); border-top-color:var(--color-primary); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 12px; }
-    @keyframes spin { to { transform:rotate(360deg); } }
-
-    /* ── Leyenda ── */
-    .cal-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--color-border); }
-    .legend-item { display: flex; align-items: center; gap: 5px; font-size: .7rem; color: var(--color-text-muted); }
-    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-    /* ── Eventos de comunidad en calendario ── */
-    .cal-ev-item { background:var(--color-bg); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:8px; border-left:3px solid var(--color-gold); }
-    .cal-ev-item-title { font-size:.875rem; font-weight:600; color:var(--color-text); }
-    .cal-ev-item-hora  { font-size:.75rem; color:var(--color-gold-dark,#9a7a2a); font-weight:500; margin-top:2px; }
-    .cal-ev-item-desc  { font-size:.75rem; color:var(--color-text-muted); margin-top:3px; }
-    .cal-ev-item-del   { float:right; background:none; border:none; color:#ef4444; cursor:pointer; font-size:.8rem; padding:0; opacity:0.6; }
-    .cal-ev-item-del:hover { opacity:1; }
-    .cal-ev-item-link  { display:inline-block; margin-top:6px; font-size:.75rem; font-weight:600; color:var(--color-primary); text-decoration:none; }
-    .cal-ev-item-link:hover { text-decoration:underline; }
-    .cal-add-btn { width:100%; margin-top:10px; padding:8px; border:1.5px dashed var(--color-border); background:none; border-radius:var(--radius-sm); color:var(--color-text-muted); cursor:pointer; font-size:.8125rem; display:flex; align-items:center; justify-content:center; gap:6px; transition:all .15s; }
-    .cal-add-btn:hover { border-color:var(--color-gold); color:var(--color-gold-dark,#9a7a2a); background:var(--color-bg); }
-    .cal-add-form { background:var(--color-bg); border-radius:var(--radius-sm); padding:12px; margin-top:10px; display:flex; flex-direction:column; gap:8px; }
-    .cal-add-form input, .cal-add-form textarea, .cal-add-form select { border:1.5px solid var(--color-border); border-radius:6px; padding:7px 10px; font-size:.8125rem; font-family:inherit; outline:none; background:#fff; }
-    .cal-add-form input:focus, .cal-add-form textarea:focus { border-color:var(--color-primary); }
-    .cal-add-form-btns { display:flex; gap:8px; }
-    .cal-add-form-btns button { flex:1; padding:7px; border-radius:6px; font-size:.8125rem; cursor:pointer; border:1.5px solid var(--color-border); }
-    .cal-add-form-btns .btn-save { background:var(--color-primary); color:#fff; border-color:var(--color-primary); font-weight:600; }
-    .dot-custom { background: #F59E0B; }
-    .dot-inscripcion { background: #0EA5E9; }
-    .cal-ev-inscripcion { background:#EFF6FF; border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:8px; border-left:3px solid #0EA5E9; }
-    .cal-ev-inscripcion .cal-ev-item-title { font-size:.875rem; font-weight:600; color:var(--color-text); }
-    .cal-ev-inscripcion .cal-ev-item-hora  { font-size:.75rem; color:#0369A1; font-weight:500; margin-top:2px; }
-    .cal-ev-inscripcion .cal-ev-item-desc  { font-size:.75rem; color:var(--color-text-muted); margin-top:3px; }
-    .cal-ev-inscripcion-badge { display:inline-flex; align-items:center; gap:4px; font-size:.68rem; font-weight:600; color:#0369A1; background:#DBEAFE; padding:2px 8px; border-radius:999px; margin-top:5px; }
   </style>
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);}</script>
   <script defer src='/_vercel/insights/script.js'></script>
@@ -271,71 +310,90 @@
 <div class="main-content">
   <div class="cal-heb-inner">
 
-      <!-- Header -->
-      <div class="page-header" style="margin-bottom:20px;">
-        <div class="page-header-left">
-          <p class="page-header-label">{{name}}</p>
-          <h1 class="page-title">Calendario Hebreo</h1>
-          <p class="page-subtitle" id="page-subtitle">Cargando horarios…</p>
+      <!-- Cabecera: hoy + este Shabat -->
+      <header class="ch-hero">
+        <div class="ch-today">
+          <h1 class="ch-title" id="ch-count">Calendario hebreo</h1>
+          <p class="ch-hoy" id="ch-hoy">Cargando horarios…</p>
+          <div class="ch-next" id="ch-next" aria-label="Próximas fechas"></div>
         </div>
-      </div>
-
-      <!-- Selector de ciudad -->
-      <div class="city-selector-bar">
-        <span class="city-selector-label">Ciudad:</span>
-        <select id="city-select" class="city-select" onchange="changeCity(this.value)">
-          <optgroup label="España">
-            <option value="madrid">Madrid</option>
-            <option value="barcelona">Barcelona</option>
-            <option value="valencia">Valencia</option>
-            <option value="bilbao">Bilbao</option>
-            <option value="sevilla">Sevilla</option>
-            <option value="malaga">Málaga</option>
-            <option value="palma">Palma de Mallorca</option>
-            <option value="zaragoza">Zaragoza</option>
-          </optgroup>
-          <optgroup label="Israel">
-            <option value="jerusalem">Jerusalén</option>
-            <option value="telaviv">Tel Aviv</option>
-            <option value="haifa">Haifa</option>
-            <option value="beersheva">Beer Sheva</option>
-          </optgroup>
-          <optgroup label="Europa">
-            <option value="london">Londres</option>
-            <option value="paris">París</option>
-            <option value="berlin">Berlín</option>
-            <option value="amsterdam">Ámsterdam</option>
-            <option value="zurich">Zúrich</option>
-            <option value="rome">Roma</option>
-            <option value="lisbon">Lisboa</option>
-            <option value="brussels">Bruselas</option>
-            <option value="vienna">Viena</option>
-            <option value="geneva">Ginebra</option>
-          </optgroup>
-          <optgroup label="América del Norte">
-            <option value="newyork">Nueva York</option>
-            <option value="losangeles">Los Ángeles</option>
-            <option value="miami">Miami</option>
-            <option value="chicago">Chicago</option>
-            <option value="toronto">Toronto</option>
-            <option value="montreal">Montreal</option>
-            <option value="mexico">Ciudad de México</option>
-          </optgroup>
-          <optgroup label="América del Sur">
-            <option value="buenosaires">Buenos Aires</option>
-            <option value="montevideo">Montevideo</option>
-            <option value="saopaulo">São Paulo</option>
-            <option value="bogota">Bogotá</option>
-          </optgroup>
-          <optgroup label="Otros">
-            <option value="johannesburg">Johannesburgo</option>
-            <option value="melbourne">Melbourne</option>
-            <option value="sydney">Sídney</option>
-          </optgroup>
-        </select>
-        <span class="city-minutes-note" id="city-minutes-note">encendido 18 min antes del ocaso</span>
-        <span class="city-candles-preview" id="city-candles-preview"></span>
-      </div>
+        <div class="ch-stage">
+          <figure class="ch-photo">
+            <img src="img/placeholder.svg" alt="Mesa de Shabat en comunidad" width="900" height="675" decoding="async" fetchpriority="high">
+            <figcaption>Shabat en comunidad</figcaption>
+          </figure>
+        <section class="ch-shabat" id="ch-shabat" aria-label="Este Shabat">
+          <div class="ch-sh-top"><span id="ch-sh-when">Este Shabat</span><b id="ch-sh-esp-top"></b></div>
+          <p class="ch-sh-name" id="ch-sh-name">—</p>
+          <span class="ch-sh-he" id="ch-sh-he"></span>
+          <span class="ch-sh-esp" id="ch-sh-esp"></span>
+          <div class="ch-sh-times">
+            <div class="ch-sh-time">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" d="M9 21h6M9.5 21V11.5h5V21"/><path class="ch-flame" d="M12 9c-1.5-1-1.4-3.1 0-5 1.4 1.9 1.5 4 0 5Z" fill="currentColor" stroke="none"/></svg>
+              <div><span>Encendido · <em id="ch-sh-fri" style="font-style:normal"></em></span><b id="ch-sh-candles">--:--</b></div>
+            </div>
+            <div class="ch-sh-time">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>
+              <div><span>Havdalá · sábado</span><b id="ch-sh-havdala">--:--</b></div>
+            </div>
+          </div>
+          <div class="ch-sh-city">
+            <span>Horarios para</span>
+            <select id="city-select" class="ch-city" onchange="changeCity(this.value)" aria-label="Ciudad">
+              <optgroup label="España">
+                <option value="madrid">Madrid</option>
+                <option value="barcelona">Barcelona</option>
+                <option value="valencia">Valencia</option>
+                <option value="bilbao">Bilbao</option>
+                <option value="sevilla">Sevilla</option>
+                <option value="malaga">Málaga</option>
+                <option value="palma">Palma de Mallorca</option>
+                <option value="zaragoza">Zaragoza</option>
+              </optgroup>
+              <optgroup label="Israel">
+                <option value="jerusalem">Jerusalén</option>
+                <option value="telaviv">Tel Aviv</option>
+                <option value="haifa">Haifa</option>
+                <option value="beersheva">Beer Sheva</option>
+              </optgroup>
+              <optgroup label="Europa">
+                <option value="london">Londres</option>
+                <option value="paris">París</option>
+                <option value="berlin">Berlín</option>
+                <option value="amsterdam">Ámsterdam</option>
+                <option value="zurich">Zúrich</option>
+                <option value="rome">Roma</option>
+                <option value="lisbon">Lisboa</option>
+                <option value="brussels">Bruselas</option>
+                <option value="vienna">Viena</option>
+                <option value="geneva">Ginebra</option>
+              </optgroup>
+              <optgroup label="América del Norte">
+                <option value="newyork">Nueva York</option>
+                <option value="losangeles">Los Ángeles</option>
+                <option value="miami">Miami</option>
+                <option value="chicago">Chicago</option>
+                <option value="toronto">Toronto</option>
+                <option value="montreal">Montreal</option>
+                <option value="mexico">Ciudad de México</option>
+              </optgroup>
+              <optgroup label="América del Sur">
+                <option value="buenosaires">Buenos Aires</option>
+                <option value="montevideo">Montevideo</option>
+                <option value="saopaulo">São Paulo</option>
+                <option value="bogota">Bogotá</option>
+              </optgroup>
+              <optgroup label="Otros">
+                <option value="johannesburg">Johannesburgo</option>
+                <option value="melbourne">Melbourne</option>
+                <option value="sydney">Sídney</option>
+              </optgroup>
+            </select>
+            <span id="city-minutes-note">· encendido 18 min antes del ocaso</span>
+          </div>
+        </section>
+        </div>
+      </header>
 
       <!-- Calendario -->
       <div id="cal-container">
@@ -437,7 +495,9 @@ const MES_HEB = {
   'Nisan':['Nisán','ניסן'], 'Iyar':['Iyar','אייר'], 'Iyyar':['Iyar','אייר'], 'Sivan':['Siván','סיון'],
   'Tamuz':['Tamuz','תמוז'], 'Tammuz':['Tamuz','תמוז'], 'Av':['Av','אב'], 'Elul':['Elul','אלול'],
 };
-const MES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const MES_CORTO = window.__kehilaLang === 'en'
+  ? ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
+  : ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const _fmtHeb = new Intl.DateTimeFormat('en-u-ca-hebrew', { day:'numeric', month:'long', year:'numeric' });
 
 function mediodia(d) { const x = new Date(d); x.setHours(12,0,0,0); return x; }
@@ -627,7 +687,7 @@ const SHABAT_ESP = {
 
 function fmtTime(isoStr) {
   if (!isoStr || isoStr.length <= 10) return null;
-  return new Date(isoStr).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',timeZone: selectedCity.tz});
+  return new Date(isoStr).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone: selectedCity.tz});
 }
 
 function isoDate(y,m,d) {
@@ -876,55 +936,132 @@ async function changeCity(key) {
 
 function updateCityUI() {
   const c = selectedCity;
-  // Subtítulo
-  const sub = document.getElementById('page-subtitle');
-  if (sub) sub.textContent = `${c.name}, ${c.country} — Shabatot, festividades y horarios`;
-  // Nota de minutos
   const note = document.getElementById('city-minutes-note');
-  if (note) {
-    if (c.b === 40) {
-      note.textContent = `encendido ${c.b} min antes del ocaso (minhag Yerushalayim)`;
-    } else {
-      note.textContent = `encendido ${c.b} min antes del ocaso`;
-    }
-  }
+  if (note) note.textContent = c.b === 40
+    ? `· encendido ${c.b} min antes del ocaso (minhag Yerushalayim)`
+    : `· encendido ${c.b} min antes del ocaso`;
+  const sel = document.getElementById('city-select');
+  const key = Object.keys(CITIES).find(k => CITIES[k] === c);
+  if (sel && key) sel.value = key;
 }
 
-/* ─── Preview del próximo encendido ─── */
-function updateCandlesPreview() {
-  const preview = document.getElementById('city-candles-preview');
-  if (!preview) return;
+/* ─── Iconos (trazo, sin emojis) ─── */
+const IC = {
+  candle: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" d="M9 21h6M9.5 21V11.5h5V21"/><path d="M12 9c-1.5-1-1.4-3.1 0-5 1.4 1.9 1.5 4 0 5Z" fill="currentColor" stroke="none"/></svg>',
+  moon: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>',
+  book: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>',
+  star: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>',
+  fast: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"/></svg>',
+  count: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5"/></svg>',
+  cal: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>',
+  check: '<svg fill="none" viewBox="0 0 24 24" stroke-width="2.6" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>',
+  x: '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>',
+  arrow: '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:13px;height:13px" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>',
+  leaf: '<svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4-3-7-6.5-7-10.5C5 6 8.5 3 12 3s7 3 7 7.5C19 14.5 16 18 12 21Zm0 0V9"/></svg>'
+};
+const escC = s => typeof escHtml === 'function' ? escHtml(s == null ? '' : String(s)) : String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const TIPO_IC = { fast: IC.fast, roshjodesh: IC.moon, chanuka: IC.candle, sukkot: IC.leaf, yomtov: IC.star, especial: IC.star, purim: IC.star };
+const TIPO_COLOR = { yomtov: '#2F6F6A', sukkot: '#2F6F6A', especial: '#2F6F6A', roshjodesh: '#3A6EA5', fast: '#6B3E75', chanuka: '#B45309', purim: '#9D174D' };
+function prevKey(key, n = 1) { const d = new Date(key + 'T12:00:00'); d.setDate(d.getDate() - n); return isoDate(d.getFullYear(), d.getMonth(), d.getDate()); }
+function nextKey(key, n = 1) { return prevKey(key, -n); }
+function capi(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
-  const today = new Date();
-  let nextCandles = null;
-  let nextDate = null;
+/* ─── Cabecera: hoy, este Shabat y próximas fechas ─── */
+async function updateCandlesPreview() {
+  const hoy = mediodia(new Date());
+  const hoyKey = keyDe(hoy);
+  // Datos del año en curso (y del siguiente si estamos a final de año)
+  try {
+    await ensureData(hoy.getFullYear());
+    if (hoy.getMonth() >= 9) await ensureData(hoy.getFullYear() + 1);
+  } catch (e) { /* sin red: se deja lo que haya */ }
 
-  for (let i = 0; i < 10; i++) {
-    const d = new Date(today);
-    d.setDate(d.getDate() + i);
-    const key = isoDate(d.getFullYear(), d.getMonth(), d.getDate());
-    if (dateMap[key]?.candles) {
-      // Si es hoy, comprobar que aún no ha pasado la hora
-      if (i === 0) {
-        const [h, m] = dateMap[key].candles.split(':').map(Number);
-        const nowH = today.getHours(), nowM = today.getMinutes();
-        if (nowH > h || (nowH === h && nowM >= m)) continue; // ya pasó
-      }
-      nextDate = d;
-      nextCandles = dateMap[key].candles;
+  // Hoy
+  try {
+    const hp = hebParts(hoy);
+    const [mesEs, mesHe] = MES_HEB[hp.m] || [hp.m, ''];
+    const dia = capi(hoy.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }));
+    document.getElementById('ch-hoy').innerHTML =
+      `Hoy es ${escC(dia)} · <b>${hp.d} de ${escC(mesEs)} ${hp.y}</b>`
+      + (mesHe ? `<span class="ch-hoy-he">${gematria(hp.d)} ${mesHe} ${gematria(hp.y % 1000)}</span>` : '');
+  } catch (e) {}
+
+  // Este Shabat: el viernes que viene (o el de ayer si hoy es sábado y aún no ha salido Shabat)
+  const ahora = new Date();
+  const hhmm = (t) => { if (!t) return null; const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const minAhora = ahora.getHours() * 60 + ahora.getMinutes();
+  let fri = null;
+  if (hoy.getDay() === 6) {
+    const ayer = keyDe(sumDias(hoy, -1));
+    const hv = hhmm((dateMap[keyDe(hoy)] || {}).havdalah);
+    if (hv === null || minAhora < hv) fri = ayer;
+  }
+  if (!fri) {
+    for (let i = 0; i <= 7; i++) {
+      const k = keyDe(sumDias(hoy, i));
+      if (new Date(k + 'T12:00:00').getDay() === 5) { fri = k; break; }
+    }
+  }
+  const fi = (fri && dateMap[fri]) || {};
+  const si = (fri && dateMap[nextKey(fri)]) || {};
+  const p = fi.parasha;
+
+  // Titular vivo: cuenta atrás hasta Shabat
+  const dias = Math.round((new Date(fri + 'T12:00:00') - hoy) / 86400000);
+  const velas = hhmm(fi.candles);
+  let titular;
+  if (dias < 0 || (dias === 0 && velas !== null && minAhora >= velas)) titular = 'Shabat <em>Shalom</em>';
+  else if (hoy.getDay() === 6) titular = '<em>Shavúa tov</em>';
+  else if (dias === 0) titular = 'Esta tarde entra <em>Shabat</em>';
+  else if (dias === 1) titular = 'Mañana entra <em>Shabat</em>';
+  else titular = `Faltan ${dias} días para <em>Shabat</em>`;
+  document.getElementById('ch-count').innerHTML = titular;
+  document.getElementById('ch-sh-when').textContent = dias < 0 ? 'Hoy es Shabat' : 'Este Shabat';
+  document.getElementById('ch-sh-name').textContent = p ? `Parashat ${p.es}` : 'Shabat';
+  document.getElementById('ch-sh-he').textContent = p ? p.he : '';
+  document.getElementById('ch-sh-esp').textContent = fi.especial || '';
+  document.getElementById('ch-sh-candles').textContent = fi.candles || '--:--';
+  document.getElementById('ch-sh-havdala').textContent = si.havdalah || '--:--';
+  document.getElementById('ch-sh-fri').textContent = fri
+    ? 'vie ' + new Date(fri + 'T12:00:00').getDate() : 'viernes';
+
+  // Próximas fechas señaladas (fiestas, ayunos, Rosh Jodesh), máximo 3
+  const prox = [];
+  const vistos = new Set();
+  for (let i = 1; i <= 80 && prox.length < 3; i++) {
+    const k = keyDe(sumDias(hoy, i));
+    const info = dateMap[k];
+    if (!info) continue;
+    for (const h of info.holidays) {
+      const base = h.es.replace(/\s*[—(].*$/, '').trim();
+      if (vistos.has(base)) continue;
+      vistos.add(base);
+      prox.push({ k, nombre: base, tipo: h.tipo });
       break;
     }
   }
-
-  if (nextCandles && nextDate) {
-    const opts = { weekday: 'long', day: 'numeric', month: 'long' };
-    const dayStr = nextDate.toLocaleDateString('es-ES', opts);
-    const dayStrCap = dayStr.charAt(0).toUpperCase() + dayStr.slice(1);
-    preview.innerHTML = `Próximo encendido: <strong>${dayStrCap} · ${nextCandles}</strong>`;
-  } else {
-    preview.innerHTML = '';
-  }
+  document.getElementById('ch-next').innerHTML = prox.map(x => {
+    const d = new Date(x.k + 'T12:00:00');
+    const f = `${d.getDate()} ${MES_CORTO[d.getMonth()]}`;
+    return `<button type="button" onclick="goToDate('${x.k}')"><i style="background:${TIPO_COLOR[x.tipo] || '#2F6F6A'}"></i>${escC(x.nombre)} <small>${f}</small></button>`;
+  }).join('');
 }
+
+/** Salta a un día concreto (desde la cabecera) */
+async function goToDate(key) {
+  const d = new Date(key + 'T12:00:00');
+  if (calModo === 'hebreo') hebAncla = mediodia(d);
+  else { curYear = d.getFullYear(); curMonth = d.getMonth(); }
+  document.getElementById('cal-container').innerHTML = `<div class="loading-state"><div class="loading-spinner"></div><p>Cargando calendario…</p></div>`;
+  try { await cargarVista(); } catch (e) { showError(); return; }
+  selectedDate = key;
+  renderCal();
+  selectDate(key);
+  const el = document.querySelector(`.cal-day[data-key="${key}"]`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+async function irAHoy() { await goToDate(keyDe(mediodia(new Date()))); }
 
 /* ─── Renderiza el calendario ─── */
 function renderCal() {
@@ -932,331 +1069,219 @@ function renderCal() {
   const todayKey = isoDate(today.getFullYear(), today.getMonth(), today.getDate());
   const heb = calModo === 'hebreo';
 
-  // Días visibles: semanas completas que cubren el mes (gregoriano o hebreo)
-  let inicio, fin, titulo, sub1 = '', sub2 = '';
+  let inicio, fin, titulo, sub = '';
   if (heb) {
     const m = hebMes(hebAncla);
     inicio = m.inicio; fin = m.fin;
     const [es, he] = MES_HEB[m.mes] || [m.mes, ''];
     titulo = `${es} ${m.ano}`;
-    sub1 = `${he} ${gematria(m.ano % 1000)}`;
     const a = `${inicio.getDate()} ${MES_CORTO[inicio.getMonth()]}`;
     const b = `${fin.getDate()} ${MES_CORTO[fin.getMonth()]} ${fin.getFullYear()}`;
-    sub2 = `${a}${inicio.getFullYear() !== fin.getFullYear() ? ' ' + inicio.getFullYear() : ''} – ${b}`;
+    sub = `<span class="he">${he} ${gematria(m.ano % 1000)}</span> · ${a}${inicio.getFullYear() !== fin.getFullYear() ? ' ' + inicio.getFullYear() : ''} – ${b}`;
   } else {
     inicio = new Date(curYear, curMonth, 1, 12);
     fin = new Date(curYear, curMonth + 1, 0, 12);
     titulo = `${MESES[curMonth]} ${curYear}`;
-    try { sub1 = new Intl.DateTimeFormat('he-u-ca-hebrew', { month: 'long', year: 'numeric' }).format(inicio); } catch(e) {}
+    try {
+      const h1 = hebParts(inicio), h2 = hebParts(fin);
+      const n1 = MES_HEB[h1.m] || [h1.m, ''], n2 = MES_HEB[h2.m] || [h2.m, ''];
+      sub = n1[0] === n2[0]
+        ? `<span class="he">${n1[1]}</span> · ${n1[0]} ${h1.y}`
+        : `<span class="he">${n1[1]} – ${n2[1]}</span> · ${n1[0]} – ${n2[0]} ${h2.y}`;
+    } catch (e) {}
   }
 
-  const hdr = heb ? ['DOM','LUN','MAR','MIÉ','JUE','VIE','SHABAT'] : DIAS_HDR;
-  let daysHtml = hdr.map(d => `<div class="cal-header-day">${d}</div>`).join('');
+  const hdr = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Shabat'];
+  let daysHtml = hdr.map((d, i) => `<div class="cal-header-day${i === 6 ? ' sab' : ''}">${d}</div>`).join('');
   const desde = sumDias(inicio, -inicio.getDay());
   const hasta = sumDias(fin, 6 - fin.getDay());
+  let i = 0;
   for (let d = desde; d <= hasta; d = sumDias(d, 1)) {
     const other = d < inicio || d > fin;
-    let label = d.getDate();
-    if (heb) {
-      const g = d.getDate() === 1 || d.getTime() === desde.getTime()
-        ? `${d.getDate()} ${MES_CORTO[d.getMonth()]}` : d.getDate();
-      label = `<span class="cal-heb-num">${gematria(hebParts(d).d)}</span><span class="cal-greg-num">${g}</span>`;
-    }
-    daysHtml += dayCell(label, keyDe(d), other, todayKey);
+    daysHtml += dayCell(d, keyDe(d), other, todayKey, heb, i++);
   }
 
   document.getElementById('cal-container').innerHTML = `
     <div class="cal-wrap">
-      <div>
-        <div class="cal-modo" role="group" aria-label="Tipo de calendario">
-          <button class="${heb ? '' : 'on'}" aria-pressed="${!heb}" onclick="setCalModo('gregoriano')">Gregoriano</button>
-          <button class="${heb ? 'on' : ''}" aria-pressed="${heb}" onclick="setCalModo('hebreo')">Hebreo<span class="he">עברי</span></button>
-        </div>
-        <div class="cal-nav">
-          <button class="cal-nav-btn" onclick="navMonth(-1)" aria-label="Mes anterior">
-            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
-          </button>
-          <div style="text-align:center;">
-            <span class="cal-month-label">${titulo}</span>
-            ${sub1 ? `<div class="cal-month-hebrew">${sub1}</div>` : ''}
-            ${sub2 ? `<div class="cal-month-greg">${sub2}</div>` : ''}
+      <div class="cal-board${heb ? ' cal-heb' : ''}">
+        <div class="cal-bar">
+          <div class="cal-titles">
+            <button class="cal-nav-btn" onclick="navMonth(-1)" aria-label="Mes anterior"><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg></button>
+            <div><div class="cal-month-label">${titulo}</div>${sub ? `<div class="cal-month-sub">${sub}</div>` : ''}</div>
+            <button class="cal-nav-btn" onclick="navMonth(1)" aria-label="Mes siguiente"><svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg></button>
           </div>
-          <button class="cal-nav-btn" onclick="navMonth(1)" aria-label="Mes siguiente">
-            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
-          </button>
+          <div class="cal-tools">
+            <button class="cal-hoy-btn" onclick="irAHoy()">Hoy</button>
+            <div class="cal-modo" role="group" aria-label="Tipo de calendario">
+              <button class="${heb ? '' : 'on'}" aria-pressed="${!heb}" onclick="setCalModo('gregoriano')">Gregoriano</button>
+              <button class="${heb ? 'on' : ''}" aria-pressed="${heb}" onclick="setCalModo('hebreo')">Hebreo<span class="he">עברי</span></button>
+            </div>
+          </div>
         </div>
         <div class="cal-grid">${daysHtml}</div>
         <div class="cal-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--color-gold)"></div>Encendido velas</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--color-primary)"></div>Shabat / Parashá</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#10B981"></div>Festividad</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#0D9488"></div>Rosh Jodesh</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#7C3AED"></div>Ayuno</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div>Evento comunidad</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#0EA5E9"></div>Mis inscripciones</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--t-candles)"></span>Encendido</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--t-shabat)"></span>Shabat</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--t-yomtov)"></span>Festividad</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--t-rj)"></span>Rosh Jodesh</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--t-fast)"></span>Ayuno</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--t-ev)"></span>Evento</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--t-mine)"></span>Estoy apuntado</div>
         </div>
       </div>
-      <div class="cal-side">
-        <p class="cal-side-title" id="cal-side-title">Selecciona un día</p>
-        <div id="cal-side-detail"><p class="cal-empty">Haz clic en un día para ver la información</p></div>
-      </div>
+      <aside class="cal-side" id="cal-side" aria-live="polite"></aside>
     </div>`;
 
   const hoy = mediodia(today);
-  if (hoy >= inicio && hoy <= fin) selectDate(todayKey);
+  if (selectedDate) selectDate(selectedDate);
+  else if (hoy >= inicio && hoy <= fin) selectDate(todayKey);
+  else selectDate(keyDe(inicio));
 }
 
-function dayCell(label, key, other, todayKey) {
+function dayCell(d, key, other, todayKey, heb, idx) {
   const info = dateMap[key] || { holidays: [] };
-  const isToday    = key === todayKey;
-  const isSelected = key === selectedDate;
-
   let classes = 'cal-day';
-  if (other)    classes += ' other';
-  if (isToday)  classes += ' today';
-  if (isSelected && !isToday) classes += ' selected';
+  if (other) classes += ' other';
+  if (key === todayKey) classes += ' today';
+  if (key === selectedDate) classes += ' selected';
+  if (d.getDay() === 6) classes += ' sab';
 
-  let dots = '';
-  if (info.candles)            dots += `<span class="cal-dot dot-candles"></span>`;
-  if (info.parasha)            dots += `<span class="cal-dot dot-shabbat"></span>`;
-  const PRIO = ['fast', 'chanuka', 'purim', 'yomtov', 'sukkot', 'especial'];
-  const otra = info.holidays.filter(h => h.tipo !== 'roshjodesh')
-    .sort((a, b) => PRIO.indexOf(a.tipo) - PRIO.indexOf(b.tipo))[0];
-  const esAyuno = info.ayunoInicio || info.ayunoFin || (otra && otra.tipo === 'fast');
-  if (esAyuno)                         dots += `<span class="cal-dot dot-fast"></span>`;
-  else if (otra) {
-    if      (otra.tipo === 'chanuka') dots += `<span class="cal-dot dot-chanuka"></span>`;
-    else if (otra.tipo === 'purim')   dots += `<span class="cal-dot dot-purim"></span>`;
-    else                              dots += `<span class="cal-dot dot-holiday"></span>`;
+  // Números: gregoriano + hebreo (o al revés en modo hebreo)
+  let hd = '';
+  try { hd = gematria(hebParts(d).d); } catch (e) {}
+  const mesCorto = (d.getDate() === 1 || idx === 0) ? `<small>${MES_CORTO[d.getMonth()]}</small>` : '';
+  const top = heb
+    ? `<span class="cal-num">${hd}</span><span class="cal-hd">${d.getDate()}${mesCorto ? ' ' + MES_CORTO[d.getMonth()] : ''}</span>`
+    : `<span class="cal-num">${d.getDate()}</span><span class="cal-hd">${mesCorto}${hd}</span>`;
+
+  // Etiquetas legibles
+  const tags = [];
+  if (info.candles) tags.push(`<span class="cal-tag t-candles">${IC.candle}<span>${info.candles}</span></span>`);
+  if (d.getDay() === 6) {
+    const fp = (dateMap[prevKey(key)] || {}).parasha;
+    if (fp) tags.push(`<span class="cal-tag t-shabat">${IC.book}<span>${escC(fp.es)}</span></span>`);
   }
-  if (info.holidays.some(h => h.tipo === 'roshjodesh')) dots += `<span class="cal-dot dot-roshjodesh"></span>`;
-  const allEvs = customEventsMap[key] || [];
-  if (allEvs.some(e => e.tipo !== 'inscripcion')) dots += `<span class="cal-dot dot-custom"></span>`;
-  if (allEvs.some(e => e.tipo === 'inscripcion')) dots += `<span class="cal-dot dot-inscripcion"></span>`;
+  info.holidays.forEach(h => {
+    tags.push(`<span class="cal-tag t-${h.tipo}">${TIPO_IC[h.tipo] || IC.star}<span>${escC(h.es)}</span></span>`);
+  });
+  if ((info.ayunoInicio || info.ayunoFin) && !info.holidays.some(h => h.tipo === 'fast'))
+    tags.push(`<span class="cal-tag t-fast">${IC.fast}<span>Ayuno</span></span>`);
+  const evs = customEventsMap[key] || [];
+  const mios = evs.filter(e => e.tipo === 'inscripcion');
+  const titulosMios = new Set(mios.map(e => e.titulo));
+  mios.forEach(e => tags.push(`<span class="cal-tag t-mine">${IC.check}<span>${escC(e.titulo)}</span></span>`));
+  evs.filter(e => e.tipo !== 'inscripcion' && !titulosMios.has(e.titulo))
+    .forEach(e => tags.push(`<span class="cal-tag t-ev">${IC.cal}<span>${escC(e.titulo)}</span></span>`));
 
-  const dotsHtml = dots ? `<div class="cal-dots">${dots}</div>` : '';
-  return `<div class="${classes}" data-key="${key}" onclick="selectDate('${key}')">${label}${dotsHtml}</div>`;
+  const MAX = 3;
+  const tagsHtml = tags.length
+    ? `<div class="cal-tags">${tags.slice(0, MAX).join('')}${tags.length > MAX ? `<span class="cal-more">+${tags.length - MAX} más</span>` : ''}</div>` : '';
+
+  return `<div class="${classes}" role="button" tabindex="0" data-key="${key}" style="--i:${idx}"
+    onclick="tapDay('${key}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tapDay('${key}')}">
+    <div class="cal-top">${top}</div>${tagsHtml}</div>`;
+}
+
+/** Toque en un día: en pantallas estrechas el panel está debajo, así que se baja a él. */
+function tapDay(key) {
+  selectDate(key);
+  if (window.innerWidth <= 1100) {
+    const side = document.getElementById('cal-side');
+    if (side) side.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
 }
 
 function selectDate(key) {
   selectedDate = key;
-
-  document.querySelectorAll('.cal-day').forEach(el => {
-    el.classList.remove('selected');
-    if (el.dataset.key === key && !el.classList.contains('today')) {
-      el.classList.add('selected');
-    }
-  });
+  document.querySelectorAll('.cal-day').forEach(el => el.classList.toggle('selected', el.dataset.key === key));
+  const side = document.getElementById('cal-side');
+  if (!side) return;
 
   const info = dateMap[key] || { holidays: [] };
   const dateObj = new Date(key + 'T12:00:00');
-  const label = dateObj.toLocaleDateString('es-ES',{ weekday:'long', day:'numeric', month:'long' });
-  const labelCap = label.charAt(0).toUpperCase() + label.slice(1);
-  // Fecha hebrea: fonética en español (en negrita, junto a la gregoriana) y en hebreo debajo
-  let hebEs = '', hebDayLabel = '';
+  const titulo = capi(dateObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }));
+  let hebEs = '', hebHe = '';
   try {
     const hp = hebParts(dateObj);
     const [mesEs, mesHe] = MES_HEB[hp.m] || [hp.m, ''];
     hebEs = `${hp.d} de ${mesEs} ${hp.y}`;
-    if (mesHe) hebDayLabel = `${gematria(hp.d)} ${mesHe} ${gematria(hp.y % 1000)}`;
-  } catch(e) {}
+    if (mesHe) hebHe = `${gematria(hp.d)} ${mesHe} ${gematria(hp.y % 1000)}`;
+  } catch (e) {}
 
-  const titleEl = document.getElementById('cal-side-title');
-  titleEl.textContent = labelCap;
-  if (hebEs) {
-    const sp = document.createElement('span');
-    sp.className = 'cal-side-heb-es';
-    sp.textContent = ` · ${hebEs}`;
-    titleEl.appendChild(sp);
-  }
-  // Fecha hebrea bajo el título gregoriano
-  let hebEl = document.getElementById('cal-side-heb');
-  if (!hebEl) {
-    hebEl = document.createElement('p');
-    hebEl.id = 'cal-side-heb';
-    hebEl.className = 'cal-side-hebrew';
-    document.getElementById('cal-side-title').after(hebEl);
-  }
-  hebEl.textContent = hebDayLabel;
-
+  const row = (cls, icon, title, sub, time, extra = '') => `
+    <div class="ds-row r-${cls}">
+      <span class="ds-ic">${icon}</span>
+      <div class="t"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}${extra}</div>
+      ${time ? `<span class="ds-time">${time}</span>` : ''}
+    </div>`;
+  const ciudad = escC(selectedCity.name);
   let html = '';
-  let hasContent = false;
 
-  // ── Encendido de velas (viernes o erev yom tov) ──
-  if (info.candles) {
-    hasContent = true;
-    const satD = new Date(dateObj); satD.setDate(satD.getDate()+1);
-    const satKey = satD.toISOString().slice(0,10);
-    const havdalahTime = (dateMap[satKey] || {}).havdalah || null;
-
-    if (info.parasha) {
-      const p = info.parasha;
-      const esp = info.especial ? `<div class="side-shabat-especial">✦ ${info.especial}</div>` : '';
-      const havdalahHTML = havdalahTime
-        ? `<div class="side-time-sep"></div><div class="side-time-item"><span class="side-time-label">Habdalá</span><span class="side-time-val">${havdalahTime}</span></div>`
-        : '';
-      html += `
-        <div class="side-shabat-card">
-          <div class="side-shabat-label">Shabat esta semana</div>
-          <div class="side-shabat-parasha">Parashat ${p.es}</div>
-          <span class="side-shabat-he">${p.he}</span>
-          ${esp}
-          <div class="side-shabat-times">
-            <div class="side-time-item">
-              <span class="side-time-label">Encendido</span>
-              <span class="side-time-val">${info.candles}</span>
-            </div>
-            ${havdalahHTML}
-          </div>
-          <div class="side-city-badge">${selectedCity.name} · ${selectedCity.b} min antes del ocaso</div>
-        </div>`;
-    } else {
-      html += `
-        <div class="side-candles-card">
-          <div class="side-candles-icon">🕯️</div>
-          <div class="side-candles-info">
-            <div class="side-candles-label">Encendido de velas — ${selectedCity.name}</div>
-            <div class="side-candles-time">${info.candles}</div>
-            <div class="side-candles-next">${selectedCity.b} minutos antes del ocaso</div>
-          </div>
-        </div>`;
-    }
+  // Shabat (viernes con parashá o sábado)
+  const esSab = dateObj.getDay() === 6;
+  const pInfo = esSab ? (dateMap[prevKey(key)] || {}) : info;
+  if (pInfo.parasha && (info.candles || esSab)) {
+    html += `<div class="ds-shabat"><div class="k">${esSab ? 'Hoy se lee' : 'Este Shabat se lee'}</div>
+      <div class="n">Parashat ${escC(pInfo.parasha.es)}</div><div class="h">${pInfo.parasha.he || ''}</div>
+      ${pInfo.especial ? `<div class="e">${escC(pInfo.especial)}</div>` : ''}</div>`;
+  }
+  if (info.candles) html += row('candles', IC.candle, 'Encendido de velas', `${ciudad} · ${selectedCity.b} min antes del ocaso`, info.candles);
+  if (info.havdalah) html += row('havdala', IC.moon, esSab ? 'Havdalá · sale Shabat' : 'Havdalá', ciudad, info.havdalah);
+  else if (!esSab && info.parasha) {
+    const hs = (dateMap[nextKey(key)] || {}).havdalah;
+    if (hs) html += row('havdala', IC.moon, 'Havdalá · sábado', ciudad, hs);
   }
 
-  // ── Sábado: mostrar parashá ──
-  if (info.havdalah && !info.candles) {
-    const friD = new Date(dateObj); friD.setDate(friD.getDate()-1);
-    const friKey = friD.toISOString().slice(0,10);
-    const friInfo = dateMap[friKey] || {};
-    if (friInfo.parasha) {
-      hasContent = true;
-      const p = friInfo.parasha;
-      const esp = friInfo.especial ? `<div class="side-shabat-especial">✦ ${friInfo.especial}</div>` : '';
-      html += `
-        <div class="side-shabat-card">
-          <div class="side-shabat-label">Shabat — Parashá de esta semana</div>
-          <div class="side-shabat-parasha">Parashat ${p.es}</div>
-          <span class="side-shabat-he">${p.he}</span>
-          ${esp}
-          <div class="side-shabat-times">
-            <div class="side-time-item">
-              <span class="side-time-label">Encendido (ayer)</span>
-              <span class="side-time-val">${friInfo.candles || '—'}</span>
-            </div>
-            <div class="side-time-sep"></div>
-            <div class="side-time-item">
-              <span class="side-time-label">Habdalá</span>
-              <span class="side-time-val">${info.havdalah}</span>
-            </div>
-          </div>
-          <div class="side-city-badge">📍 ${selectedCity.flag} ${selectedCity.name}</div>
-        </div>`;
-    }
-  }
-
-  // ── Horario del ayuno ──
-  let ayunoHTML = '';
+  // Ayuno
+  let ayunoExtra = '';
   if (info.ayunoInicio || info.ayunoFin) {
-    // Si hoy solo termina (Tishá Beav, Kipur), el inicio fue la víspera
     let ini = info.ayunoInicio, iniLabel = 'Empieza';
     if (!ini) {
-      const prev = new Date(dateObj); prev.setDate(prev.getDate() - 1);
-      const pv = dateMap[isoDate(prev.getFullYear(), prev.getMonth(), prev.getDate())];
+      const pv = dateMap[prevKey(key)];
       if (pv && pv.ayunoInicio) { ini = pv.ayunoInicio; iniLabel = 'Empezó ayer'; }
     } else if (ini.encendido) iniLabel = 'Empieza (encendido)';
-    else if (ini.noche)       iniLabel = 'Empieza esta noche';
+    else if (ini.noche) iniLabel = 'Empieza esta noche';
     const fin = info.ayunoFin;
-    ayunoHTML = `
-        <div class="side-ayuno-times">
-          ${ini ? `<div class="side-time-item"><span class="side-time-label">${iniLabel}</span><span class="side-time-val">${ini.hora}</span></div>` : ''}
-          ${ini && fin ? '<div class="side-time-sep"></div>' : ''}
-          ${fin ? `<div class="side-time-item"><span class="side-time-label">Termina</span><span class="side-time-val">${fin.hora}</span></div>` : ''}
-        </div>
-        <div class="side-ayuno-city">📍 ${selectedCity.name}</div>`;
+    ayunoExtra = `<div class="ds-ayuno">${ini ? `<div><span>${iniLabel}</span><b>${ini.hora}</b></div>` : ''}${fin ? `<div><span>Termina</span><b>${fin.hora}</b></div>` : ''}</div>`;
   }
 
-  // ── Festividades ──
+  // Festividades
   info.holidays.forEach(h => {
-    hasContent = true;
-    const timeHTML = h.time ? `<div class="side-holiday-time">Encendido: ${h.time} · ${selectedCity.name}</div>` : '';
-    const conAyuno = ayunoHTML && h.tipo === 'fast';
-    html += `
-      <div class="side-holiday-card ${h.tipo}">
-        <div class="side-holiday-name">${h.es}</div>
-        ${h.he ? `<div class="side-holiday-he">${h.he}</div>` : ''}
-        ${h.desc ? `<div class="side-holiday-desc">${h.desc}</div>` : ''}
-        ${timeHTML}
-        ${conAyuno ? ayunoHTML : ''}
-      </div>`;
-    if (conAyuno) ayunoHTML = '';
+    const sub = [h.he ? `<span class="he">${h.he}</span>` : '', h.desc ? escC(h.desc) : '', h.time ? `Encendido ${h.time}` : ''].filter(Boolean).join(' · ');
+    const extra = h.tipo === 'fast' && ayunoExtra ? ayunoExtra : '';
+    if (extra) ayunoExtra = '';
+    html += row(h.tipo, TIPO_IC[h.tipo] || IC.star, escC(h.es), sub, '', extra);
   });
-  if (ayunoHTML) {
-    hasContent = true;
-    const nombre = (info.ayunoInicio || info.ayunoFin).nombre;
-    html += `
-      <div class="side-holiday-card fast">
-        <div class="side-holiday-name">Ayuno — ${nombre}</div>
-        ${ayunoHTML}
-      </div>`;
-  }
+  if (ayunoExtra) html += row('fast', IC.fast, `Ayuno · ${escC((info.ayunoInicio || info.ayunoFin).nombre)}`, ciudad, '', ayunoExtra);
 
-  // ── Cuenta del Omer ──
-  if (info.omer) {
-    hasContent = true;
-    html += `
-      <div class="side-holiday-card omer">
-        <div class="side-holiday-name">Cuenta del Omer — día ${info.omer}</div>
-        <div class="side-holiday-he">ספירת העומר · ${gematria(info.omer)}</div>
-        <div class="side-holiday-desc">Se cuenta la noche anterior, al salir las estrellas</div>
-      </div>`;
-  }
+  if (info.omer) html += row('omer', IC.count, `Omer · día ${info.omer}`, `<span class="he">ספירת העומר · ${gematria(info.omer)}</span> · se cuenta la noche anterior`, '');
 
-  // ── Mis eventos inscritos ──
-  const inscrEvs = (customEventsMap[key] || []).filter(e => e.tipo === 'inscripcion');
-  if (inscrEvs.length) {
-    if (hasContent) html += `<hr style="border:none;border-top:1px solid var(--color-border);margin:12px 0;">`;
-    html += `<div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0369A1;margin-bottom:8px;">Mis eventos inscritos</div>`;
-    inscrEvs.forEach(ev => {
-      html += `<div class="cal-ev-inscripcion">
-        <div class="cal-ev-item-title">${ev.titulo}</div>
-        ${ev.hora ? `<div class="cal-ev-item-hora">🕐 ${ev.hora}</div>` : ''}
-        ${ev.lugar ? `<div class="cal-ev-item-desc">📍 ${ev.lugar}</div>` : ''}
-        <span class="cal-ev-inscripcion-badge">✓ Inscrito</span>
-      </div>`;
-    });
-    hasContent = true;
-  }
+  // Eventos
+  const evs = customEventsMap[key] || [];
+  const mios = evs.filter(e => e.tipo === 'inscripcion');
+  const titulosMios = new Set(mios.map(e => e.titulo));
+  const comunidad = evs.filter(e => e.tipo !== 'inscripcion');
+  if (mios.length || comunidad.length) html += `<p class="ds-sec">En la comunidad</p>`;
+  comunidad.forEach(ev => {
+    const isEventosTable = String(ev.id).startsWith('evt-');
+    const realId = isEventosTable ? String(ev.id).slice(4) : null;
+    const mine = titulosMios.has(ev.titulo);
+    const sub = [ev.hora ? escC(String(ev.hora).slice(0, 5)) : '', ev.lugar ? escC(ev.lugar) : ''].filter(Boolean).join(' · ');
+    const extra = (ev.descripcion ? `<small>${escC(ev.descripcion)}</small>` : '')
+      + (mine ? `<span class="ds-badge">${IC.check}Estás apuntado</span>` : '')
+      + (isEventosTable ? `<a class="lnk" href="evento.html?id=${encodeURIComponent(realId)}">Ver evento ${IC.arrow}</a>` : '');
+    const icon = ev.imagen_url
+      ? `<img class="flyer" src="${escC(ev.imagen_url)}" alt="" loading="lazy" onclick="openEventoLightbox('${key}','${escC(ev.id)}')">`
+      : `<span class="ds-ic">${IC.cal}</span>`;
+    const del = _calIsAdmin && !isEventosTable ? `<button class="cal-ev-item-del" onclick="deleteCalEv('${escC(ev.id)}','${key}',event)" aria-label="Eliminar evento">${IC.x}</button>` : '';
+    html += `<div class="ds-row r-${mine ? 'mine' : 'ev'}" id="calev-${escC(ev.id)}">${icon}<div class="t"><b>${escC(ev.titulo)}</b>${sub ? `<small>${sub}</small>` : ''}${extra}</div>${del}</div>`;
+  });
+  mios.filter(m => !comunidad.some(c => c.titulo === m.titulo)).forEach(ev => {
+    const sub = [ev.hora ? escC(String(ev.hora).slice(0, 5)) : '', ev.lugar ? escC(ev.lugar) : ''].filter(Boolean).join(' · ');
+    html += row('mine', IC.check, escC(ev.titulo), sub, '', `<span class="ds-badge">${IC.check}Estás apuntado</span>`);
+  });
 
-  // ── Eventos de la comunidad ──
-  const customEvs = (customEventsMap[key] || []).filter(e => e.tipo !== 'inscripcion');
-  if (customEvs.length) {
-    if (hasContent) html += `<hr style="border:none;border-top:1px solid var(--color-border);margin:12px 0;">`;
-    html += `<div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);margin-bottom:8px;">Eventos de la comunidad</div>`;
-    customEvs.forEach(ev => {
-      // Los eventos sincronizados desde la tabla `eventos` (id con prefijo
-      // 'evt-') viven y se gestionan en eventos.html — no se borran desde
-      // aquí (ese botón solo aplica a calendario_eventos), en su lugar
-      // llevan un enlace directo al evento.
-      const isEventosTable = ev.id.startsWith('evt-');
-      const realId = isEventosTable ? ev.id.slice(4) : null;
-      const hasFlyer = !!ev.imagen_url;
-      const evBody = `
-        <div class="cal-ev-item-title">${ev.titulo}</div>
-        ${ev.hora ? `<div class="cal-ev-item-hora">🕐 ${ev.hora}</div>` : ''}
-        ${ev.descripcion ? `<div class="cal-ev-item-desc">${ev.descripcion}</div>` : ''}
-        ${isEventosTable ? `<a class="cal-ev-item-link" href="evento.html?id=${realId}" onclick="event.stopPropagation()">Ver en Eventos →</a>` : ''}`;
-      html += hasFlyer
-        ? `<div class="cal-ev-item" id="calev-${ev.id}" style="cursor:pointer;display:flex;gap:10px;align-items:flex-start;" onclick="openEventoLightbox('${key}','${ev.id}')">
-            <img src="${ev.imagen_url}" alt="${ev.titulo}" loading="lazy" decoding="async" style="width:48px;height:48px;border-radius:6px;object-fit:cover;flex-shrink:0;">
-            <div style="flex:1;min-width:0;">${evBody}</div>
-          </div>`
-        : `<div class="cal-ev-item" id="calev-${ev.id}">
-            ${_calIsAdmin && !isEventosTable ? `<button class="cal-ev-item-del" onclick="deleteCalEv('${ev.id}','${key}',event)" title="Eliminar">✕</button>` : ''}
-            ${evBody}
-          </div>`;
-    });
-    hasContent = true;
-  }
+  if (!html) html = `<div class="ds-empty">${IC.cal}Un día tranquilo: sin fiestas ni eventos.</div>`;
 
   if (_calIsAdmin) {
     html += `<button class="cal-add-btn" onclick="showCalAddForm('${key}')">
@@ -1276,11 +1301,12 @@ function selectDate(key) {
     </div>`;
   }
 
-  if (!hasContent) {
-    html = `<p class="cal-empty">Sin eventos hebreos este día</p>`;
-  }
-
-  document.getElementById('cal-side-detail').innerHTML = html;
+  side.innerHTML = `
+    <div class="ds-head">
+      <div class="ds-num"><b>${dateObj.getDate()}</b><small>${MES_CORTO[dateObj.getMonth()]}</small></div>
+      <div class="ds-titles"><h2>${escC(titulo)}</h2>${hebEs ? `<div class="es">${escC(hebEs)}</div>` : ''}${hebHe ? `<div class="he">${hebHe}</div>` : ''}</div>
+    </div>
+    <div class="ds-body">${html}</div>`;
 }
 
 function openEventoLightbox(key, id) {

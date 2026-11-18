@@ -23,6 +23,28 @@ window.__KEHILA_EN={exact:{
 "Inscríbete gratis": "Sign up for free",
 "Para todos": "For everyone",
 "Todavía no estás inscrito en ningún evento próximo.": "You're not registered for any upcoming events yet.",
+"Mañana entra": "Tomorrow is",
+"Esta tarde entra": "Tonight is",
+"Shavúa tov": "Shavua tov",
+"Shabat en comunidad": "Shabbat together",
+"Miembros de la comunidad alrededor de una mesa de Shabat": "Community members around a Shabbat table",
+"Calendario hebreo": "Hebrew calendar",
+"Próximas fechas": "Upcoming dates",
+"Este Shabat": "This Shabbat",
+"Hoy es Shabat": "Today is Shabbat",
+"Havdalá · sábado": "Havdalah · Saturday",
+"Horarios para": "Times for",
+"Mar": "Tue",
+"Estoy apuntado": "I'm signed up",
+"Hoy se lee": "Read today",
+"Este Shabat se lee": "This Shabbat's reading",
+"Havdalá · sale Shabat": "Havdalah · Shabbat ends",
+"Termina": "Ends",
+"En la comunidad": "In the community",
+"Estás apuntado": "You're signed up",
+"Ver evento": "View event",
+"Un día tranquilo: sin fiestas ni eventos.": "A quiet day: no holidays or events.",
+"se cuenta la noche anterior": "counted the night before",
 "Una cita": "An appointment",
 "con el Rav": "with the Rabbi",
 "Para hablar con calma de lo que necesites: una consulta halájica, tu camino judío, un Bar Mitzvá o una boda que se acerca.": "To talk calmly about whatever you need: a halachic question, your Jewish path, a Bar Mitzvah or an upcoming wedding.",
@@ -2923,6 +2945,42 @@ patterns:[
 [
 "^¿Eliminar el subgrupo \"(.+?)\"\\? Se quitaran tambien todos sus miembros\\.$",
 "Delete the subgroup \"{}\"? All its members will be removed too."
+],
+[
+"^Faltan (\\d+) días para$",
+"{} days until"
+],
+[
+"^vie (\\d+)$",
+"Fri {}"
+],
+[
+"^Hoy es (.+?) ·$",
+"Today is {} ·"
+],
+[
+"^encendido (\\d+) min antes del ocaso$",
+"candle lighting {} min before sunset"
+],
+[
+"^(.+?) · (\\d+) min antes del ocaso$",
+"{0} · {1} min before sunset"
+],
+[
+"^\\+(\\d+) más$",
+"+{} more"
+],
+[
+"^Omer · día (\\d+)$",
+"Omer · day {}"
+],
+[
+"^(\\d+) de (Tishrei|Jeshván|Kislev|Tevet|Shevat|Adar I|Adar II|Adar|Nisán|Iyar|Siván|Tamuz|Av|Elul) (\\d{4})$",
+"{0} {1} {2}"
+],
+[
+"^viernes (\\d+)$",
+"Friday {}"
 ],
 [
 "^La solicitud llega por email a la oficina del Rav \\((.+?)\\)\\.$",
