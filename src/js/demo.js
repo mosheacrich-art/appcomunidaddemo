@@ -20,7 +20,7 @@
   'use strict';
 
   const DB_KEY = 'kehila_demo_db';
-  const SEED_VERSION = 15;   // subir al cambiar seed(): descarta lo guardado en los navegadores
+  const SEED_VERSION = 16;   // subir al cambiar seed(): descarta lo guardado en los navegadores
   const DEMO_USER_ID = '00000000-0000-0000-0000-000000000000';
   const NO_DISPONIBLE = { message: 'No disponible en la demo', code: 'demo' };
 
@@ -90,6 +90,9 @@
       ev('ev-7', 'Clase de hebreo para principiantes', proximo(2, 1), '19:30', 'Aula 2', 'Educación', 'libro', 2, {
         imagen_url: 'img/demo/evento-clase-hebreo.jpg',
         descripcion: 'Primer módulo de hebreo conversacional: alefato, saludos y frases útiles del día a día.', aforo: 15 }),
+      ev('ev-8', 'Fiesta de disfraces (jóvenes +18)', proximo(6, 2), '21:00', 'Salón principal', 'Comunidad', 'estrella', 3, {
+        imagen_url: 'img/demo/evento-fiesta-disfraces.jpg',
+        descripcion: 'Una noche de diversión, comunidad y los mejores disfraces. Música, buena compañía y ambiente festivo.', aforo: 120 }),
     ];
 
     const noticias = [
@@ -428,6 +431,14 @@
     'Celebración de Tu Bishvat': 'Tu BiShvat celebration',
     'Séder de frutos con las siete especies, actividades para niños y plantación simbólica.': 'A fruit seder with the seven species, activities for kids and a symbolic tree planting.',
     'Clase de hebreo para principiantes': 'Hebrew class for beginners',
+    'Fiesta de disfraces (jóvenes +18)': 'Costume party (young adults 18+)',
+    'Una noche de diversión, comunidad y los mejores disfraces. Música, buena compañía y ambiente festivo.': 'A night of fun, community and the best costumes. Music, good company and a festive atmosphere.',
+    // Carteles con versión en inglés
+    'img/demo/evento-cena-shabat.jpg': 'img/demo/evento-cena-shabat-en.jpg',
+    'img/demo/evento-shiur-parasha.jpg': 'img/demo/evento-shiur-parasha-en.jpg',
+    'img/demo/evento-torneo-futbol.jpg': 'img/demo/evento-torneo-futbol-en.jpg',
+    'img/demo/evento-tu-bishvat.jpg': 'img/demo/evento-tu-bishvat-en.jpg',
+    'img/demo/evento-fiesta-disfraces.jpg': 'img/demo/evento-fiesta-disfraces-en.jpg',
     'Primer módulo de hebreo conversacional: alefato, saludos y frases útiles del día a día.': 'First module of conversational Hebrew: the alef-bet, greetings and useful everyday phrases.',
     '¡Te esperamos! Recibirás un recordatorio el día antes.': "We'll see you there! You'll get a reminder the day before.",
     'Salón principal': 'Main hall', 'Sala de estudio': 'Study room', 'Cocina comunitaria': 'Community kitchen',
