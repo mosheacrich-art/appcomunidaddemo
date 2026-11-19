@@ -20,7 +20,7 @@
   'use strict';
 
   const DB_KEY = 'kehila_demo_db';
-  const SEED_VERSION = 16;   // subir al cambiar seed(): descarta lo guardado en los navegadores
+  const SEED_VERSION = 17;   // subir al cambiar seed(): descarta lo guardado en los navegadores
   const DEMO_USER_ID = '00000000-0000-0000-0000-000000000000';
   const NO_DISPONIBLE = { message: 'No disponible en la demo', code: 'demo' };
 
@@ -75,21 +75,12 @@
       ev('ev-2', 'Shiur semanal de Parashá', proximo(4, 1), '19:30', 'Sala de estudio', 'Estudio', 'libro', 1, {
         imagen_url: 'img/demo/evento-shiur-parasha.jpg',
         descripcion: 'Estudio de la porción semanal con preguntas abiertas y debate. No hace falta conocimiento previo.', aforo: 30 }),
-      ev('ev-3', 'Taller de jalot para familias', proximo(0, 9), '11:00', 'Cocina comunitaria', 'Educación', 'jala', 2, {
-        imagen_url: 'img/demo/evento-taller-jalot.jpg',
-        descripcion: 'Aprende a trenzar jalot con tus hijos. Incluye ingredientes, delantal y una jalá para llevar a casa.', aforo: 24 }),
       ev('ev-4', 'Torneo de fútbol comunitario', proximo(0, 20), '10:00', 'Parque Deportivo', 'Comunidad', 'balon', 3, {
         imagen_url: 'img/demo/evento-torneo-futbol.jpg',
         descripcion: 'Torneo de fútbol 7 por equipos mixtos de todas las edades. Inscríbete solo o con tu equipo; trofeos y comida kosher.', aforo: 56 }),
-      ev('ev-5', 'Encuentro de jóvenes profesionales', proximo(3, 1), '19:30', 'Terraza del centro', 'Comunidad', 'personas', 0, {
-        imagen_url: 'img/demo/evento-jovenes-profesionales.jpg',
-        descripcion: 'Networking informal para jóvenes de 22 a 35 años, con picoteo kosher y una charla breve.', aforo: 50 }),
       ev('ev-6', 'Celebración de Tu Bishvat', proximo(0, 16), '11:00', 'Jardín del centro', 'Festividad', 'hoja', 1, {
         imagen_url: 'img/demo/evento-tu-bishvat.jpg',
         descripcion: 'Séder de frutos con las siete especies, actividades para niños y plantación simbólica.', aforo: 100 }),
-      ev('ev-7', 'Clase de hebreo para principiantes', proximo(2, 1), '19:30', 'Aula 2', 'Educación', 'libro', 2, {
-        imagen_url: 'img/demo/evento-clase-hebreo.jpg',
-        descripcion: 'Primer módulo de hebreo conversacional: alefato, saludos y frases útiles del día a día.', aforo: 15 }),
       ev('ev-8', 'Fiesta de disfraces (jóvenes +18)', proximo(6, 2), '21:00', 'Salón principal', 'Comunidad', 'estrella', 3, {
         imagen_url: 'img/demo/evento-fiesta-disfraces.jpg',
         descripcion: 'Una noche de diversión, comunidad y los mejores disfraces. Música, buena compañía y ambiente festivo.', aforo: 120 }),
@@ -185,7 +176,7 @@
       subgrupos: [],
       inscripciones: [
         { id: 'i-1', evento_id: 'ev-2', usuario_id: DEMO_USER_ID, created_at: hace(2) },
-        ...Array.from({ length: 34 }, (_, i) => ({ id: 'i-x' + i, evento_id: ['ev-1', 'ev-2', 'ev-3', 'ev-4', 'ev-5'][i % 5], usuario_id: 'otro-' + i, created_at: hace(3) })),
+        ...Array.from({ length: 34 }, (_, i) => ({ id: 'i-x' + i, evento_id: ['ev-1', 'ev-2', 'ev-4', 'ev-6', 'ev-8'][i % 5], usuario_id: 'otro-' + i, created_at: hace(3) })),
       ],
       horarios: [{ id: 'sinagoga', items: [
         { nombre: 'Shajarit', hora: '07:30', tipo: 'semana' }, { nombre: 'Minjá', hora: '17:45', tipo: 'semana' },
@@ -268,7 +259,7 @@
     ];
 
     // Inscripciones: miembros reales (y algún familiar) para que el panel muestre quién va
-    const OCUPACION = { 'ev-1': 34, 'ev-2': 14, 'ev-3': 16, 'ev-4': 28, 'ev-5': 19, 'ev-6': 31, 'ev-7': 11 };
+    const OCUPACION = { 'ev-1': 34, 'ev-2': 14, 'ev-4': 28, 'ev-6': 31, 'ev-8': 47 };
     const insc = t.inscripciones.filter((r) => r.usuario_id === DEMO_USER_ID);
     Object.entries(OCUPACION).forEach(([ev, n], e) => {
       for (let i = 0; i < n; i++) {
@@ -422,15 +413,10 @@
     'Una cena de Shabat para toda la comunidad: kidush, jalot caseras, menú de tres platos y canciones. Ideal para conocer a nuevas familias.': 'A Shabbat dinner for the whole community: kiddush, homemade challah, a three-course menu and songs. A great way to meet new families.',
     'Shiur semanal de Parashá': 'Weekly Parasha shiur',
     'Estudio de la porción semanal con preguntas abiertas y debate. No hace falta conocimiento previo.': 'Study of the weekly Torah portion with open questions and discussion. No prior knowledge needed.',
-    'Taller de jalot para familias': 'Challah workshop for families',
-    'Aprende a trenzar jalot con tus hijos. Incluye ingredientes, delantal y una jalá para llevar a casa.': 'Learn to braid challah with your kids. Ingredients, an apron and a challah to take home are included.',
     'Torneo de fútbol comunitario': 'Community football tournament',
     'Torneo de fútbol 7 por equipos mixtos de todas las edades. Inscríbete solo o con tu equipo; trofeos y comida kosher.': '7-a-side football tournament with mixed teams of all ages. Sign up on your own or with your team; trophies and a kosher lunch.',
-    'Encuentro de jóvenes profesionales': 'Young professionals meetup',
-    'Networking informal para jóvenes de 22 a 35 años, con picoteo kosher y una charla breve.': 'Informal networking for 22 to 35-year-olds, with kosher snacks and a short talk.',
     'Celebración de Tu Bishvat': 'Tu BiShvat celebration',
     'Séder de frutos con las siete especies, actividades para niños y plantación simbólica.': 'A fruit seder with the seven species, activities for kids and a symbolic tree planting.',
-    'Clase de hebreo para principiantes': 'Hebrew class for beginners',
     'Fiesta de disfraces (jóvenes +18)': 'Costume party (young adults 18+)',
     'Una noche de diversión, comunidad y los mejores disfraces. Música, buena compañía y ambiente festivo.': 'A night of fun, community and the best costumes. Music, good company and a festive atmosphere.',
     // Carteles con versión en inglés
@@ -439,7 +425,6 @@
     'img/demo/evento-torneo-futbol.jpg': 'img/demo/evento-torneo-futbol-en.jpg',
     'img/demo/evento-tu-bishvat.jpg': 'img/demo/evento-tu-bishvat-en.jpg',
     'img/demo/evento-fiesta-disfraces.jpg': 'img/demo/evento-fiesta-disfraces-en.jpg',
-    'Primer módulo de hebreo conversacional: alefato, saludos y frases útiles del día a día.': 'First module of conversational Hebrew: the alef-bet, greetings and useful everyday phrases.',
     '¡Te esperamos! Recibirás un recordatorio el día antes.': "We'll see you there! You'll get a reminder the day before.",
     'Salón principal': 'Main hall', 'Sala de estudio': 'Study room', 'Cocina comunitaria': 'Community kitchen',
     'Parque Deportivo': 'Sports park', 'Terraza del centro': 'Center terrace', 'Jardín del centro': 'Center garden', 'Aula 2': 'Classroom 2',
