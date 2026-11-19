@@ -2,6 +2,10 @@
 window.__KEHILA_EN={exact:{
 "Cambiar ciudad": "Change city",
 "Entre semana": "Weekdays",
+"Zmanim y festividades": "Zmanim and holidays",
+"Reserva tu cita": "Book your appointment",
+"Agenda de la comunidad": "Community calendar",
+"Tzedaká en línea": "Online tzedakah",
 "Hemos recibido tu solicitud de": "We've received your request for",
 "No se pudo subir:": "Couldn't upload:",
 "pasos cortos. Puedes volver atrás en cualquier momento sin perder lo que has escrito.": "short steps. You can go back at any time without losing what you've written.",
