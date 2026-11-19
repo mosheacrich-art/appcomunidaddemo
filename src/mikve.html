@@ -23,12 +23,12 @@
     :root {
       --mk-parchment: #EDE7DC;
       --mk-surface:   #FDFAF5;
-      --mk-navy:      #0D2545;
+      --mk-navy:      var(--color-primary);
       --mk-gold:      #B8963E;
       --mk-gold-bg:   var(--color-gold-light);
       --mk-gold-pale: color-mix(in srgb, var(--color-gold-light) 45%, #fff);
       --mk-border:    #DDD5C7;
-      --mk-text:      #0D2545;
+      --mk-text:      var(--color-primary);
       --mk-muted:     #8A7E73;
     }
     .main-content { margin-left: var(--sidebar-width); min-height: 100vh; background: var(--mk-parchment); }
@@ -245,7 +245,7 @@
     .mk-modal-confirm { flex: 2; padding: 12px; border: none; border-radius: 12px; background: var(--mk-gold); color: #fff; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: inherit; }
   </style>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0D2545">
+  <meta name="theme-color" content="#1B2E5E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="{{name}}">
