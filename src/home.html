@@ -1791,9 +1791,10 @@
       try {
         const { data } = await sb.from('servicios_config').select('image_url').eq('id', 'shabat_banner').single();
         if (data?.image_url) {
+          // La ventana con arco solo aparece si la foto carga (una URL rota no deja el hueco vacío)
           const img = document.getElementById('shabat-banner-photo');
+          img.onload = () => document.getElementById('shabat-card').classList.add('has-photo');
           img.src = data.image_url;
-          document.getElementById('shabat-card').classList.add('has-photo');
         }
       } catch(e) {}
     })());

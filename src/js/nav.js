@@ -450,8 +450,8 @@ function buildSidebar(activePage) {
   }
 
   const roleLabelMap = {
-    es: { admin: 'Administrador', miembro: 'Miembro', mod: 'Moderador' },
-    en: { admin: 'Administrator', miembro: 'Member', mod: 'Moderator' }
+    es: { admin: 'Administrador', super_admin: 'Superadmin', staff: 'Equipo', miembro: 'Miembro', mod: 'Moderador' },
+    en: { admin: 'Administrator', super_admin: 'Super admin', staff: 'Staff', miembro: 'Member', mod: 'Moderator' }
   };
   const roleLabel = (roleLabelMap[_lang] || roleLabelMap.es)[user.role] || user.role;
   const verPerfil = _lang === 'en' ? 'View profile' : 'Ver perfil';
@@ -461,12 +461,12 @@ function buildSidebar(activePage) {
     <aside class="sidebar">
       <div class="sidebar-inner">
         <!-- Logo -->
-        <a href="home.html" class="sidebar-logo" style="text-decoration:none;cursor:pointer;display:flex;justify-content:center;align-items:center;width:100%;padding:6px 0 14px;">
-          <img src="img/{{brand.logoFile}}" alt="{{name}}" style="width:112px;height:112px;object-fit:contain;display:block;flex-shrink:0;">
+        <a href="home.html" class="sidebar-logo">
+          <span class="sidebar-medallion"><img src="img/{{brand.logoFile}}" alt="{{name}}"></span>
         </a>
 
         <!-- Usuario -->
-        <a href="perfil.html" class="sidebar-user" style="text-decoration:none;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">
+        <a href="perfil.html" class="sidebar-user">
           <div class="avatar avatar-md" data-color="${color}">${escHtml(initials)}</div>
           <div class="sidebar-user-info">
             <div class="sidebar-user-name">${escHtml(user.name)}</div>
@@ -482,9 +482,7 @@ function buildSidebar(activePage) {
 
         <!-- Footer: lang toggle + logout -->
         <div class="sidebar-footer">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 18px 2px;">
-            <button class="lang-toggle-btn" onclick="toggleLang()" style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:3px;padding:3px 8px;cursor:pointer;font-family:inherit;transition:all 0.15s;" title="${_lang === 'es' ? 'Switch to English' : 'Cambiar a Español'}">${_lang === 'es' ? 'EN' : 'ES'}</button>
-          </div>
+          <button class="sidebar-lang" onclick="toggleLang()" title="${_lang === 'es' ? 'Switch to English' : 'Cambiar a Español'}"><span class="${_lang === 'es' ? 'on' : ''}">ES</span><span class="sep">·</span><span class="${_lang === 'en' ? 'on' : ''}">EN</span></button>
           <button class="sidebar-logout" onclick="logout()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"/></svg>
             <span>${cerrarSesion}</span>
